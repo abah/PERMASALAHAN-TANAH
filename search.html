@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Data - Simple & Realtime</title>
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Dashboard</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="search.html" class="nav-item active">
+                    <i class="fas fa-search"></i>
+                    <span>Pencarian</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Search Header -->
+            <div class="search-header">
+                <h1><i class="fas fa-search"></i> Pencarian Data</h1>
+                <p>Cari dari <span id="totalCount">0</span> lokasi transmigrasi</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Ketik untuk mencari..." autocomplete="off">
+                    <button id="clearBtn" class="clear-btn" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Filters -->
+            <div class="quick-filters">
+                <span class="filter-label">Filter Cepat:</span>
+                <button class="filter-tag" data-filter="provinsi">Provinsi</button>
+                <button class="filter-tag" data-filter="kabupaten">Kabupaten</button>
+                <button class="filter-tag" data-filter="tahun">Tahun</button>
+                <button class="filter-tag" data-filter="status">Status</button>
+            </div>
+
+            <!-- Results -->
+            <div id="searchResults" class="search-results" style="display: none;">
+                <div class="results-header">
+                    <div class="results-info">
+                        <h3>Hasil Pencarian: <span id="resultsCount">0</span></h3>
+                        <span class="search-time" id="searchTime"></span>
+                    </div>
+                    <div class="results-actions">
+                        <button id="exportBtn" class="btn-export">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                        <button id="clearResults" class="btn-clear">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                <div id="resultsList" class="results-list"></div>
+            </div>
+
+            <!-- No Results -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Tidak ada hasil</h3>
+                <p>Coba kata kunci lain</p>
+                <button id="tryAgainBtn" class="btn-try-again">
+                    <i class="fas fa-redo"></i> Coba Lagi
+                </button>
+            </div>
+
+            <!-- Initial State -->
+            <div id="initialState" class="initial-state">
+                <i class="fas fa-search"></i>
+                <h3>Mulai Pencarian</h3>
+                <p>Ketik kata kunci di atas untuk mencari data</p>
+                <div class="search-tips">
+                    <h4>Tips Pencarian:</h4>
+                    <div class="tip-tags">
+                        <span class="tip-tag">Sulawesi Selatan</span>
+                        <span class="tip-tag">Kawasan Hutan</span>
+                        <span class="tip-tag">2020</span>
+                        <span class="tip-tag">Belum HPL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Detail Lokasi</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="search.js"></script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Transmigrasi - Trans-Data Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="data.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-database"></i>
+                    Trans-Data Dashboard
+                </div>
+                <div class="project-info">
+                    <div class="project-location" id="currentLocation">Data Transmigrasi</div>
+                    <div class="project-province">Manajemen Data</div>
+                    <div class="patent-year">Total: <span id="totalRecords">0</span> Lokasi</div>
+                    <div class="data-status" id="dataStatus">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Data tersimpan di memory browser</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <div class="nav-item" onclick="window.location.href='index.html'">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item active">
+                        <i class="fas fa-database"></i>
+                        <span>Data</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='analytics.html'">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="nav-item" onclick="window.location.href='search.html'">
+                        <i class="fas fa-search"></i>
+                        <span>Pencarian</span>
+                    </div>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <p>© 2024 Trans-Data Dashboard</p>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Data Management Header -->
+                <div class="data-header">
+                    <div class="data-title">
+                        <h1><i class="fas fa-table"></i> Data Transmigrasi</h1>
+                        <p>Kelola data lokasi transmigrasi dan permasalahan tanah</p>
+                    </div>
+                    <div class="data-actions">
+                        <button id="addNewBtn" class="btn-primary">
+                            <i class="fas fa-plus"></i> Tambah Data
+                        </button>
+                        <button id="saveDataBtn" class="btn-primary">
+                            <i class="fas fa-save"></i> Save Data
+                        </button>
+                        <button id="exportDataBtn" class="btn-secondary">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                        <button id="importDataBtn" class="btn-secondary">
+                            <i class="fas fa-upload"></i> Import CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="data-filters">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Cari data...">
+                    </div>
+                    <div class="filter-options">
+                        <select id="provinsiFilter">
+                            <option value="">Semua Provinsi</option>
+                        </select>
+                        <select id="statusFilter">
+                            <option value="">Semua Status</option>
+                            <option value="active">Aktif</option>
+                            <option value="inactive">Tidak Aktif</option>
+                        </select>
+                        <button id="clearFiltersBtn" class="btn-clear">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-container">
+                    <table id="dataTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Provinsi</th>
+                                <th>Kabupaten</th>
+                                <th>Pola</th>
+                                <th>Tahun Patan</th>
+                                <th>Jumlah KK</th>
+                                <th>Beban SHM</th>
+                                <th>Total Kasus</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Menampilkan <span id="startRecord">1</span> - <span id="endRecord">10</span> dari <span id="totalRecordsPagination">0</span> data
+                    </div>
+                    <div class="pagination-controls">
+                        <button id="prevPage" class="btn-page">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="page-numbers" id="pageNumbers">
+                            <!-- Page numbers will be generated -->
+                        </div>
+                        <button id="nextPage" class="btn-page">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Edit Data</h2>
+                <button class="close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="editId">ID</label>
+                            <input type="number" id="editId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editProvinsi">Provinsi *</label>
+                            <input type="text" id="editProvinsi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editKabupaten">Kabupaten *</label>
+                            <input type="text" id="editKabupaten" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPola">Pola</label>
+                            <input type="text" id="editPola">
+                        </div>
+                        <div class="form-group">
+                            <label for="editTahunPatan">Tahun Patan</label>
+                            <input type="text" id="editTahunPatan">
+                        </div>
+                        <div class="form-group">
+                            <label for="editTahunSerah">Tahun Serah</label>
+                            <input type="text" id="editTahunSerah">
+                        </div>
+                        <div class="form-group">
+                            <label for="editJmlKK">Jumlah KK *</label>
+                            <input type="number" id="editJmlKK" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editBebanTugasSHM">Beban Tugas SHM *</label>
+                            <input type="number" id="editBebanTugasSHM" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editHPL">HPL</label>
+                            <input type="text" id="editHPL">
+                        </div>
+                        <div class="form-group">
+                            <label for="editTotalKasus">Total Kasus *</label>
+                            <input type="number" id="editTotalKasus" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Status Bina</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="editStatusBinaBlmHPL">
+                                Belum HPL
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editStatusBinaSdhHPL">
+                                Sudah HPL
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editStatusBinaTdkHPL">
+                                Tidak HPL
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Status Serah</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="editStatusSerahSdhHPL">
+                                Sudah HPL
+                            </label>
+                            <label>
+                                <input type="text" id="editStatusSerahSKSerah" placeholder="SK Serah">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Jenis Permasalahan</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="editPermasalahanOKUMasy">
+                                Masyarakat
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editPermasalahanPerusahaan">
+                                Perusahaan
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editPermasalahanKwsHutan">
+                                Kawasan Hutan
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editPermasalahanMHA">
+                                MHA
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editPermasalahanInstansi">
+                                Instansi
+                            </label>
+                            <label>
+                                <input type="checkbox" id="editPermasalahanLainLain">
+                                Lain-lain
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Deskripsi</h3>
+                        <div class="form-group">
+                            <label for="editDeskripsiPermasalahan">Deskripsi Permasalahan</label>
+                            <textarea id="editDeskripsiPermasalahan" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTindakLanjut">Tindak Lanjut</label>
+                            <textarea id="editTindakLanjut" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editRekomendasi">Rekomendasi</label>
+                            <textarea id="editRekomendasi" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancelEdit" class="btn-secondary">Batal</button>
+                        <button type="submit" class="btn-primary">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Data Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tambah Data Baru</h2>
+                <button class="close" id="closeAddModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="addProvinsi">Provinsi *</label>
+                            <input type="text" id="addProvinsi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addKabupaten">Kabupaten *</label>
+                            <input type="text" id="addKabupaten" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addPola">Pola</label>
+                            <input type="text" id="addPola">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTahunPatan">Tahun Patan</label>
+                            <input type="text" id="addTahunPatan">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTahunSerah">Tahun Serah</label>
+                            <input type="text" id="addTahunSerah">
+                        </div>
+                        <div class="form-group">
+                            <label for="addJmlKK">Jumlah KK *</label>
+                            <input type="number" id="addJmlKK" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addBebanTugasSHM">Beban Tugas SHM *</label>
+                            <input type="number" id="addBebanTugasSHM" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addHPL">HPL</label>
+                            <input type="text" id="addHPL">
+                        </div>
+                        <div class="form-group">
+                            <label for="addTotalKasus">Total Kasus *</label>
+                            <input type="number" id="addTotalKasus" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Status Bina</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="addStatusBinaBlmHPL">
+                                Belum HPL
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addStatusBinaSdhHPL">
+                                Sudah HPL
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addStatusBinaTdkHPL">
+                                Tidak HPL
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Status Serah</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="addStatusSerahSdhHPL">
+                                Sudah HPL
+                            </label>
+                            <label>
+                                <input type="text" id="addStatusSerahSKSerah" placeholder="SK Serah">
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Jenis Permasalahan</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" id="addPermasalahanOKUMasy">
+                                Masyarakat
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addPermasalahanPerusahaan">
+                                Perusahaan
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addPermasalahanKwsHutan">
+                                Kawasan Hutan
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addPermasalahanMHA">
+                                MHA
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addPermasalahanInstansi">
+                                Instansi
+                            </label>
+                            <label>
+                                <input type="checkbox" id="addPermasalahanLainLain">
+                                Lain-lain
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Deskripsi</h3>
+                        <div class="form-group">
+                            <label for="addDeskripsiPermasalahan">Deskripsi Permasalahan</label>
+                            <textarea id="addDeskripsiPermasalahan" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="addTindakLanjut">Tindak Lanjut</label>
+                            <textarea id="addTindakLanjut" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="addRekomendasi">Rekomendasi</label>
+                            <textarea id="addRekomendasi" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancelAdd" class="btn-secondary">Batal</button>
+                        <button type="submit" class="btn-primary">Tambah Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Import Data CSV</h2>
+                <button class="close" id="closeImportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="import-instructions">
+                    <h3>Petunjuk Import:</h3>
+                    <ul>
+                        <li>File harus dalam format CSV</li>
+                        <li>Kolom harus sesuai dengan struktur data</li>
+                        <li>Data akan ditambahkan ke database</li>
+                    </ul>
+                </div>
+                <div class="form-group">
+                    <label for="csvFile">Pilih File CSV</label>
+                    <input type="file" id="csvFile" accept=".csv" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelImport" class="btn-secondary">Batal</button>
+                    <button type="button" id="processImport" class="btn-primary">Import Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="data-table.js"></script>
+</body>
+</html>

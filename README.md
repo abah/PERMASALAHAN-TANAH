@@ -1,77 +1,57 @@
-# 🌱 Permasalahan Tanah - Land Problem Analysis System
+# 🔄 Automatic Code Backup System
 
-A comprehensive web-based application for analyzing and visualizing land-related problems and issues. This project includes an advanced analytics dashboard and an automatic backup system to ensure data safety.
+A powerful, cross-platform automatic backup system that saves your code files periodically to prevent data loss. Perfect for developers, designers, and anyone working with important files.
 
-## 🚀 Features
+## 🌟 Features
 
-### 📊 Analytics Dashboard
-- **Interactive Charts**: Visualize land problem data with modern charts
-- **Data Filtering**: Advanced filtering and search capabilities
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Real-time Updates**: Dynamic data updates and real-time monitoring
-
-### 🔄 Automatic Backup System
-- **Auto-backup**: Automatic code backup every 5 minutes
-- **Version Control**: Timestamped backups with easy restoration
-- **Smart Cleanup**: Automatically manages backup storage (keeps last 50)
-- **Cross-platform**: Works on Windows, macOS, and Linux
-
-## 🛠️ Technology Stack
-
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Charts**: Chart.js for data visualization
-- **Backup System**: Node.js with file system operations
-- **Styling**: Modern CSS with responsive design principles
-
-## 📁 Project Structure
-
-```
-PERMASALAHAN TANAH/
-├── 📊 analytics.html          # Main analytics dashboard
-├── 🎨 analytics.css           # Dashboard styling
-├── ⚡ analytics.js            # Dashboard functionality
-├── 🏠 index.html              # Landing page
-├── 🎯 script.js               # Main application logic
-├── 💅 styles.css              # Global styling
-├── 📊 data.js                 # Data storage and management
-├── 🔄 backup.js               # Automatic backup system
-├── ⚙️ backup-config.json      # Backup configuration
-├── 🚀 start-backup.sh         # Backup startup script (macOS/Linux)
-├── 🚀 start-backup.bat        # Backup startup script (Windows)
-├── 🔧 run-backup-service.sh   # Background service script
-├── 🔧 run-backup-service.bat  # Background service script (Windows)
-├── 📦 package.json            # Project configuration
-└── 📚 README files            # Documentation
-```
+- **🕐 Automatic Backup**: Saves files every 5 minutes (configurable)
+- **📅 Timestamped**: Each backup has unique timestamp for easy identification
+- **🧹 Smart Cleanup**: Automatically manages storage (keeps last 50 backups)
+- **🔄 Easy Restore**: One-click restoration from any backup
+- **💻 Cross-Platform**: Works on Windows, macOS, and Linux
+- **📊 Detailed Logging**: Comprehensive backup logs and status
+- **⚙️ Configurable**: Easy customization via JSON config file
+- **🚀 Background Service**: Run as background service for continuous protection
 
 ## 🚀 Quick Start
 
-### 1. Clone the Repository
+### Prerequisites
+- Node.js 14.0.0 or higher
+- [Download Node.js](https://nodejs.org/)
+
+### Installation
+1. Clone or download this repository
+2. Navigate to the project directory
+3. Run the backup system
+
+### Start Automatic Backup
+
+#### macOS/Linux
 ```bash
-git clone <your-github-repo-url>
-cd PERMASALAHAN-TANAH
-```
+# Make scripts executable
+chmod +x *.sh
 
-### 2. Start the Application
-Simply open `index.html` in your web browser to view the landing page, or open `analytics.html` for the analytics dashboard.
-
-### 3. Setup Automatic Backup System
-```bash
-# Install Node.js (if not already installed)
-# Download from: https://nodejs.org/
-
-# Start automatic backup (every 5 minutes)
-./start-backup.sh          # macOS/Linux
-start-backup.bat           # Windows
+# Start backup service
+./start-backup.sh
 
 # Or run as background service
-./run-backup-service.sh    # macOS/Linux
-run-backup-service.bat     # Windows
+./run-backup-service.sh
 ```
 
-## 🔧 Backup System Commands
-
+#### Windows
 ```bash
+# Start backup service
+start-backup.bat
+
+# Or run as background service
+run-backup-service.bat
+```
+
+#### Direct Node.js
+```bash
+# Start auto-backup (every 5 minutes)
+node backup.js
+
 # Create manual backup
 node backup.js backup
 
@@ -80,83 +60,183 @@ node backup.js list
 
 # Restore from backup
 node backup.js restore <backup-name>
-
-# Start auto-backup service
-node backup.js
 ```
 
-## 📊 Dashboard Features
+## 📁 What Gets Backed Up
 
-- **Land Problem Analysis**: Comprehensive analysis of land-related issues
-- **Interactive Maps**: Visual representation of problem locations
-- **Statistical Reports**: Detailed statistical analysis and reporting
-- **Export Functionality**: Export data in various formats
-- **User Management**: Role-based access control
+By default, the system backs up these file types:
+- JavaScript files (`.js`)
+- HTML files (`.html`)
+- CSS files (`.css`)
+- Data files (`.json`, `.xml`, `.csv`)
+- Documentation (`.md`, `.txt`)
+- Configuration files (`.config`, `.ini`)
 
-## 🎨 Design Features
+**Customizable**: Edit `backup-config.json` to specify exact files
 
-- **Modern UI/UX**: Clean, professional interface design
-- **Responsive Layout**: Optimized for all device sizes
-- **Light Blue Theme**: Professional color scheme
-- **Accessibility**: WCAG compliant design principles
+## ⚙️ Configuration
 
-## 🔒 Security Features
+Edit `backup-config.json` to customize:
 
-- **Local Backup Storage**: All backups stored locally
-- **No External Dependencies**: Self-contained backup system
-- **File Integrity**: Maintains original file structure
+```json
+{
+  "backupInterval": 300000,        // 5 minutes in milliseconds
+  "backupDirectory": "./backups",   // Where backups are stored
+  "maxBackups": 50,                // Maximum backups to keep
+  "filesToBackup": [               // Specific files to backup
+    "*.js",
+    "*.html",
+    "*.css"
+  ],
+  "excludePatterns": [             // Files to exclude
+    "*.tmp",
+    "node_modules/*",
+    "backups/*"
+  ]
+}
+```
+
+## 📊 Backup Structure
+
+```
+backups/
+├── backup-2024-01-15T10-30-00-000Z/
+│   ├── file1.js
+│   ├── file2.html
+│   └── file3.css
+├── backup-2024-01-15T10-25-00-000Z/
+│   └── ...
+└── ...
+```
+
+## 🔧 Commands Reference
+
+| Command | Description |
+|---------|-------------|
+| `node backup.js` | Start automatic backup service |
+| `node backup.js backup` | Create manual backup |
+| `node backup.js list` | Show all available backups |
+| `node backup.js restore <name>` | Restore from specific backup |
+| `node backup.js help` | Show help information |
+
+## 🎯 Use Cases
+
+### For Developers
+- **Code Safety**: Never lose work due to crashes or accidents
+- **Version History**: Track changes over time
+- **Collaboration**: Share specific versions with team members
+- **Deployment**: Rollback to working versions quickly
+
+### For Designers
+- **Design Files**: Backup PSD, AI, Sketch files
+- **Project Versions**: Keep multiple design iterations
+- **Client Work**: Safe storage of client deliverables
+
+### For Students
+- **Assignment Safety**: Protect important school work
+- **Research Backup**: Save research papers and notes
+- **Project History**: Track project development
+
+## 🚀 Advanced Usage
+
+### Background Service
+Run as a background service for continuous protection:
+
+```bash
+# macOS/Linux
+./run-backup-service.sh
+
+# Windows
+run-backup-service.bat
+```
+
+### Custom File Types
+Add custom file extensions to backup:
+
+```json
+{
+  "filesToBackup": [
+    "*.js",
+    "*.html", 
+    "*.css",
+    "*.psd",
+    "*.ai",
+    "*.sketch"
+  ]
+}
+```
+
+### Network Backup
+Backup to network drives or cloud storage:
+
+```json
+{
+  "backupDirectory": "/Volumes/NetworkDrive/backups"
+}
+```
+
+## 🔒 Security & Privacy
+
+- **Local Storage**: All backups stored locally by default
+- **No Cloud Upload**: Your files never leave your computer
+- **File Integrity**: Original files remain unchanged
 - **Safe Operations**: No risk of data loss during backup
 
-## 📱 Browser Compatibility
+## 🆘 Troubleshooting
 
-- ✅ Chrome (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers
+### Common Issues
 
-## 🚀 Deployment
+#### Backup Not Starting
+```bash
+# Check Node.js installation
+node --version
 
-### Local Development
-1. Clone the repository
-2. Open `index.html` or `analytics.html` in your browser
-3. Start the backup system if needed
+# Check file permissions
+chmod +x *.sh  # macOS/Linux
+```
 
-### Web Server Deployment
-1. Upload all files to your web server
-2. Ensure proper file permissions
-3. Configure backup system on server (if needed)
+#### Permission Errors
+```bash
+# macOS/Linux: Make scripts executable
+chmod +x *.sh
+
+# Windows: Run as Administrator
+```
+
+#### Storage Full
+- System automatically keeps only last 50 backups
+- Manually delete old backups from `backups/` folder
+- Adjust `maxBackups` in config file
+
+### Getting Help
+
+1. Check the logs in `logs/backup.log`
+2. Verify Node.js version compatibility
+3. Check file permissions and paths
+4. Review configuration file syntax
 
 ## 🤝 Contributing
 
+Contributions welcome! Please:
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 🙏 Acknowledgments
 
-If you encounter any issues or have questions:
-
-1. Check the [BACKUP-README.md](BACKUP-README.md) for backup system help
-2. Review the code comments for implementation details
-3. Open an issue on GitHub for bugs or feature requests
-
-## 🎯 Roadmap
-
-- [ ] Enhanced data visualization
-- [ ] Mobile app version
-- [ ] Cloud backup integration
-- [ ] Advanced analytics features
-- [ ] Multi-language support
+- Built with Node.js and modern JavaScript
+- Cross-platform compatibility focus
+- Community-driven development
 
 ---
 
-**🌱 Permasalahan Tanah** - Making land problem analysis simple and efficient!
+**🔄 Keep Your Code Safe!** 
 
-*Built with ❤️ and modern web technologies*
+*Never lose your work again with automatic, intelligent backup protection.*

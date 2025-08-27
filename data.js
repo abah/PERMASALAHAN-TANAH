@@ -5074,7 +5074,7 @@ const dashboardData = [
     }
 ];
 
-// Export data untuk digunakan di file lain
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { dashboardData };
+// Export data untuk browser
+if (typeof window !== 'undefined') {
+    window.dashboardData = dashboardData;
 }

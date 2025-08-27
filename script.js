@@ -1,8 +1,9 @@
 // Dashboard Data - Import dari file data.js
 // Data sekarang disimpan di file terpisah untuk maintainability yang lebih baik
 
-// Current selected location
-let currentLocationId = 4; // Default to Kab. Pulau Morotai - UPT. Daruba SP.3
+// Global variables
+let currentLocationId = null; // Tidak ada lokasi default, tampilkan global view
+let filteredData = []; // Data yang sudah difilter
 
 // DOM Elements
 const locationList = document.getElementById('locationList');
@@ -25,8 +26,329 @@ const analysisChartElement = document.getElementById('analysisChart');
 function initDashboard() {
     populateLocationList();
     populateFilterOptions();
-    updateDashboard(currentLocationId);
+    updateGlobalDashboard();
     addEventListeners();
+}
+
+// Calculate global statistics
+function calculateGlobalStats(data = dashboardData) {
+    const stats = {
+        totalLocations: data.length,
+        totalKK: data.reduce((sum, item) => sum + (item.jmlKK || 0), 0),
+        totalSHM: data.reduce((sum, item) => sum + (item.bebanTugasSHM || 0), 0),
+        totalKasus: data.reduce((sum, item) => sum + (item.totalKasus || 0), 0),
+        uniqueProvinces: new Set(data.map(item => item.provinsi)).size,
+        uniqueKabupatens: new Set(data.map(item => item.kabupaten)).size,
+        yearRange: {
+            min: Math.min(...data.map(item => parseInt(item.tahunPatan) || 0).filter(year => year > 0)),
+            max: Math.max(...data.map(item => parseInt(item.tahunPatan) || 0).filter(year => year > 0))
+        }
+    };
+    
+    return stats;
+}
+
+// Calculate province statistics
+function calculateProvinceStats(data = dashboardData) {
+    const provinceMap = {};
+    
+    data.forEach(item => {
+        if (!provinceMap[item.provinsi]) {
+            provinceMap[item.provinsi] = {
+                provinsi: item.provinsi,
+                locations: 0,
+                totalKK: 0,
+                totalSHM: 0,
+                totalKasus: 0
+            };
+        }
+        
+        provinceMap[item.provinsi].locations++;
+        provinceMap[item.provinsi].totalKK += item.jmlKK || 0;
+        provinceMap[item.provinsi].totalSHM += item.bebanTugasSHM || 0;
+        provinceMap[item.provinsi].totalKasus += item.totalKasus || 0;
+    });
+    
+    return Object.values(provinceMap).sort((a, b) => b.totalKasus - a.totalKasus);
+}
+
+// Calculate problem statistics
+function calculateProblemStats(data = dashboardData) {
+    return {
+        kwsHutan: data.filter(item => item.permasalahanKwsHutan).length,
+        perusahaan: data.filter(item => item.permasalahanPerusahaan).length,
+        masyarakat: data.filter(item => item.permasalahanOKUMasy).length,
+        mha: data.filter(item => item.permasalahanMHA).length,
+        instansi: data.filter(item => item.permasalahanInstansi).length,
+        lainLain: data.filter(item => item.permasalahanLainLain).length
+    };
+}
+
+// Calculate status statistics
+function calculateStatusStats(data = dashboardData) {
+    return {
+        binaBlmHPL: data.filter(item => item.statusBinaBlmHPL).length,
+        binaSdhHPL: data.filter(item => item.statusBinaSdhHPL).length,
+        binaTdkHPL: data.filter(item => item.statusBinaTdkHPL).length,
+        serahSdhHPL: data.filter(item => item.statusSerahSdhHPL).length,
+        serahSKSerah: data.filter(item => item.statusSerahSKSerah).length
+    };
+}
+
+// Update global dashboard
+function updateGlobalDashboard() {
+    const data = filteredData.length > 0 ? filteredData : dashboardData;
+    const stats = calculateGlobalStats(data);
+    const problemStats = calculateProblemStats(data);
+    const statusStats = calculateStatusStats(data);
+    const provinceStats = calculateProvinceStats(data);
+    
+    // Update header information
+    if (currentLocationId) {
+        const selectedLocation = dashboardData.find(loc => loc.id === currentLocationId);
+        currentLocationElement.textContent = selectedLocation.kabupaten;
+        currentYearElement.textContent = selectedLocation.tahunPatan;
+        
+        // Update summary cards for selected location
+        totalKKElement.textContent = selectedLocation.jmlKK.toLocaleString();
+        totalSHMElement.textContent = selectedLocation.bebanTugasSHM.toLocaleString();
+        totalKasusElement.textContent = selectedLocation.totalKasus;
+        
+        // Update problem description with selected location data
+        problemDescriptionElement.innerHTML = `
+            <div class="problem-stats">
+                <h4>Permasalahan di ${selectedLocation.kabupaten}:</h4>
+                <div class="problem-detail">
+                    <strong>Deskripsi Permasalahan:</strong>
+                    <p>${selectedLocation.deskripsiPermasalahan}</p>
+                </div>
+                <div class="problem-types">
+                    <h5>Jenis Permasalahan:</h5>
+                    <div class="problem-grid">
+                        <div class="problem-item">
+                            <span class="problem-label">Kawasan Hutan:</span>
+                            <span class="problem-value">${selectedLocation.permasalahanKwsHutan ? 'Ya' : 'Tidak'}</span>
+                        </div>
+                        <div class="problem-item">
+                            <span class="problem-label">Perusahaan:</span>
+                            <span class="problem-value">${selectedLocation.permasalahanPerusahaan ? 'Ya' : 'Tidak'}</span>
+                        </div>
+                        <div class="problem-item">
+                            <span class="problem-label">Masyarakat:</span>
+                            <span class="problem-value">${selectedLocation.permasalahanOKUMasy ? 'Ya' : 'Tidak'}</span>
+                        </div>
+                        <div class="problem-item">
+                            <span class="problem-label">MHA:</span>
+                            <span class="problem-value">${selectedLocation.permasalahanMHA ? 'Ya' : 'Tidak'}</span>
+                        </div>
+                        <div class="problem-item">
+                            <span class="problem-label">Instansi:</span>
+                            <span class="problem-value">${selectedLocation.permasalahanInstansi ? 'Ya' : 'Tidak'}</span>
+                        </div>
+                        <div class="problem-item">
+                            <span class="problem-label">Lain-lain:</span>
+                            <span class="problem-value">${selectedLocation.permasalahanLainLain ? 'Ya' : 'Tidak'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Update follow-up action with selected location data
+        followupActionElement.innerHTML = `
+            <div class="tindak-lanjut-detail">
+                <h4>Tindak Lanjut di ${selectedLocation.kabupaten}:</h4>
+                <div class="tindak-lanjut-content">
+                    <p>${selectedLocation.tindakLanjut}</p>
+                </div>
+            </div>
+        `;
+        
+        // Update recommendation with selected location data
+        recommendationElement.innerHTML = `
+            <div class="rekomendasi-detail">
+                <h4>Rekomendasi untuk ${selectedLocation.kabupaten}:</h4>
+                <div class="rekomendasi-content">
+                    <p>${selectedLocation.rekomendasi}</p>
+                </div>
+            </div>
+        `;
+        
+    } else {
+        // Global overview
+        currentLocationElement.textContent = `Overview Nasional`;
+        currentYearElement.textContent = `${stats.yearRange.min} - ${stats.yearRange.max}`;
+        
+        // Update summary cards
+        totalKKElement.textContent = stats.totalKK.toLocaleString();
+        totalSHMElement.textContent = stats.totalSHM.toLocaleString();
+        totalKasusElement.textContent = stats.totalKasus;
+        
+        // Update problem description with statistics
+        problemDescriptionElement.innerHTML = `
+            <div class="problem-stats">
+                <h4>Distribusi Permasalahan Nasional:</h4>
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <span class="problem-label">Kawasan Hutan:</span>
+                        <span class="problem-value">${problemStats.kwsHutan} lokasi</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-label">Perusahaan:</span>
+                        <span class="problem-value">${problemStats.perusahaan} lokasi</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-label">Masyarakat:</span>
+                        <span class="problem-value">${problemStats.masyarakat} lokasi</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-label">MHA:</span>
+                        <span class="problem-value">${problemStats.mha} lokasi</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-label">Instansi:</span>
+                        <span class="problem-value">${problemStats.instansi} lokasi</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="problem-label">Lain-lain:</span>
+                        <span class="problem-value">${problemStats.lainLain} lokasi</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Update follow-up action with province summary
+        followupActionElement.innerHTML = `
+            <div class="province-summary">
+                <h4>Top 5 Provinsi dengan Kasus Terbanyak:</h4>
+                <div class="province-list">
+                    ${provinceStats.slice(0, 5).map(prov => `
+                        <div class="province-item">
+                            <span class="province-name">${prov.provinsi}</span>
+                            <span class="province-stats">
+                                ${prov.locations} lokasi, ${prov.totalKasus} kasus
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        
+        // Update recommendation with status summary
+        recommendationElement.innerHTML = `
+            <div class="status-summary">
+                <h4>Status HPL Summary:</h4>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Belum HPL:</span>
+                        <span class="status-value">${statusStats.binaBlmHPL} lokasi</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Sudah HPL:</span>
+                        <span class="status-value">${statusStats.binaSdhHPL} lokasi</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Tidak HPL:</span>
+                        <span class="status-value">${statusStats.binaTdkHPL} lokasi</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Update status values
+    updateStatusValues(statusStats);
+    
+    // Update analysis chart
+    updateAnalysisChart(problemStats, provinceStats);
+    
+    // Add animation
+    addFadeInAnimation();
+}
+
+// Update status values
+function updateStatusValues(statusStats) {
+    // Status Bina
+    binaBlmHPLElement.textContent = `${statusStats.binaBlmHPL} lokasi`;
+    binaBlmHPLElement.className = `status-value ${statusStats.binaBlmHPL > 0 ? 'active' : ''}`;
+    
+    binaSdhHPLElement.textContent = `${statusStats.binaSdhHPL} lokasi`;
+    binaSdhHPLElement.className = `status-value ${statusStats.binaSdhHPL > 0 ? 'active' : ''}`;
+    
+    binaTdkHPLElement.textContent = `${statusStats.binaTdkHPL} lokasi`;
+    binaTdkHPLElement.className = `status-value ${statusStats.binaTdkHPL > 0 ? 'active' : ''}`;
+    
+    // Status Serah
+    serahSdhHPLElement.textContent = `${statusStats.serahSdhHPL} lokasi`;
+    serahSdhHPLElement.className = `status-value ${statusStats.serahSdhHPL > 0 ? 'active' : ''}`;
+    
+    serahSKSerahElement.textContent = `${statusStats.serahSKSerah} lokasi`;
+    serahSKSerahElement.className = `status-value ${statusStats.serahSKSerah > 0 ? 'active' : ''}`;
+}
+
+// Update analysis chart
+function updateAnalysisChart(problemStats, provinceStats) {
+    analysisChartElement.innerHTML = '';
+    
+    // Problem distribution chart
+    const problemChart = document.createElement('div');
+    problemChart.className = 'chart-section';
+    problemChart.innerHTML = `
+        <h4>Distribusi Permasalahan</h4>
+        <div class="chart-container">
+            ${Object.entries(problemStats).map(([key, value]) => {
+                const percentage = Object.values(problemStats).reduce((sum, val) => sum + val, 0) > 0 
+                    ? (value / Object.values(problemStats).reduce((sum, val) => sum + val, 0)) * 100 
+                    : 0;
+                return `
+                    <div class="chart-item">
+                        <div class="chart-label">${getProblemLabel(key)}</div>
+                        <div class="chart-bar">
+                            <div class="chart-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="chart-value">${value}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    analysisChartElement.appendChild(problemChart);
+    
+    // Top provinces chart
+    const provinceChart = document.createElement('div');
+    provinceChart.className = 'chart-section';
+    provinceChart.innerHTML = `
+        <h4>Top 5 Provinsi dengan Kasus Terbanyak</h4>
+        <div class="chart-container">
+            ${provinceStats.slice(0, 5).map((prov, index) => {
+                const maxKasus = Math.max(...provinceStats.slice(0, 5).map(p => p.totalKasus));
+                const percentage = maxKasus > 0 ? (prov.totalKasus / maxKasus) * 100 : 0;
+                return `
+                    <div class="chart-item">
+                        <div class="chart-label">${prov.provinsi}</div>
+                        <div class="chart-bar">
+                            <div class="chart-fill" style="width: ${percentage}%"></div>
+                        </div>
+                        <div class="chart-value">${prov.totalKasus} kasus</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    analysisChartElement.appendChild(provinceChart);
+}
+
+// Helper function to get problem label
+function getProblemLabel(key) {
+    const labels = {
+        kwsHutan: 'Kawasan Hutan',
+        perusahaan: 'Perusahaan',
+        masyarakat: 'Masyarakat',
+        mha: 'MHA',
+        instansi: 'Instansi',
+        lainLain: 'Lain-lain'
+    };
+    return labels[key] || key;
 }
 
 // Populate filter options from data
@@ -38,6 +360,7 @@ function populateFilterOptions() {
 
     // Populate provinsi filter
     const provinsiFilter = document.getElementById('provinsiFilter');
+    provinsiFilter.innerHTML = '<option value="">Semua Provinsi</option>';
     provinsiList.forEach(provinsi => {
         const option = document.createElement('option');
         option.value = provinsi;
@@ -47,6 +370,7 @@ function populateFilterOptions() {
 
     // Populate kabupaten filter
     const kabupatenFilter = document.getElementById('kabupatenFilter');
+    kabupatenFilter.innerHTML = '<option value="">Semua Kabupaten</option>';
     kabupatenList.forEach(kabupaten => {
         const option = document.createElement('option');
         option.value = kabupaten;
@@ -56,6 +380,7 @@ function populateFilterOptions() {
 
     // Populate tahun patan filter
     const tahunPatanFilter = document.getElementById('tahunPatanFilter');
+    tahunPatanFilter.innerHTML = '<option value="">Semua Tahun</option>';
     tahunPatanList.forEach(tahun => {
         const option = document.createElement('option');
         option.value = tahun;
@@ -115,15 +440,15 @@ function populateLocationList() {
         locationItem.dataset.id = location.id;
         
         locationItem.addEventListener('click', () => {
-            switchLocation(location.id);
+            filterByLocation(location.id);
         });
         
         locationList.appendChild(locationItem);
     });
 }
 
-// Switch to a different location
-function switchLocation(locationId) {
+// Filter by specific location
+function filterByLocation(locationId) {
     currentLocationId = locationId;
     
     // Update active state in location list
@@ -132,89 +457,17 @@ function switchLocation(locationId) {
     });
     document.querySelector(`[data-id="${locationId}"]`).classList.add('active');
     
-    // Update dashboard content
-    updateDashboard(locationId);
-}
-
-// Update dashboard content based on selected location
-function updateDashboard(locationId) {
+    // Filter data to show only selected location
+    filteredData = dashboardData.filter(item => item.id === locationId);
+    
+    // Update dashboard with filtered data
+    updateGlobalDashboard();
+    
+    // Update filter header
     const location = dashboardData.find(loc => loc.id === locationId);
-    if (!location) return;
-    
-    // Update header information
-    currentLocationElement.textContent = location.kabupaten;
-    currentYearElement.textContent = location.tahunPatan;
-    
-    // Update summary cards
-    totalKKElement.textContent = location.jmlKK.toLocaleString();
-    totalSHMElement.textContent = location.bebanTugasSHM.toLocaleString();
-    totalKasusElement.textContent = location.totalKasus;
-    
-    // Update problem description, follow-up, and recommendation
-    problemDescriptionElement.textContent = location.deskripsiPermasalahan;
-    followupActionElement.textContent = location.tindakLanjut;
-    recommendationElement.textContent = location.rekomendasi;
-    
-    // Update status values
-    updateStatusValues(location);
-    
-    // Update analysis chart
-    updateAnalysisChart(location);
-    
-    // Add animation
-    addFadeInAnimation();
-}
-
-// Update status values
-function updateStatusValues(location) {
-    // Status Bina
-    binaBlmHPLElement.textContent = location.statusBinaBlmHPL ? 'Yes' : 'No';
-    binaBlmHPLElement.className = `status-value ${location.statusBinaBlmHPL ? 'active' : ''}`;
-    
-    binaSdhHPLElement.textContent = location.statusBinaSdhHPL ? 'Yes' : 'No';
-    binaSdhHPLElement.className = `status-value ${location.statusBinaSdhHPL ? 'active' : ''}`;
-    
-    binaTdkHPLElement.textContent = location.statusBinaTdkHPL ? 'Yes' : 'No';
-    binaTdkHPLElement.className = `status-value ${location.statusBinaTdkHPL ? 'active' : ''}`;
-    
-    // Status Serah
-    serahSdhHPLElement.textContent = location.statusSerahSdhHPL ? 'Yes' : 'No';
-    serahSdhHPLElement.className = `status-value ${location.statusSerahSdhHPL ? 'active' : ''}`;
-    
-    serahSKSerahElement.textContent = location.statusSerahSKSerah || 'No';
-    serahSKSerahElement.className = `status-value ${location.statusSerahSKSerah ? 'active' : ''}`;
-}
-
-// Update analysis chart
-function updateAnalysisChart(location) {
-    const chartData = [
-        { label: 'Masyarakat', value: location.permasalahanOKUMasy ? 1 : 0 },
-        { label: 'Perusahaan', value: location.permasalahanPerusahaan ? 1 : 0 },
-        { label: 'Kws Hutan', value: location.permasalahanKwsHutan ? 1 : 0 },
-        { label: 'MHA', value: location.permasalahanMHA ? 1 : 0 },
-        { label: 'Instansi', value: location.permasalahanInstansi ? 1 : 0 },
-        { label: 'Lain-lain', value: location.permasalahanLainLain ? 1 : 0 }
-    ];
-    
-    const total = chartData.reduce((sum, item) => sum + item.value, 0);
-    
-    analysisChartElement.innerHTML = '';
-    
-    chartData.forEach(item => {
-        const percentage = total > 0 ? (item.value / total) * 100 : 0;
-        
-        const chartItem = document.createElement('div');
-        chartItem.className = 'chart-item';
-        chartItem.innerHTML = `
-            <div class="chart-label">${item.label}</div>
-            <div class="chart-bar">
-                <div class="chart-fill" style="width: ${percentage}%"></div>
-            </div>
-            <div class="chart-value">${item.value}</div>
-        `;
-        
-        analysisChartElement.appendChild(chartItem);
-    });
+    const filterHeader = document.querySelector('.filter-header h2');
+    filterHeader.textContent = `Filter Data (${location.kabupaten})`;
+    filterHeader.style.color = '#3b82f6';
 }
 
 // Add fade-in animation to cards
@@ -239,6 +492,8 @@ function addEventListeners() {
             const text = item.querySelector('span').textContent;
             if (text === 'Analytics') {
                 window.location.href = 'analytics.html';
+            } else if (text === 'Pencarian') {
+                window.location.href = 'search.html';
             }
         });
     });
@@ -247,18 +502,6 @@ function addEventListeners() {
     document.querySelector('.user-profile').addEventListener('click', () => {
         alert('User profile clicked!');
     });
-}
-
-// Search functionality
-function searchLocations(query) {
-    const filteredData = dashboardData.filter(location => 
-        location.kabupaten.toLowerCase().includes(query.toLowerCase()) ||
-        location.provinsi.toLowerCase().includes(query.toLowerCase())
-    );
-    
-    if (filteredData.length > 0) {
-        switchLocation(filteredData[0].id);
-    }
 }
 
 // Apply filters to data
@@ -271,7 +514,7 @@ function applyFilters() {
     const permasalahan = document.getElementById('permasalahanFilter').value;
 
     // Filter data based on selected criteria
-    let filteredData = dashboardData.filter(item => {
+    filteredData = dashboardData.filter(item => {
         let match = true;
 
         // Filter by provinsi
@@ -340,8 +583,8 @@ function applyFilters() {
     // Update location list with filtered data
     updateLocationListWithFilter(filteredData);
     
-    // Update summary cards with filtered data
-    updateSummaryCardsWithFilter(filteredData);
+    // Update dashboard with filtered data
+    updateGlobalDashboard();
     
     // Show filter results count
     showFilterResults(filteredData.length);
@@ -364,22 +607,11 @@ function updateLocationListWithFilter(filteredData) {
         locationItem.dataset.id = location.id;
         
         locationItem.addEventListener('click', () => {
-            switchLocation(location.id);
+            filterByLocation(location.id);
         });
         
         locationList.appendChild(locationItem);
     });
-}
-
-// Update summary cards with filtered data
-function updateSummaryCardsWithFilter(filteredData) {
-    const totalKK = filteredData.reduce((sum, item) => sum + item.jmlKK, 0);
-    const totalSHM = filteredData.reduce((sum, item) => sum + item.bebanTugasSHM, 0);
-    const totalKasus = filteredData.reduce((sum, item) => sum + item.totalKasus, 0);
-    
-    document.getElementById('totalKK').textContent = totalKK.toLocaleString();
-    document.getElementById('totalSHM').textContent = totalSHM.toLocaleString();
-    document.getElementById('totalKasus').textContent = totalKasus;
 }
 
 // Show filter results count
@@ -405,11 +637,15 @@ function clearAllFilters() {
     document.getElementById('statusSerahFilter').value = '';
     document.getElementById('permasalahanFilter').value = '';
     
+    // Reset filtered data
+    filteredData = [];
+    currentLocationId = null;
+    
     // Reset location list
     populateLocationList();
     
-    // Reset summary cards
-    updateSummaryCardsWithFilter(dashboardData);
+    // Reset dashboard to global view
+    updateGlobalDashboard();
     
     // Reset filter header
     const filterHeader = document.querySelector('.filter-header h2');
@@ -419,55 +655,13 @@ function clearAllFilters() {
 
 // Export filtered data
 function exportFilteredData() {
-    const provinsi = document.getElementById('provinsiFilter').value;
-    const kabupaten = document.getElementById('kabupatenFilter').value;
-    const tahunPatan = document.getElementById('tahunPatanFilter').value;
-    const statusBina = document.getElementById('statusBinaFilter').value;
-    const statusSerah = document.getElementById('statusSerahFilter').value;
-    const permasalahan = document.getElementById('permasalahanFilter').value;
-
-    // Apply same filtering logic
-    let filteredData = dashboardData.filter(item => {
-        let match = true;
-
-        if (provinsi && item.provinsi !== provinsi) match = false;
-        if (kabupaten && !item.kabupaten.startsWith(kabupaten)) match = false;
-        if (tahunPatan && item.tahunPatan !== tahunPatan) match = false;
-
-        if (statusBina) {
-            switch (statusBina) {
-                case 'blmHPL': if (!item.statusBinaBlmHPL) match = false; break;
-                case 'sdhHPL': if (!item.statusBinaSdhHPL) match = false; break;
-                case 'tdkHPL': if (!item.statusBinaTdkHPL) match = false; break;
-            }
-        }
-
-        if (statusSerah) {
-            switch (statusSerah) {
-                case 'sdhHPL': if (!item.statusSerahSdhHPL) match = false; break;
-                case 'skSerah': if (!item.statusSerahSKSerah) match = false; break;
-            }
-        }
-
-        if (permasalahan) {
-            switch (permasalahan) {
-                case 'masyarakat': if (!item.permasalahanOKUMasy) match = false; break;
-                case 'perusahaan': if (!item.permasalahanPerusahaan) match = false; break;
-                case 'kwsHutan': if (!item.permasalahanKwsHutan) match = false; break;
-                case 'mha': if (!item.permasalahanMHA) match = false; break;
-                case 'instansi': if (!item.permasalahanInstansi) match = false; break;
-                case 'lainLain': if (!item.permasalahanLainLain) match = false; break;
-            }
-        }
-
-        return match;
-    });
-
+    const dataToExport = filteredData.length > 0 ? filteredData : dashboardData;
+    
     // Create CSV content
     const headers = ['ID', 'Provinsi', 'Kabupaten', 'Pola', 'Tahun Patan', 'Tahun Serah', 'Jumlah KK', 'Beban Tugas SHM', 'HPL', 'Total Kasus', 'Deskripsi Permasalahan'];
     const csvContent = [
         headers.join(','),
-        ...filteredData.map(item => [
+        ...dataToExport.map(item => [
             item.id,
             `"${item.provinsi}"`,
             `"${item.kabupaten}"`,
@@ -487,61 +681,21 @@ function exportFilteredData() {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `filtered_data_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `dashboard_data_${new Date().toISOString().split('T')[0]}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
 
-// Export data functionality (original)
-function exportData() {
-    const location = dashboardData.find(loc => loc.id === currentLocationId);
-    if (!location) return;
-    
-    const dataStr = JSON.stringify(location, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${location.kabupaten.replace(/[^a-zA-Z0-9]/g, '_')}_data.json`;
-    link.click();
-    
-    URL.revokeObjectURL(url);
-}
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-        switch (e.key) {
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-                const locationIndex = parseInt(e.key) - 1;
-                if (dashboardData[locationIndex]) {
-                    switchLocation(dashboardData[locationIndex].id);
-                }
-                break;
-            case 's':
-                e.preventDefault();
-                exportData();
-                break;
-        }
-    }
-});
-
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', initDashboard);
 
 // Add some utility functions
 window.dashboardUtils = {
-    searchLocations,
-    exportData,
-    getCurrentLocation: () => dashboardData.find(loc => loc.id === currentLocationId),
+    calculateGlobalStats,
+    calculateProvinceStats,
+    calculateProblemStats,
+    exportFilteredData,
     getAllData: () => dashboardData
 };

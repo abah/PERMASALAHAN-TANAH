@@ -42,6 +42,10 @@
                         <span>Analytics</span>
                     </div>
                     <div class="nav-item">
+                        <i class="fas fa-search"></i>
+                        <span>Pencarian</span>
+                    </div>
+                    <div class="nav-item">
                         <i class="fas fa-file-alt"></i>
                         <span>Reports</span>
                     </div>
@@ -51,38 +55,15 @@
                     </div>
                 </nav>
 
-                <div class="analytics-filters">
-                    <h3>FILTERS</h3>
-                    <div class="filter-group">
-                        <label>Provinsi</label>
-                        <select id="provinsiFilter">
-                            <option value="">Semua Provinsi</option>
-                            <!-- Will be populated dynamically -->
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Kabupaten</label>
-                        <select id="kabupatenFilter">
-                            <option value="">Semua Kabupaten</option>
-                            <!-- Will be populated dynamically -->
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Tahun Patan</label>
-                        <select id="tahunFilter">
-                            <option value="">Semua Tahun</option>
-                            <!-- Will be populated dynamically -->
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Status</label>
-                        <select id="statusFilter">
-                            <option value="">Semua Status</option>
-                            <option value="blmHPL">Belum HPL</option>
-                            <option value="sdhHPL">Sudah HPL</option>
-                            <option value="tdkHPL">Tidak HPL</option>
-                        </select>
-                    </div>
+                <div class="sidebar-info">
+                    <h3>INFO</h3>
+                    <p>Halaman Analytics menampilkan:</p>
+                    <ul>
+                        <li>• 4 Grafik interaktif</li>
+                        <li>• Data dari 193 lokasi</li>
+                        <li>• Summary statistics</li>
+                        <li>• Key insights</li>
+                    </ul>
                 </div>
 
                 <footer class="sidebar-footer">
@@ -231,37 +212,37 @@
                     </div>
                 </div>
 
-                <!-- Insights Section -->
+                <!-- Data Summary Section -->
                 <div class="insights-section">
-                    <h2>Key Insights</h2>
+                    <h2>Ringkasan Data</h2>
                     <div class="insights-grid">
                         <div class="insight-card">
                             <div class="insight-icon">
-                                <i class="fas fa-lightbulb"></i>
+                                <i class="fas fa-database"></i>
                             </div>
-                            <h4>Permasalahan Terbanyak</h4>
-                            <p>Kawasan hutan menjadi permasalahan utama dengan 4 kasus dari total 9 kasus.</p>
+                            <h4>Total Data</h4>
+                            <p>Halaman ini menampilkan data dari <strong id="totalLocationsDisplay">193</strong> lokasi transmigrasi di seluruh Indonesia.</p>
                         </div>
                         <div class="insight-card">
                             <div class="insight-icon">
-                                <i class="fas fa-trending-up"></i>
+                                <i class="fas fa-map-marked-alt"></i>
                             </div>
-                            <h4>Provinsi Teraktif</h4>
-                            <p>Maluku Utara memiliki jumlah proyek terbanyak dengan 4 lokasi aktif.</p>
+                            <h4>Cakupan Wilayah</h4>
+                            <p>Data mencakup <strong id="totalProvincesDisplay">27</strong> provinsi dengan berbagai pola transmigrasi (TU-TPLK, TULK, dll).</p>
                         </div>
                         <div class="insight-card">
                             <div class="insight-icon">
-                                <i class="fas fa-clock"></i>
+                                <i class="fas fa-calendar-alt"></i>
                             </div>
-                            <h4>Rata-rata Penyelesaian</h4>
-                            <p>Rata-rata waktu penyelesaian proyek adalah 5-7 tahun dari paten hingga serah.</p>
+                            <h4>Rentang Waktu</h4>
+                            <p>Proyek dari tahun <strong id="minYearDisplay">1988</strong> hingga <strong id="maxYearDisplay">2023</strong> dengan berbagai status penyelesaian.</p>
                         </div>
                         <div class="insight-card">
                             <div class="insight-icon">
-                                <i class="fas fa-chart-line"></i>
+                                <i class="fas fa-chart-pie"></i>
                             </div>
-                            <h4>Tren Permasalahan</h4>
-                            <p>Permasalahan terkait perusahaan dan MHA menunjukkan tren peningkatan.</p>
+                            <h4>Jenis Permasalahan</h4>
+                            <p>Meliputi masalah kawasan hutan, perusahaan, MHA, masyarakat, instansi, dan lainnya yang dihitung secara real-time.</p>
                         </div>
                     </div>
                 </div>
