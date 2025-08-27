@@ -213,7 +213,6 @@ function initAnalytics() {
         // Setup other components
         populateFilterOptions();
         updateSummaryStats();
-        setupEventListeners();
         updateLastUpdated();
         
         console.log('Analytics initialized successfully');

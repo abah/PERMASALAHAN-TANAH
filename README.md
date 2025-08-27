@@ -1,149 +1,162 @@
-# Trans-Data Dashboard
+# 🌱 Permasalahan Tanah - Land Problem Analysis System
 
-A modern, responsive dashboard application for managing and analyzing land problem data across various regions in Indonesia. Built with HTML, CSS, and JavaScript.
+A comprehensive web-based application for analyzing and visualizing land-related problems and issues. This project includes an advanced analytics dashboard and an automatic backup system to ensure data safety.
 
-## Features
+## 🚀 Features
 
-### 🎨 Modern Design
-- Clean, professional interface with light blue color scheme
-- Responsive design that works on desktop, tablet, and mobile devices
-- Smooth animations and hover effects
-- Beautiful gradient backgrounds and card-based layout
+### 📊 Analytics Dashboard
+- **Interactive Charts**: Visualize land problem data with modern charts
+- **Data Filtering**: Advanced filtering and search capabilities
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Real-time Updates**: Dynamic data updates and real-time monitoring
 
-### 📊 Data Visualization
-- **Summary Cards**: Display key metrics (Jumlah KK, Beban Tugas SHM, Total Kasus)
-- **Status Summary**: Visual representation of Bina and Serah statuses
-- **Problem Analysis Chart**: Interactive bar chart showing problem categories
-- **Dynamic Content**: All data updates automatically when switching locations
+### 🔄 Automatic Backup System
+- **Auto-backup**: Automatic code backup every 5 minutes
+- **Version Control**: Timestamped backups with easy restoration
+- **Smart Cleanup**: Automatically manages backup storage (keeps last 50)
+- **Cross-platform**: Works on Windows, macOS, and Linux
 
-### 🗺️ Location Management
-- **Sidebar Navigation**: Easy switching between 7 different project locations
-- **Active State Indicators**: Clear visual feedback for selected location
-- **Province Grouping**: Organized by provinces (Papua Selatan, Papua, Maluku Utara)
+## 🛠️ Technology Stack
 
-### 📋 Data Categories
-The dashboard tracks comprehensive information for each location:
-- **Basic Info**: Province, District/Location, Pattern, Patent Year, Handover Year
-- **Quantitative Data**: Number of households, SHM workload, total cases
-- **Status Tracking**: HPL status, Bina status, Serah status
-- **Problem Analysis**: 6 categories of problems (Community, Company, Forest Area, MHA, Institution, Others)
-- **Action Items**: Problem descriptions, follow-up actions, recommendations
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Charts**: Chart.js for data visualization
+- **Backup System**: Node.js with file system operations
+- **Styling**: Modern CSS with responsive design principles
 
-## Usage
-
-### Getting Started
-1. Open `index.html` in any modern web browser
-2. The dashboard will load with the default location (Kab. Pulau Morotai - UPT. Daruba SP.3)
-3. Use the sidebar to switch between different project locations
-
-### Navigation
-- **Sidebar Locations**: Click any location in the left sidebar to switch views
-- **Navigation Menu**: Dashboard, Analytics, Reports, Settings (currently visual only)
-- **User Profile**: Click the user icon in the top-right corner
-
-### Keyboard Shortcuts
-- `Ctrl/Cmd + 1-7`: Switch to location 1-7
-- `Ctrl/Cmd + S`: Export current location data as JSON
-
-### Data Export
-- Use `Ctrl/Cmd + S` to export the current location's data
-- Data is exported as a JSON file with the location name as filename
-
-## Data Structure
-
-Each location contains the following information:
-
-```javascript
-{
-  id: 1,
-  provinsi: "Province Name",
-  kabupaten: "District/Location Name",
-  pola: "Pattern Type",
-  tahunPatan: "Patent Year",
-  tahunSerah: "Handover Year",
-  jmlKK: 199,                    // Number of households
-  bebanTugasSHM: 398,           // SHM workload (fields)
-  hpl: "HPL Reference",
-  statusBinaBlmHPL: false,      // Bina status - No HPL
-  statusBinaSdhHPL: true,       // Bina status - Has HPL
-  statusBinaTdkHPL: false,      // Bina status - No HPL needed
-  statusSerahSdhHPL: false,     // Serah status - Has HPL
-  statusSerahSKSerah: "SK Reference", // Serah SK reference
-  permasalahanOKUMasy: false,   // Community problems
-  permasalahanPerusahaan: false, // Company problems
-  permasalahanKwsHutan: true,   // Forest area problems
-  permasalahanMHA: false,       // MHA problems
-  permasalahanInstansi: false,  // Institution problems
-  permasalahanLainLain: false,  // Other problems
-  totalKasus: 1,                // Total problem cases
-  deskripsiPermasalahan: "...", // Problem description
-  tindakLanjut: "...",          // Follow-up actions
-  rekomendasi: "..."            // Recommendations
-}
-```
-
-## Included Locations
-
-1. **Papua Selatan**: Kab. Merauke - Muting SP XII
-2. **Papua**: Kab. Keerom - UPT. Senggi 1
-3. **Papua**: Kab. Keerom - UPT. Senggi 2
-4. **Maluku Utara**: Kab. Pulau Morotai - UPT. Daruba SP.3 (Default)
-5. **Maluku Utara**: Kab. Halmahera Tengah - UPT. Sagea Waleh SP.1
-6. **Maluku Utara**: Kab. Halmahera Tengah - UPT. Kubekulo SP.3
-7. **Maluku Utara**: Kab. Halmahera Tengah - UPT. Kubekulo SP.4
-
-## Technical Details
-
-### Technologies Used
-- **HTML5**: Semantic markup and structure
-- **CSS3**: Modern styling with Flexbox and Grid
-- **JavaScript (ES6+)**: Dynamic functionality and data management
-- **Font Awesome**: Icons for enhanced UI
-- **Google Fonts**: Typography (Segoe UI fallback)
-
-### Browser Compatibility
-- Chrome 60+
-- Firefox 55+
-- Safari 12+
-- Edge 79+
-
-### Performance Features
-- Optimized animations using CSS transforms
-- Efficient DOM manipulation
-- Responsive images and icons
-- Minimal external dependencies
-
-## Customization
-
-### Adding New Locations
-1. Add a new object to the `dashboardData` array in `script.js`
-2. Follow the existing data structure
-3. The location will automatically appear in the sidebar
-
-### Styling Changes
-- Modify `styles.css` to change colors, fonts, or layout
-- The color scheme uses CSS custom properties for easy theming
-- Responsive breakpoints are clearly defined
-
-### Functionality Extensions
-- Add new chart types in the `updateAnalysisChart()` function
-- Extend the export functionality for different formats
-- Implement search functionality using the `searchLocations()` function
-
-## File Structure
+## 📁 Project Structure
 
 ```
-trans-data-dashboard/
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles and responsive design
-├── script.js           # JavaScript functionality and data
-└── README.md           # This documentation
+PERMASALAHAN TANAH/
+├── 📊 analytics.html          # Main analytics dashboard
+├── 🎨 analytics.css           # Dashboard styling
+├── ⚡ analytics.js            # Dashboard functionality
+├── 🏠 index.html              # Landing page
+├── 🎯 script.js               # Main application logic
+├── 💅 styles.css              # Global styling
+├── 📊 data.js                 # Data storage and management
+├── 🔄 backup.js               # Automatic backup system
+├── ⚙️ backup-config.json      # Backup configuration
+├── 🚀 start-backup.sh         # Backup startup script (macOS/Linux)
+├── 🚀 start-backup.bat        # Backup startup script (Windows)
+├── 🔧 run-backup-service.sh   # Background service script
+├── 🔧 run-backup-service.bat  # Background service script (Windows)
+├── 📦 package.json            # Project configuration
+└── 📚 README files            # Documentation
 ```
 
-## License
+## 🚀 Quick Start
 
-This project is open source and available under the MIT License.
+### 1. Clone the Repository
+```bash
+git clone <your-github-repo-url>
+cd PERMASALAHAN-TANAH
+```
 
-## Support
+### 2. Start the Application
+Simply open `index.html` in your web browser to view the landing page, or open `analytics.html` for the analytics dashboard.
 
-For questions or issues, please refer to the code comments or create an issue in the project repository.
+### 3. Setup Automatic Backup System
+```bash
+# Install Node.js (if not already installed)
+# Download from: https://nodejs.org/
+
+# Start automatic backup (every 5 minutes)
+./start-backup.sh          # macOS/Linux
+start-backup.bat           # Windows
+
+# Or run as background service
+./run-backup-service.sh    # macOS/Linux
+run-backup-service.bat     # Windows
+```
+
+## 🔧 Backup System Commands
+
+```bash
+# Create manual backup
+node backup.js backup
+
+# List all backups
+node backup.js list
+
+# Restore from backup
+node backup.js restore <backup-name>
+
+# Start auto-backup service
+node backup.js
+```
+
+## 📊 Dashboard Features
+
+- **Land Problem Analysis**: Comprehensive analysis of land-related issues
+- **Interactive Maps**: Visual representation of problem locations
+- **Statistical Reports**: Detailed statistical analysis and reporting
+- **Export Functionality**: Export data in various formats
+- **User Management**: Role-based access control
+
+## 🎨 Design Features
+
+- **Modern UI/UX**: Clean, professional interface design
+- **Responsive Layout**: Optimized for all device sizes
+- **Light Blue Theme**: Professional color scheme
+- **Accessibility**: WCAG compliant design principles
+
+## 🔒 Security Features
+
+- **Local Backup Storage**: All backups stored locally
+- **No External Dependencies**: Self-contained backup system
+- **File Integrity**: Maintains original file structure
+- **Safe Operations**: No risk of data loss during backup
+
+## 📱 Browser Compatibility
+
+- ✅ Chrome (latest)
+- ✅ Firefox (latest)
+- ✅ Safari (latest)
+- ✅ Edge (latest)
+- ✅ Mobile browsers
+
+## 🚀 Deployment
+
+### Local Development
+1. Clone the repository
+2. Open `index.html` or `analytics.html` in your browser
+3. Start the backup system if needed
+
+### Web Server Deployment
+1. Upload all files to your web server
+2. Ensure proper file permissions
+3. Configure backup system on server (if needed)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [BACKUP-README.md](BACKUP-README.md) for backup system help
+2. Review the code comments for implementation details
+3. Open an issue on GitHub for bugs or feature requests
+
+## 🎯 Roadmap
+
+- [ ] Enhanced data visualization
+- [ ] Mobile app version
+- [ ] Cloud backup integration
+- [ ] Advanced analytics features
+- [ ] Multi-language support
+
+---
+
+**🌱 Permasalahan Tanah** - Making land problem analysis simple and efficient!
+
+*Built with ❤️ and modern web technologies*
