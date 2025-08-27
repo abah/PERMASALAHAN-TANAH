@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trans-Data Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">Trans-Data</div>
+                <div class="project-info">
+                    <div class="project-location" id="currentLocation">Kab. Pulau Morotai - UPT. Daruba SP.3</div>
+                    <div class="project-province">Maluku Utara</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="patent-year">Tahun Patan: <span id="currentYear">2010</span></div>
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <div class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                </nav>
+
+                <div class="project-locations">
+                    <h3>LOKASI PROYEK</h3>
+                    <div class="location-list" id="locationList">
+                        <!-- Locations will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <footer class="sidebar-footer">
+                    <p>© 2024 Data Dashboard</p>
+                </footer>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <div class="filter-header">
+                        <h2>Filter Data</h2>
+                        <button class="btn-clear-filters" onclick="clearAllFilters()">
+                            <i class="fas fa-times"></i> Clear All
+                        </button>
+                    </div>
+                    <div class="filter-grid">
+                        <div class="filter-group">
+                            <label for="provinsiFilter">Provinsi</label>
+                            <select id="provinsiFilter" onchange="updateKabupatenOptions()">
+                                <option value="">Semua Provinsi</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="kabupatenFilter">Kabupaten</label>
+                            <select id="kabupatenFilter" onchange="applyFilters()">
+                                <option value="">Semua Kabupaten</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="tahunPatanFilter">Tahun Patan</label>
+                            <select id="tahunPatanFilter" onchange="applyFilters()">
+                                <option value="">Semua Tahun</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="statusBinaFilter">Status Bina</label>
+                            <select id="statusBinaFilter" onchange="applyFilters()">
+                                <option value="">Semua Status</option>
+                                <option value="blmHPL">Belum HPL</option>
+                                <option value="sdhHPL">Sudah HPL</option>
+                                <option value="tdkHPL">Tidak HPL</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="statusSerahFilter">Status Serah</label>
+                            <select id="statusSerahFilter" onchange="applyFilters()">
+                                <option value="">Semua Status</option>
+                                <option value="sdhHPL">Sudah HPL</option>
+                                <option value="skSerah">SK Serah</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="permasalahanFilter">Permasalahan</label>
+                            <select id="permasalahanFilter" onchange="applyFilters()">
+                                <option value="">Semua Permasalahan</option>
+                                <option value="masyarakat">Masyarakat</option>
+                                <option value="perusahaan">Perusahaan</option>
+                                <option value="kwsHutan">Kawasan Hutan</option>
+                                <option value="mha">MHA</option>
+                                <option value="instansi">Instansi</option>
+                                <option value="lainLain">Lain-lain</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn-apply-filters" onclick="applyFilters()">
+                            <i class="fas fa-filter"></i> Apply Filters
+                        </button>
+                        <button class="btn-export-filtered" onclick="exportFilteredData()">
+                            <i class="fas fa-download"></i> Export Filtered Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="card summary-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Jumlah KK</h3>
+                            <div class="card-value" id="totalKK">200</div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Beban Tugas SHM (Bidang)</h3>
+                            <div class="card-value" id="totalSHM">417</div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Total Kasus Permasalahan</h3>
+                            <div class="card-value" id="totalKasus">1</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem Description -->
+                <div class="card problem-card">
+                    <h3>Deskripsi Permasalahan</h3>
+                    <p id="problemDescription">LU II Daruba SP.3 (115 bidang) masuk kawasan hutan.</p>
+                </div>
+
+                <!-- Follow-up Action -->
+                <div class="card followup-card">
+                    <h3>Tindak Lanjut</h3>
+                    <p id="followupAction">Usulan pelepasan kawasan hutan ke KLHK, rakor koordinasi dengan BPKH VI Manado.</p>
+                </div>
+
+                <!-- Recommendation -->
+                <div class="card recommendation-card">
+                    <h3>Rekomendasi</h3>
+                    <p id="recommendation">Ditjen PPKTrans perlu memonitor pengusulan pelepasan kawasan hutan</p>
+                </div>
+
+                <!-- Status Summary -->
+                <div class="card status-card">
+                    <h3>Status Summary</h3>
+                    <div class="status-grid">
+                        <div class="status-section">
+                            <h4>Status Bina</h4>
+                            <div class="status-item">
+                                <span>Bina - Belum HPL:</span>
+                                <span class="status-value" id="binaBlmHPL">No</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Bina - Sudah HPL:</span>
+                                <span class="status-value" id="binaSdhHPL">No</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Bina - Tidak HPL:</span>
+                                <span class="status-value active" id="binaTdkHPL">Yes</span>
+                            </div>
+                        </div>
+                        <div class="status-section">
+                            <h4>Status Serah</h4>
+                            <div class="status-item">
+                                <span>Serah - Sudah HPL:</span>
+                                <span class="status-value" id="serahSdhHPL">No</span>
+                            </div>
+                            <div class="status-item">
+                                <span>Serah - SK Serah:</span>
+                                <span class="status-value active" id="serahSKSerah">Kepmen No. 79 Tahun 2015</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem Analysis -->
+                <div class="card analysis-card">
+                    <h3>Analisis Permasalahan</h3>
+                    <div class="analysis-chart" id="analysisChart">
+                        <!-- Chart will be populated by JavaScript -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

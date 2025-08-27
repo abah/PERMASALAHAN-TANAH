@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Trans-Data Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="analytics.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">Trans-Data</div>
+                <div class="project-info">
+                    <div class="project-location">Analytics Dashboard</div>
+                    <div class="project-province">Data Analysis & Insights</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="patent-year">Last Updated: <span id="lastUpdated">Today</span></div>
+                <div class="user-profile">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <div class="nav-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="nav-item active">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                </nav>
+
+                <div class="analytics-filters">
+                    <h3>FILTERS</h3>
+                    <div class="filter-group">
+                        <label>Provinsi</label>
+                        <select id="provinsiFilter">
+                            <option value="">Semua Provinsi</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Kabupaten</label>
+                        <select id="kabupatenFilter">
+                            <option value="">Semua Kabupaten</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Tahun Patan</label>
+                        <select id="tahunFilter">
+                            <option value="">Semua Tahun</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status</label>
+                        <select id="statusFilter">
+                            <option value="">Semua Status</option>
+                            <option value="blmHPL">Belum HPL</option>
+                            <option value="sdhHPL">Sudah HPL</option>
+                            <option value="tdkHPL">Tidak HPL</option>
+                        </select>
+                    </div>
+                </div>
+
+                <footer class="sidebar-footer">
+                    <p>© 2024 Data Dashboard</p>
+                </footer>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Analytics Header -->
+                <div class="analytics-header">
+                    <h1>Analytics & Insights</h1>
+                    <p>Analisis mendalam data permasalahan tanah dan kinerja proyek</p>
+                </div>
+
+                <!-- Summary Statistics -->
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Lokasi</h3>
+                            <div class="stat-value" id="totalLocations">7</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total KK</h3>
+                            <div class="stat-value" id="totalKK">1,484</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total SHM</h3>
+                            <div class="stat-value" id="totalSHM">2,210</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Kasus</h3>
+                            <div class="stat-value" id="totalKasus">9</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="charts-grid">
+                    <!-- Problem Distribution Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Distribusi Permasalahan</h3>
+                            <div class="chart-actions">
+                                <button class="btn-icon" onclick="toggleChartType('problemChart')">
+                                    <i class="fas fa-chart-pie"></i>
+                                </button>
+                                <button class="btn-icon" onclick="exportChart('problemChart')">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="problemChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Province Performance Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Kinerja per Provinsi</h3>
+                            <div class="chart-actions">
+                                <button class="btn-icon" onclick="toggleChartType('provinceChart')">
+                                    <i class="fas fa-chart-bar"></i>
+                                </button>
+                                <button class="btn-icon" onclick="exportChart('provinceChart')">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="provinceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Chart -->
+                    <div class="chart-card full-width">
+                        <div class="chart-header">
+                            <h3>Timeline Proyek</h3>
+                            <div class="chart-actions">
+                                <button class="btn-icon" onclick="toggleChartType('timelineChart')">
+                                    <i class="fas fa-chart-line"></i>
+                                </button>
+                                <button class="btn-icon" onclick="exportChart('timelineChart')">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Status Distribution -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Distribusi Status</h3>
+                            <div class="chart-actions">
+                                <button class="btn-icon" onclick="toggleChartType('statusChart')">
+                                    <i class="fas fa-chart-doughnut"></i>
+                                </button>
+                                <button class="btn-icon" onclick="exportChart('statusChart')">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Correlation Matrix -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Korelasi Data</h3>
+                            <div class="chart-actions">
+                                <button class="btn-icon" onclick="toggleChartType('correlationChart')">
+                                    <i class="fas fa-chart-area"></i>
+                                </button>
+                                <button class="btn-icon" onclick="exportChart('correlationChart')">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="correlationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insights Section -->
+                <div class="insights-section">
+                    <h2>Key Insights</h2>
+                    <div class="insights-grid">
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h4>Permasalahan Terbanyak</h4>
+                            <p>Kawasan hutan menjadi permasalahan utama dengan 4 kasus dari total 9 kasus.</p>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-trending-up"></i>
+                            </div>
+                            <h4>Provinsi Teraktif</h4>
+                            <p>Maluku Utara memiliki jumlah proyek terbanyak dengan 4 lokasi aktif.</p>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h4>Rata-rata Penyelesaian</h4>
+                            <p>Rata-rata waktu penyelesaian proyek adalah 5-7 tahun dari paten hingga serah.</p>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Tren Permasalahan</h4>
+                            <p>Permasalahan terkait perusahaan dan MHA menunjukkan tren peningkatan.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+    <script src="analytics.js"></script>
+</body>
+</html>

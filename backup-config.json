@@ -1,0 +1,26 @@
+{
+  "backupInterval": 300000,
+  "backupDirectory": "./backups",
+  "maxBackups": 50,
+  "filesToBackup": [
+    "analytics.js",
+    "data.js",
+    "analytics.html",
+    "index.html",
+    "script.js",
+    "styles.css",
+    "analytics.css",
+    "README.md"
+  ],
+  "excludePatterns": [
+    "*.tmp",
+    "*.log",
+    "node_modules/*",
+    "backups/*"
+  ],
+  "compression": false,
+  "notifications": {
+    "enabled": true,
+    "sound": false
+  }
+}

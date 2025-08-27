@@ -1,0 +1,19 @@
+{
+  "name": "permasalahan-tanah-backup",
+  "version": "1.0.0",
+  "description": "Automatic backup system for Permasalahan Tanah project",
+  "main": "backup.js",
+  "scripts": {
+    "start": "node backup.js",
+    "backup": "node backup.js backup",
+    "list": "node backup.js list",
+    "restore": "node backup.js restore",
+    "dev": "node backup.js"
+  },
+  "keywords": ["backup", "automation", "file-management"],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
