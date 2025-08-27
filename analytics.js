@@ -983,17 +983,91 @@ function applyFilters() {
             filters: { provinsi, kabupaten, tahun, status }
         });
 
-        // Update summary stats
+        // Update summary stats with filtered data
         updateFilteredStats(filteredData);
         
-        // Update charts
+        // Update charts with filtered data
         updateChartsWithNewData(filteredData);
+        
+        // Update key insights with filtered data
+        updateKeyInsightsWithFilter(filteredData);
+        
+        // Show filter results message
+        showFilterResults(filteredData, dashboardData.length);
         
         console.log('=== FILTERS APPLIED SUCCESSFULLY ===');
         
     } catch (error) {
         console.error('Error applying filters:', error);
     }
+}
+
+// Show filter results message
+function showFilterResults(filteredData, totalCount) {
+    // Create or update filter results message
+    let filterMessage = document.getElementById('filterMessage');
+    if (!filterMessage) {
+        filterMessage = document.createElement('div');
+        filterMessage.id = 'filterMessage';
+        filterMessage.style.cssText = `
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 16px 0;
+            color: #1976d2;
+            font-weight: 500;
+            text-align: center;
+        `;
+        
+        // Insert after summary stats
+        const summaryStats = document.querySelector('.summary-stats');
+        if (summaryStats) {
+            summaryStats.parentNode.insertBefore(filterMessage, summaryStats.nextSibling);
+        }
+    }
+    
+    if (filteredData.length === totalCount) {
+        filterMessage.style.display = 'none';
+    } else {
+        filterMessage.style.display = 'block';
+        filterMessage.innerHTML = `
+            <i class="fas fa-filter"></i>
+            Filter aktif: Menampilkan ${filteredData.length} dari ${totalCount} lokasi
+            <button onclick="clearAllFilters()" style="margin-left: 12px; padding: 4px 8px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Clear All
+            </button>
+        `;
+    }
+}
+
+// Clear all filters
+function clearAllFilters() {
+    console.log('Clearing all filters...');
+    
+    // Reset all filter dropdowns
+    const provinsiFilter = document.getElementById('provinsiFilter');
+    const kabupatenFilter = document.getElementById('kabupatenFilter');
+    const tahunFilter = document.getElementById('tahunFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    
+    if (provinsiFilter) provinsiFilter.value = '';
+    if (kabupatenFilter) kabupatenFilter.value = '';
+    if (tahunFilter) tahunFilter.value = '';
+    if (statusFilter) statusFilter.value = '';
+    
+    // Hide filter message
+    const filterMessage = document.getElementById('filterMessage');
+    if (filterMessage) {
+        filterMessage.style.display = 'none';
+    }
+    
+    // Reset to original data
+    updateSummaryStats();
+    createCharts();
+    updateKeyInsights();
+    
+    console.log('All filters cleared');
 }
 
 // Update charts with filters
@@ -1176,31 +1250,47 @@ function updateChartData(chartId, data) {
 
 // Update filtered statistics
 function updateFilteredStats(filteredData) {
-    if (!filteredData) {
-        updateSummaryStats();
-        return;
+    console.log('Updating filtered stats with', filteredData.length, 'locations');
+    
+    try {
+        if (!filteredData || filteredData.length === 0) {
+            // Show no results message
+            document.getElementById('totalLocations').textContent = '0';
+            document.getElementById('totalKK').textContent = '0';
+            document.getElementById('totalSHM').textContent = '0';
+            document.getElementById('totalKasus').textContent = '0';
+            return;
+        }
+
+        // Calculate totals from filtered data
+        const totalLocations = filteredData.length;
+        const totalKK = filteredData.reduce((sum, location) => sum + (location.jmlKK || 0), 0);
+        const totalSHM = filteredData.reduce((sum, location) => sum + (location.bebanTugasSHM || 0), 0);
+        const totalKasus = filteredData.reduce((sum, location) => sum + (location.totalKasus || 0), 0);
+
+        // Update DOM elements with filtered data
+        document.getElementById('totalLocations').textContent = totalLocations.toLocaleString();
+        document.getElementById('totalKK').textContent = totalKK.toLocaleString();
+        document.getElementById('totalSHM').textContent = totalSHM.toLocaleString();
+        document.getElementById('totalKasus').textContent = totalKasus.toLocaleString();
+
+        // Add visual indication that stats are filtered
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach(card => {
+            card.style.border = '2px solid #2196f3';
+            card.style.boxShadow = '0 4px 8px rgba(33, 150, 243, 0.2)';
+        });
+
+        console.log('Filtered stats updated:', {
+            totalLocations,
+            totalKK,
+            totalSHM,
+            totalKasus
+        });
+        
+    } catch (error) {
+        console.error('Error updating filtered stats:', error);
     }
-
-    // Calculate totals from filtered data
-    const totalLocations = filteredData.length;
-    const totalKK = filteredData.reduce((sum, location) => sum + location.jmlKK, 0);
-    const totalSHM = filteredData.reduce((sum, location) => sum + location.bebanTugasSHM, 0);
-    const totalKasus = filteredData.reduce((sum, location) => sum + location.totalKasus, 0);
-
-    document.getElementById('totalLocations').textContent = totalLocations.toLocaleString();
-    document.getElementById('totalKK').textContent = totalKK.toLocaleString();
-    document.getElementById('totalSHM').textContent = totalSHM.toLocaleString();
-    document.getElementById('totalKasus').textContent = totalKasus.toLocaleString();
-
-    console.log('Filtered stats updated:', {
-        totalLocations,
-        totalKK,
-        totalSHM,
-        totalKasus
-    });
-
-    // Update Key Insights with filtered data
-    updateKeyInsightsWithFilter(filteredData);
 }
 
 // Update Key Insights with filtered data
