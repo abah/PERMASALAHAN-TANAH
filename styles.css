@@ -12,11 +12,7 @@ body {
     line-height: 1.6;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
+/* Container - REMOVED (Using Ultimate Dashboard) */
 
 /* Header Styling - REMOVED (Using Ultimate Dashboard Header) */
     color: #ffffff;
@@ -160,21 +156,11 @@ body {
     color: #dc2626 !important;
 }
 
-/* Main Content Layout */
-.main-content {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-}
+/* Main Content Layout - REMOVED (Using Ultimate Dashboard) */
 
 /* Sidebar Styles - Moved to sidebar.css */
 
-/* Content Area */
-.content {
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
-}
+/* Content Area - REMOVED (Using Ultimate Dashboard) */
 
 /* Filter Section */
 .filter-section {
