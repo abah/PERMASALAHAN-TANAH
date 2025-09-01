@@ -1981,8 +1981,6 @@ function initializeCharts() {
                 cutout: '60%'
             }
         });
-    }
-
     } else {
         console.warn('⚠️ Distribution chart canvas not found');
     }
