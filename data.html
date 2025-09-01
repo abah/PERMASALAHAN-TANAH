@@ -90,8 +90,10 @@
                 </div>
 
                 <!-- Data Table -->
-                <div class="table-container">
-                    <table id="dataTable" class="data-table">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="overflow-x-auto">
+                            <table id="dataTable" class="w-full">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -134,11 +136,11 @@
     </div>
 
     <!-- Edit Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-container modal-md">
             <div class="modal-header">
-                <h2 id="modalTitle">Edit Data</h2>
-                <button class="close" id="closeModal">
+                <h2 class="modal-header-title" id="modalTitle">Edit Data</h2>
+                <button class="modal-close" id="closeModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -274,11 +276,11 @@
     </div>
 
     <!-- Add New Data Modal -->
-    <div id="addModal" class="modal">
-        <div class="modal-content">
+    <div id="addModal" class="modal-overlay">
+        <div class="modal-container modal-lg">
             <div class="modal-header">
-                <h2>Tambah Data Baru</h2>
-                <button class="close" id="closeAddModal">
+                <h2 class="modal-header-title">Tambah Data Baru</h2>
+                <button class="modal-close" id="closeAddModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -410,11 +412,11 @@
     </div>
 
     <!-- Import Modal -->
-    <div id="importModal" class="modal">
-        <div class="modal-content">
+    <div id="importModal" class="modal-overlay">
+        <div class="modal-container modal-md">
             <div class="modal-header">
-                <h2>Import Data CSV</h2>
-                <button class="close" id="closeImportModal">
+                <h2 class="modal-header-title">Import Data CSV</h2>
+                <button class="modal-close" id="closeImportModal">
                     <i class="fas fa-times"></i>
                 </button>
             </div>

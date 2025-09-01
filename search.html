@@ -93,11 +93,13 @@
     </div>
 
     <!-- Detail Modal -->
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
+    <div id="detailModal" class="modal-overlay">
+        <div class="modal-container modal-lg">
             <div class="modal-header">
-                <h3 id="modalTitle">Detail Lokasi</h3>
-                <span class="close">&times;</span>
+                <h3 class="modal-header-title" id="modalTitle">Detail Lokasi</h3>
+                <button class="modal-close" onclick="closeDetailModal()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <div class="modal-body" id="modalBody"></div>
         </div>

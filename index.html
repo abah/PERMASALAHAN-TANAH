@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trans-Data Dashboard</title>
-    <link rel="stylesheet" href="css/design-system.css?v=3.0">
+    <link rel="stylesheet" href="css/design-system.css?v=4.0">
     <link rel="stylesheet" href="styles.css?v=2.0">
     <link rel="stylesheet" href="sidebar.css?v=2.0">
     <link rel="stylesheet" href="sidebar-force.css?v=2.0">
@@ -62,14 +62,61 @@
         </header>
 
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar-layout">
             <!-- Sidebar content will be managed by sidebar.js -->
         </aside>
 
         <!-- Main Content -->
-        <div class="main-content">
-            <!-- Content Area -->
-            <main class="content">
+        <div class="content-layout">
+            <header class="header-layout">
+                <div class="flex items-center justify-between w-full">
+                    <div class="flex items-center gap-4">
+                        <div class="logo">
+                            <h1 class="text-xl font-bold text-primary">Trans-Data</h1>
+                            <p class="text-sm text-muted">Dashboard System</p>
+                        </div>
+                        <div class="project-info">
+                            <h2 class="project-location text-lg font-semibold">Overview Nasional</h2>
+                            <p class="project-province text-sm text-muted">Indonesia</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="current-year text-sm text-muted">
+                            <span id="currentYear">1968 - 2019</span>
+                        </div>
+                        <div class="user-profile-container">
+                            <button class="user-profile flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                                <i class="fas fa-user-circle text-xl text-gray-600"></i>
+                            </button>
+                            <div class="user-dropdown hidden absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                                <div class="user-info p-3 border-b border-gray-200">
+                                    <div class="user-avatar mb-2">
+                                        <i class="fas fa-user-circle text-2xl text-gray-600"></i>
+                                    </div>
+                                    <div class="user-details">
+                                        <div class="user-name font-medium" id="userName">User</div>
+                                        <div class="user-email text-sm text-muted" id="userEmail">user@example.com</div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <button class="dropdown-item w-full text-left px-3 py-2 hover:bg-gray-100" onclick="showModal('profile')">
+                                        <i class="fas fa-user mr-2"></i>Profile
+                                    </button>
+                                    <button class="dropdown-item w-full text-left px-3 py-2 hover:bg-gray-100" onclick="showModal('settings')">
+                                        <i class="fas fa-cog mr-2"></i>Settings
+                                    </button>
+                                    <div class="dropdown-divider"></div>
+                                    <button class="dropdown-item w-full text-left px-3 py-2 hover:bg-gray-100 text-red-600" onclick="logout()">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="main-content-layout">
                 <!-- Filter Section -->
                 <div class="filter-section">
                     <div class="filter-header">
