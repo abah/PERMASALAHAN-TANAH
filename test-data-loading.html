@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Data Loading - Provinsi Dropdown</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 20px;
+            background: #f8fafc;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+        .test-title {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .log-output {
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .status {
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-weight: 500;
+        }
+        .status.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        .status.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        .status.warning {
+            background: #fefce8;
+            color: #a16207;
+            border: 1px solid #fde68a;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔍 Test Data Loading - Provinsi Dropdown</h1>
+        
+        <div class="test-section">
+            <h3 class="test-title">1. Data Loading Status</h3>
+            <div id="dataStatus" class="status warning">Checking...</div>
+            <button onclick="checkDataStatus()">🔄 Check Data Status</button>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">2. Provinsi Dropdown Test</h3>
+            <select id="provinsiTest">
+                <option value="">Loading...</option>
+            </select>
+            <br>
+            <button onclick="testPopulateProvinces()">🧪 Test with Dummy Data</button>
+            <button onclick="forcePopulateRealData()">🔧 Force Real Data</button>
+            <button onclick="clearDropdown()">🗑️ Clear Dropdown</button>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">3. Data Analysis</h3>
+            <button onclick="analyzeDataStructure()">📊 Analyze Data Structure</button>
+            <button onclick="showSampleData()">📋 Show Sample Data</button>
+            <button onclick="checkUniqueProvinces()">🗺️ Check Unique Provinces</button>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">4. Console Log Output</h3>
+            <div id="logOutput" class="log-output"></div>
+            <button onclick="clearLog()">🗑️ Clear Log</button>
+        </div>
+    </div>
+
+    <!-- Load data.js -->
+    <script src="data.js"></script>
+    
+    <script>
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const logOutput = document.getElementById('logOutput');
+        
+        function appendLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logLine = `[${timestamp}] ${message}`;
+            
+            const div = document.createElement('div');
+            div.textContent = logLine;
+            div.style.color = type === 'error' ? '#ef4444' : 
+                             type === 'warn' ? '#f59e0b' : 
+                             type === 'success' ? '#22c55e' : '#f1f5f9';
+            
+            logOutput.appendChild(div);
+            logOutput.scrollTop = logOutput.scrollHeight;
+            
+            // Also log to original console
+            originalLog(logLine);
+        }
+        
+        console.log = function(...args) {
+            appendLog(args.join(' '));
+            originalLog(...args);
+        };
+        
+        console.error = function(...args) {
+            appendLog(args.join(' '), 'error');
+            originalLog(...args);
+        };
+        
+        console.warn = function(...args) {
+            appendLog(args.join(' '), 'warn');
+            originalLog(...args);
+        };
+        
+        // Test functions
+        function checkDataStatus() {
+            const statusDiv = document.getElementById('dataStatus');
+            
+            if (typeof window.dashboardData === 'undefined') {
+                statusDiv.textContent = '❌ window.dashboardData is undefined';
+                statusDiv.className = 'status error';
+                console.error('Data not loaded: window.dashboardData is undefined');
+                return;
+            }
+            
+            if (!Array.isArray(window.dashboardData)) {
+                statusDiv.textContent = '❌ window.dashboardData is not an array';
+                statusDiv.className = 'status error';
+                console.error('Data type error: window.dashboardData is not an array');
+                return;
+            }
+            
+            if (window.dashboardData.length === 0) {
+                statusDiv.textContent = '⚠️ window.dashboardData is empty';
+                statusDiv.className = 'status warning';
+                console.warn('Data warning: window.dashboardData is empty');
+                return;
+            }
+            
+            statusDiv.textContent = `✅ Data loaded successfully: ${window.dashboardData.length} records`;
+            statusDiv.className = 'status success';
+            console.log(`Data loaded successfully: ${window.dashboardData.length} records`);
+        }
+        
+        function testPopulateProvinces() {
+            const select = document.getElementById('provinsiTest');
+            select.innerHTML = '<option value="">Semua Provinsi</option>';
+            
+            const testProvinces = ['Aceh', 'Papua', 'Papua Selatan', 'Maluku Utara', 'Jawa Barat'];
+            testProvinces.forEach(provinsi => {
+                const option = document.createElement('option');
+                option.value = provinsi;
+                option.textContent = provinsi;
+                select.appendChild(option);
+            });
+            
+            console.log('✅ Test provinces populated: ' + testProvinces.length);
+        }
+        
+        function forcePopulateRealData() {
+            if (!window.dashboardData || window.dashboardData.length === 0) {
+                console.error('❌ No dashboard data available');
+                return;
+            }
+            
+            console.log('🔧 Extracting provinces from real data...');
+            
+            // Get unique provinces
+            const provinces = [...new Set(window.dashboardData.map(item => {
+                console.log('Processing item:', item.provinsi);
+                return item.provinsi;
+            }).filter(Boolean))];
+            
+            console.log('🗺️ Unique provinces found:', provinces);
+            
+            const select = document.getElementById('provinsiTest');
+            select.innerHTML = '<option value="">Semua Provinsi</option>';
+            
+            provinces.sort().forEach(provinsi => {
+                const option = document.createElement('option');
+                option.value = provinsi;
+                option.textContent = provinsi;
+                select.appendChild(option);
+            });
+            
+            console.log(`✅ Real provinces populated: ${provinces.length} options`);
+        }
+        
+        function clearDropdown() {
+            document.getElementById('provinsiTest').innerHTML = '<option value="">-- Select Province --</option>';
+            console.log('🗑️ Dropdown cleared');
+        }
+        
+        function analyzeDataStructure() {
+            if (!window.dashboardData || window.dashboardData.length === 0) {
+                console.error('❌ No data to analyze');
+                return;
+            }
+            
+            const sample = window.dashboardData[0];
+            console.log('📊 Data structure analysis:');
+            console.log('- Total records:', window.dashboardData.length);
+            console.log('- Sample record keys:', Object.keys(sample));
+            console.log('- Sample record:', sample);
+            
+            // Check for provinsi field
+            if (sample.provinsi) {
+                console.log('✅ "provinsi" field exists');
+                console.log('- Sample provinsi value:', sample.provinsi);
+            } else {
+                console.error('❌ "provinsi" field not found in sample record');
+                console.log('- Available fields:', Object.keys(sample));
+            }
+        }
+        
+        function showSampleData() {
+            if (!window.dashboardData || window.dashboardData.length === 0) {
+                console.error('❌ No data to show');
+                return;
+            }
+            
+            console.log('📋 Sample data (first 3 records):');
+            for (let i = 0; i < Math.min(3, window.dashboardData.length); i++) {
+                console.log(`Record ${i + 1}:`, window.dashboardData[i]);
+            }
+        }
+        
+        function checkUniqueProvinces() {
+            if (!window.dashboardData || window.dashboardData.length === 0) {
+                console.error('❌ No data to check');
+                return;
+            }
+            
+            const allProvinces = window.dashboardData.map(item => item.provinsi);
+            const uniqueProvinces = [...new Set(allProvinces.filter(Boolean))];
+            
+            console.log('🗺️ Province analysis:');
+            console.log('- Total records:', window.dashboardData.length);
+            console.log('- Records with provinsi field:', allProvinces.filter(Boolean).length);
+            console.log('- Unique provinces:', uniqueProvinces.length);
+            console.log('- Province list:', uniqueProvinces.sort());
+            
+            // Check for null/undefined values
+            const nullCount = allProvinces.filter(p => !p).length;
+            if (nullCount > 0) {
+                console.warn(`⚠️ Found ${nullCount} records with missing provinsi`);
+            }
+        }
+        
+        function clearLog() {
+            document.getElementById('logOutput').innerHTML = '';
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Test page loaded');
+            setTimeout(() => {
+                checkDataStatus();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
