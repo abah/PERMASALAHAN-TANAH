@@ -350,11 +350,60 @@
     }
 }
 
-/* Main Content Override */
+/* Main Content Override - Match Analytics Layout */
 .main-content-ultimate {
     padding: 2rem !important;
     background: #f8fafc !important;
     min-height: calc(100vh - 80px) !important;
+    /* Ensure same grid layout as analytics */
+    flex: 1 !important;
+    overflow-y: auto !important;
+}
+
+/* Fix container wrapper issue */
+.container {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Data container should not add extra margin/padding */
+.data-container-ultimate {
+    margin: 0 !important;
+}
+
+/* Force exact same layout dimensions as analytics */
+.dashboard-ultimate {
+    display: flex !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+}
+
+.sidebar-ultimate {
+    width: 280px !important;
+    position: fixed !important;
+}
+
+.main-content-ultimate {
+    margin-left: 280px !important;
+    margin-top: 80px !important;
+    width: calc(100vw - 280px) !important;
+    padding: 2rem !important;
+    background: #f8fafc !important;
+    min-height: calc(100vh - 80px) !important;
+    flex: none !important;
+    overflow-y: auto !important;
+}
+
+.header-ultimate {
+    height: 80px !important;
+    width: calc(100vw - 280px) !important;
+    left: 280px !important;
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 50 !important;
 }
 
 /* Table Container Professional Look */
