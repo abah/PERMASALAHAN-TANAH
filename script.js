@@ -1,6 +1,9 @@
 // Dashboard Data - Import dari file data.js
 // Data sekarang disimpan di file terpisah untuk maintainability yang lebih baik
 
+console.log('🚀 script.js loading...');
+console.log('🔍 window.dashboardData at script load:', window.dashboardData ? window.dashboardData.length : 'not available');
+
 // Global variables
 let currentLocationId = null; // Tidak ada lokasi default, tampilkan global view
 let filteredData = []; // Data yang sudah difilter
@@ -2046,8 +2049,78 @@ function initializeCharts() {
     console.log('✅ Charts initialization completed');
 }
 
+// Test function to manually populate provinces
+function testPopulateProvinces() {
+    console.log('🧪 Testing province population...');
+    
+    const provinsiFilter = document.getElementById('provinsiFilter');
+    if (!provinsiFilter) {
+        console.error('❌ Provinsi filter element not found');
+        return;
+    }
+    
+    // Clear existing options
+    provinsiFilter.innerHTML = '<option value="">Semua Provinsi</option>';
+    
+    // Add test provinces
+    const testProvinces = ['Aceh', 'Papua', 'Papua Selatan', 'Maluku Utara', 'Jawa Barat'];
+    testProvinces.forEach(provinsi => {
+        const option = document.createElement('option');
+        option.value = provinsi;
+        option.textContent = provinsi;
+        provinsiFilter.appendChild(option);
+    });
+    
+    console.log('✅ Test provinces populated');
+}
+
+// Force populate with real data
+function forcePopulateData() {
+    console.log('🔧 Force populating with real data...');
+    
+    if (!window.dashboardData) {
+        console.error('❌ No dashboardData available');
+        return;
+    }
+    
+    console.log('📊 Available data:', window.dashboardData.length, 'records');
+    
+    // Get unique provinces
+    const provinces = [...new Set(window.dashboardData.map(item => item.provinsi).filter(Boolean))];
+    console.log('🗺️ Unique provinces:', provinces);
+    
+    const provinsiFilter = document.getElementById('provinsiFilter');
+    if (provinsiFilter) {
+        provinsiFilter.innerHTML = '<option value="">Semua Provinsi</option>';
+        provinces.sort().forEach(provinsi => {
+            const option = document.createElement('option');
+            option.value = provinsi;
+            option.textContent = provinsi;
+            provinsiFilter.appendChild(option);
+        });
+        console.log('✅ Real provinces populated:', provinces.length);
+    }
+}
+
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', initDashboard);
+
+// Also try after page fully loads
+window.addEventListener('load', () => {
+    console.log('🌐 Page fully loaded, trying data population again...');
+    setTimeout(() => {
+        if (window.dashboardData && window.dashboardData.length > 0) {
+            console.log('🔧 Attempting to populate filters after page load...');
+            populateFilterOptions();
+        } else {
+            console.warn('⚠️ Still no data after page load');
+        }
+    }, 2000);
+});
+
+// Add test functions to window for console access
+window.testPopulateProvinces = testPopulateProvinces;
+window.forcePopulateData = forcePopulateData;
 
 // Add some utility functions
 window.dashboardUtils = {
