@@ -1225,3 +1225,127 @@ h4, .h4 {
 .mt-5 { margin-top: var(--space-5); }
 .mt-6 { margin-top: var(--space-6); }
 .mt-8 { margin-top: var(--space-8); }
+
+/* ========================================
+   ULTIMATE ANALYTICS COMPONENTS
+   ======================================== */
+
+.analytics-header-ultimate {
+  margin-bottom: var(--space-8);
+  text-align: center;
+}
+
+.analytics-header-ultimate h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: var(--space-2);
+}
+
+.analytics-header-ultimate p {
+  font-size: 1.125rem;
+  color: var(--gray-600);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.full-width-ultimate {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.insights-section-ultimate {
+  margin-bottom: var(--space-8);
+}
+
+.insights-grid-ultimate {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.insight-card-ultimate {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.insight-card-ultimate:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.insight-icon-ultimate {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  margin: 0 auto var(--space-4) auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.insight-icon-ultimate.blue {
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+}
+
+.insight-icon-ultimate.green {
+  background: linear-gradient(135deg, var(--success-500), var(--success-600));
+}
+
+.insight-icon-ultimate.orange {
+  background: linear-gradient(135deg, var(--warning-500), var(--warning-600));
+}
+
+.insight-icon-ultimate.purple {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.insight-card-ultimate h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-3);
+}
+
+.insight-card-ultimate p {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN FOR ANALYTICS
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .insights-grid-ultimate {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .analytics-header-ultimate h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .insights-grid-ultimate {
+    grid-template-columns: 1fr;
+  }
+  
+  .analytics-header-ultimate h1 {
+    font-size: 1.75rem;
+  }
+  
+  .analytics-header-ultimate p {
+    font-size: 1rem;
+  }
+}

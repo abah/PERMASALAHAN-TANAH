@@ -7,208 +7,281 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="css/design-system.css?v=3.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/design-system.css?v=4.0">
+    <link rel="stylesheet" href="css/design-system/ultimate-dashboard.css?v=1.0">
     <link rel="stylesheet" href="styles.css?v=2.0">
-    <link rel="stylesheet" href="analytics.css?v=2.0">
     <link rel="stylesheet" href="sidebar.css?v=2.0">
     <link rel="stylesheet" href="sidebar-force.css?v=2.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <div class="logo">Trans-Data</div>
-                <div class="project-info">
-                    <div class="project-location">Analytics Dashboard</div>
-                    <div class="project-province">Data Analysis & Insights</div>
+    <div class="dashboard-ultimate">
+        <!-- Ultimate Sidebar -->
+        <aside class="sidebar-ultimate">
+            <div class="sidebar-header-ultimate">
+                <div class="sidebar-brand-ultimate">
+                    <div class="brand-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h1>Trans-Data</h1>
+                        <p>Dashboard System</p>
+                    </div>
                 </div>
             </div>
-            <div class="header-right">
-                <div class="patent-year">Last Updated: <span id="lastUpdated">Today</span></div>
-                <div class="user-profile">
-                    <i class="fas fa-user-circle"></i>
+            <nav class="sidebar-nav-ultimate">
+                <a href="index.html" class="nav-item-ultimate">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="analytics.html" class="nav-item-ultimate active">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="search.html" class="nav-item-ultimate">
+                    <i class="fas fa-search"></i>
+                    <span>Pencarian</span>
+                </a>
+                <a href="data.html" class="nav-item-ultimate">
+                    <i class="fas fa-database"></i>
+                    <span>Data</span>
+                </a>
+                <a href="admin-users.html" class="nav-item-ultimate">
+                    <i class="fas fa-users-cog"></i>
+                    <span>Admin Users</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Ultimate Header -->
+        <header class="header-ultimate">
+            <div class="header-left-ultimate">
+                <div class="page-info-ultimate">
+                    <h1>Analytics</h1>
+                    <p>Data Analysis & Insights - Indonesia</p>
+                </div>
+            </div>
+            <div class="header-right-ultimate">
+                <div class="status-indicator-ultimate">
+                    <div class="status-dot"></div>
+                    <span>CONNECTED</span>
+                </div>
+                <div class="user-profile-ultimate" onclick="toggleUserDropdown()">
+                    <div class="user-avatar-ultimate">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium" id="userName">User</div>
+                        <div class="text-sm text-muted" id="userEmail">user@example.com</div>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <!-- Sidebar content will be managed by sidebar.js -->
-        </aside>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Content Area -->
-            <main class="content">
+        <!-- Ultimate Main Content -->
+        <main class="main-content-ultimate">
                 <!-- Analytics Header -->
-                <div class="analytics-header">
+                <div class="analytics-header-ultimate">
                     <h1>Analytics & Insights</h1>
                     <p>Analisis mendalam data permasalahan tanah dan kinerja proyek</p>
                 </div>
 
                 <!-- Summary Statistics -->
-                <div class="summary-stats">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-map-marker-alt"></i>
+                <div class="stats-grid-ultimate">
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalLocations">195</h3>
+                                <p>Total Lokasi</p>
+                            </div>
+                            <div class="stat-icon-ultimate blue">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
                         </div>
-                        <div class="stat-content">
-                            <h3>Total Lokasi</h3>
-                            <div class="stat-value" id="totalLocations">7</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-content">
-                            <h3>Total KK</h3>
-                            <div class="stat-value" id="totalKK">1,484</div>
+                        <div class="stat-change-ultimate positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+5.2% from last month</span>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-file-alt"></i>
+                    
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalKK">44,772</h3>
+                                <p>Total KK</p>
+                            </div>
+                            <div class="stat-icon-ultimate green">
+                                <i class="fas fa-users"></i>
+                            </div>
                         </div>
-                        <div class="stat-content">
-                            <h3>Total SHM</h3>
-                            <div class="stat-value" id="totalSHM">2,210</div>
+                        <div class="stat-change-ultimate positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12.5% from last month</span>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon warning">
-                            <i class="fas fa-exclamation-triangle"></i>
+                    
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalSHM">61,178</h3>
+                                <p>Total SHM</p>
+                            </div>
+                            <div class="stat-icon-ultimate orange">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
                         </div>
-                        <div class="stat-content">
-                            <h3>Total Kasus</h3>
-                            <div class="stat-value" id="totalKasus">9</div>
+                        <div class="stat-change-ultimate positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8.3% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalKasus">235</h3>
+                                <p>Total Kasus</p>
+                            </div>
+                            <div class="stat-icon-ultimate red">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change-ultimate negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>-5.2% from last month</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Charts Grid -->
-                <div class="charts-grid">
+                <div class="charts-grid-ultimate">
                     <!-- Problem Distribution Chart -->
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Distribusi Permasalahan</h3>
-                            <div class="chart-actions">
-                                <button class="btn-icon" onclick="toggleChartType('problemChart')">
+                    <div class="chart-card-ultimate">
+                        <div class="chart-header-ultimate">
+                            <h3 class="chart-title-ultimate">Distribusi Permasalahan</h3>
+                            <div class="chart-actions-ultimate">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="toggleChartType('problemChart')">
                                     <i class="fas fa-chart-pie"></i>
                                 </button>
-                                <button class="btn-icon" onclick="exportChart('problemChart')">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="exportChart('problemChart')">
                                     <i class="fas fa-download"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="chart-container">
+                        <div class="chart-body-ultimate">
                             <canvas id="problemChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Province Performance Chart -->
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Kinerja per Provinsi</h3>
-                            <div class="chart-actions">
-                                <button class="btn-icon" onclick="toggleChartType('provinceChart')">
+                    <div class="chart-card-ultimate">
+                        <div class="chart-header-ultimate">
+                            <h3 class="chart-title-ultimate">Kinerja per Provinsi</h3>
+                            <div class="chart-actions-ultimate">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="toggleChartType('provinceChart')">
                                     <i class="fas fa-chart-bar"></i>
                                 </button>
-                                <button class="btn-icon" onclick="exportChart('provinceChart')">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="exportChart('provinceChart')">
                                     <i class="fas fa-download"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="chart-container">
+                        <div class="chart-body-ultimate">
                             <canvas id="provinceChart"></canvas>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Timeline Chart -->
-                    <div class="chart-card full-width">
-                        <div class="chart-header">
-                            <h3>Timeline Proyek</h3>
-                            <div class="chart-actions">
-                                <button class="btn-icon" onclick="toggleChartType('timelineChart')">
-                                    <i class="fas fa-chart-line"></i>
-                                </button>
-                                <button class="btn-icon" onclick="exportChart('timelineChart')">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="timelineChart"></canvas>
+                <!-- Timeline Chart -->
+                <div class="chart-card-ultimate full-width-ultimate">
+                    <div class="chart-header-ultimate">
+                        <h3 class="chart-title-ultimate">Timeline Proyek</h3>
+                        <div class="chart-actions-ultimate">
+                            <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="toggleChartType('timelineChart')">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="exportChart('timelineChart')">
+                                <i class="fas fa-download"></i>
+                            </button>
                         </div>
                     </div>
+                    <div class="chart-body-ultimate">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </div>
 
+                <!-- Additional Charts Grid -->
+                <div class="charts-grid-ultimate">
                     <!-- Status Distribution -->
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Distribusi Status</h3>
-                            <div class="chart-actions">
-                                <button class="btn-icon" onclick="toggleChartType('statusChart')">
+                    <div class="chart-card-ultimate">
+                        <div class="chart-header-ultimate">
+                            <h3 class="chart-title-ultimate">Distribusi Status</h3>
+                            <div class="chart-actions-ultimate">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="toggleChartType('statusChart')">
                                     <i class="fas fa-chart-doughnut"></i>
                                 </button>
-                                <button class="btn-icon" onclick="exportChart('statusChart')">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="exportChart('statusChart')">
                                     <i class="fas fa-download"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="chart-container">
+                        <div class="chart-body-ultimate">
                             <canvas id="statusChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Correlation Matrix -->
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Korelasi Data</h3>
-                            <div class="chart-actions">
-                                <button class="btn-icon" onclick="toggleChartType('correlationChart')">
+                    <div class="chart-card-ultimate">
+                        <div class="chart-header-ultimate">
+                            <h3 class="chart-title-ultimate">Korelasi Data</h3>
+                            <div class="chart-actions-ultimate">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="toggleChartType('correlationChart')">
                                     <i class="fas fa-chart-area"></i>
                                 </button>
-                                <button class="btn-icon" onclick="exportChart('correlationChart')">
+                                <button class="btn-ultimate btn-secondary-ultimate btn-sm" onclick="exportChart('correlationChart')">
                                     <i class="fas fa-download"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="chart-container">
+                        <div class="chart-body-ultimate">
                             <canvas id="correlationChart"></canvas>
                         </div>
                     </div>
                 </div>
 
                 <!-- Data Summary Section -->
-                <div class="insights-section">
-                    <h2>Ringkasan Data</h2>
-                    <div class="insights-grid">
-                        <div class="insight-card">
-                            <div class="insight-icon">
+                <div class="insights-section-ultimate">
+                    <div class="card-header-ultimate">
+                        <h2 class="card-title-ultimate">Ringkasan Data</h2>
+                    </div>
+                    <div class="insights-grid-ultimate">
+                        <div class="insight-card-ultimate">
+                            <div class="insight-icon-ultimate blue">
                                 <i class="fas fa-database"></i>
                             </div>
                             <h4>Total Data</h4>
                             <p>Halaman ini menampilkan data dari <strong id="totalLocationsDisplay">193</strong> lokasi transmigrasi di seluruh Indonesia.</p>
                         </div>
-                        <div class="insight-card">
-                            <div class="insight-icon">
+                        <div class="insight-card-ultimate">
+                            <div class="insight-icon-ultimate green">
                                 <i class="fas fa-map-marked-alt"></i>
                             </div>
                             <h4>Cakupan Wilayah</h4>
                             <p>Data mencakup <strong id="totalProvincesDisplay">27</strong> provinsi dengan berbagai pola transmigrasi (TU-TPLK, TULK, dll).</p>
                         </div>
-                        <div class="insight-card">
-                            <div class="insight-icon">
+                        <div class="insight-card-ultimate">
+                            <div class="insight-icon-ultimate orange">
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
                             <h4>Rentang Waktu</h4>
                             <p>Proyek dari tahun <strong id="minYearDisplay">1988</strong> hingga <strong id="maxYearDisplay">2023</strong> dengan berbagai status penyelesaian.</p>
                         </div>
-                        <div class="insight-card">
-                            <div class="insight-icon">
+                        <div class="insight-card-ultimate">
+                            <div class="insight-icon-ultimate purple">
                                 <i class="fas fa-chart-pie"></i>
                             </div>
                             <h4>Jenis Permasalahan</h4>
