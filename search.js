@@ -462,7 +462,7 @@ function createResultItem(item) {
         </div>
         <div class="result-actions">
             ${!item.isProvinceSummary && !item.isKabupatenSummary && !item.isYearSummary && !item.isStatusSummary ? 
-                `<button class="btn-detail" data-location-id="${item.id}">
+                `<button class="btn-detail" onclick="window.showLocationDetail(${item.id})" style="cursor: pointer; pointer-events: auto;">
                     <i class="fas fa-eye"></i> Detail
                 </button>` : 
                 `<span class="summary-info">Klik untuk lihat detail</span>`
