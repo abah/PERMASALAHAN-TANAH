@@ -1,0 +1,21 @@
+/* Fix Sidebar Width Issue - Override Problematic CSS */
+
+/* Remove forced width calculation that can compress sidebar */
+.main-content-ultimate {
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* Ensure dashboard container doesn't force full viewport width */
+.dashboard-ultimate {
+    max-width: none !important;
+    overflow-x: visible !important;
+}
+
+/* Force sidebar to maintain exact 280px width */
+.sidebar-ultimate {
+    flex-shrink: 0 !important;
+    min-width: 280px !important;
+    width: 280px !important;
+    max-width: 280px !important;
+}
