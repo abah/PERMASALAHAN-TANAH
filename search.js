@@ -678,10 +678,20 @@ function showLocationDetail(locationId) {
             modalBody.innerHTML = buildDetailContent(location);
         }
         
-        // Show modal
+        // Show modal with FORCE styling
         const detailModal = document.getElementById('detailModal');
         if (detailModal) {
             detailModal.style.display = 'block';
+            detailModal.style.position = 'fixed';
+            detailModal.style.top = '0';
+            detailModal.style.left = '0';
+            detailModal.style.width = '100%';
+            detailModal.style.height = '100%';
+            detailModal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            detailModal.style.zIndex = '9999';
+            console.log('✅ Modal forced to display with inline styles');
+        } else {
+            console.error('❌ detailModal element not found in DOM');
         }
         
         console.log('Location detail modal opened for:', location.kabupaten);
