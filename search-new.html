@@ -413,6 +413,34 @@
                         <div class="font-medium" id="userName">User</div>
                         <div class="text-sm text-muted" id="userEmail">user@example.com</div>
                     </div>
+                    <!-- User Dropdown -->
+                    <div class="user-dropdown-ultimate" id="userDropdown">
+                        <div class="dropdown-header-ultimate">
+                            <div class="dropdown-user-info-ultimate">
+                                <div class="dropdown-avatar-ultimate">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="dropdown-user-details-ultimate">
+                                    <h4 id="dropdownUserName">User</h4>
+                                    <p id="dropdownUserEmail">user@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu-ultimate">
+                            <button class="dropdown-item-ultimate" onclick="openProfileModal()">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Profile</span>
+                            </button>
+                            <button class="dropdown-item-ultimate" onclick="openSettingsModal()">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </button>
+                            <button class="dropdown-item-ultimate logout" onclick="handleLogout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -965,6 +993,42 @@
         // Global functions
         function toggleUserDropdown() {
             console.log('👤 User dropdown clicked');
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const userProfile = event.target.closest('.user-profile-ultimate');
+            
+            if (!userProfile && dropdown && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function openProfileModal() {
+            console.log('👤 Opening profile modal');
+            alert('Profile functionality coming soon!');
+            document.getElementById('userDropdown').classList.remove('show');
+        }
+
+        function openSettingsModal() {
+            console.log('⚙️ Opening settings modal');
+            alert('Settings functionality coming soon!');
+            document.getElementById('userDropdown').classList.remove('show');
+        }
+
+        function handleLogout() {
+            console.log('🚪 Logout requested');
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear any stored auth data
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userData');
+                
+                // Redirect to login
+                window.location.href = 'login.html';
+            }
         }
         
         function clearSearch() {

@@ -1349,3 +1349,210 @@ h4, .h4 {
     font-size: 1rem;
   }
 }
+
+/* ========================================
+   ULTIMATE USER DROPDOWN
+   ======================================== */
+
+.user-profile-ultimate {
+  position: relative !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.user-profile-ultimate:hover {
+  transform: translateY(-1px) !important;
+}
+
+.user-dropdown-ultimate {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  background: white !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-xl) !important;
+  min-width: 220px !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-10px) scale(0.95) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 1000 !important;
+  margin-top: var(--space-2) !important;
+}
+
+.user-dropdown-ultimate.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+.dropdown-header-ultimate {
+  padding: var(--space-4) var(--space-5) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%) !important;
+}
+
+.dropdown-user-info-ultimate {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--space-3) !important;
+}
+
+.dropdown-avatar-ultimate {
+  width: 40px !important;
+  height: 40px !important;
+  background: var(--primary-600) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
+  font-size: 1.125rem !important;
+}
+
+.dropdown-user-details-ultimate h4 {
+  margin: 0 !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: var(--gray-900) !important;
+}
+
+.dropdown-user-details-ultimate p {
+  margin: 0 !important;
+  font-size: 0.75rem !important;
+  color: var(--gray-500) !important;
+}
+
+.dropdown-menu-ultimate {
+  padding: var(--space-2) 0 !important;
+}
+
+.dropdown-item-ultimate {
+  display: flex !important;
+  align-items: center !important;
+  gap: var(--space-3) !important;
+  padding: var(--space-3) var(--space-5) !important;
+  color: var(--gray-700) !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  border: none !important;
+  background: none !important;
+  width: 100% !important;
+  text-align: left !important;
+  font-size: 0.875rem !important;
+}
+
+.dropdown-item-ultimate:hover {
+  background: var(--gray-50) !important;
+  color: var(--primary-600) !important;
+}
+
+.dropdown-item-ultimate.logout {
+  color: var(--red-600) !important;
+  border-top: 1px solid var(--border-light) !important;
+  margin-top: var(--space-1) !important;
+}
+
+.dropdown-item-ultimate.logout:hover {
+  background: var(--red-50) !important;
+  color: var(--red-700) !important;
+}
+
+.dropdown-item-ultimate i {
+  width: 16px !important;
+  text-align: center !important;
+}
+
+/* ========================================
+   ULTIMATE MODAL STYLES
+   ======================================== */
+
+.modal-ultimate {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 2000 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+.modal-ultimate.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.modal-content-ultimate {
+  background: white !important;
+  border-radius: var(--radius-xl) !important;
+  max-width: 500px !important;
+  width: 90% !important;
+  max-height: 80vh !important;
+  overflow-y: auto !important;
+  transform: scale(0.9) translateY(-20px) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: var(--shadow-2xl) !important;
+}
+
+.modal-ultimate.show .modal-content-ultimate {
+  transform: scale(1) translateY(0) !important;
+}
+
+.modal-header-ultimate {
+  padding: var(--space-6) var(--space-6) var(--space-4) !important;
+  border-bottom: 1px solid var(--border-light) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.modal-title-ultimate {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: var(--gray-900) !important;
+  margin: 0 !important;
+}
+
+.modal-close-ultimate {
+  background: none !important;
+  border: none !important;
+  font-size: 1.5rem !important;
+  color: var(--gray-400) !important;
+  cursor: pointer !important;
+  padding: var(--space-2) !important;
+  border-radius: var(--radius-md) !important;
+  transition: all 0.2s ease !important;
+}
+
+.modal-close-ultimate:hover {
+  background: var(--gray-100) !important;
+  color: var(--gray-600) !important;
+}
+
+.modal-body-ultimate {
+  padding: var(--space-6) !important;
+}
+
+/* ========================================
+   RESPONSIVE DROPDOWN & MODAL
+   ======================================== */
+
+@media (max-width: 768px) {
+  .user-dropdown-ultimate {
+    min-width: 200px !important;
+    right: var(--space-2) !important;
+  }
+  
+  .modal-content-ultimate {
+    width: 95% !important;
+    margin: var(--space-4) !important;
+  }
+}

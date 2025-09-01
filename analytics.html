@@ -70,15 +70,43 @@
                     <div class="status-dot"></div>
                     <span>CONNECTED</span>
                 </div>
-                                        <div class="user-profile-ultimate" onclick="toggleUserDropdown()">
-                            <div class="user-avatar-ultimate">
-                                <i class="fas fa-user"></i>
+                                                            <div class="user-profile-ultimate" onclick="toggleUserDropdown()">
+                        <div class="user-avatar-ultimate">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium" id="userName">User</div>
+                            <div class="text-sm text-muted" id="userEmail">user@example.com</div>
+                        </div>
+                        <!-- User Dropdown -->
+                        <div class="user-dropdown-ultimate" id="userDropdown">
+                            <div class="dropdown-header-ultimate">
+                                <div class="dropdown-user-info-ultimate">
+                                    <div class="dropdown-avatar-ultimate">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="dropdown-user-details-ultimate">
+                                        <h4 id="dropdownUserName">User</h4>
+                                        <p id="dropdownUserEmail">user@example.com</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="font-medium" id="userName">User</div>
-                                <div class="text-sm text-muted" id="userEmail">user@example.com</div>
+                            <div class="dropdown-menu-ultimate">
+                                <button class="dropdown-item-ultimate" onclick="openProfileModal()">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>Profile</span>
+                                </button>
+                                <button class="dropdown-item-ultimate" onclick="openSettingsModal()">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </button>
+                                <button class="dropdown-item-ultimate logout" onclick="handleLogout()">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </button>
                             </div>
                         </div>
+                    </div>
                         <!-- Hidden element for lastUpdated -->
                         <div id="lastUpdated" style="display: none;">Today</div>
             </div>
@@ -315,5 +343,177 @@
     <!-- Data & Scripts -->
     <script src="data.js"></script>
     <script src="analytics.js"></script>
+    
+    <!-- Profile Modal -->
+    <div class="modal-ultimate" id="profileModal">
+        <div class="modal-content-ultimate">
+            <div class="modal-header-ultimate">
+                <h2 class="modal-title-ultimate">
+                    <i class="fas fa-user-circle"></i> User Profile
+                </h2>
+                <button class="modal-close-ultimate" onclick="closeModal('profileModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-ultimate">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="width: 60px; height: 60px; background: var(--primary-600); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0; color: var(--gray-900);">User Profile</h3>
+                        <p style="margin: 0; color: var(--gray-500); font-size: 0.875rem;">Manage your account information</p>
+                    </div>
+                </div>
+                <div style="space-y: 1rem;">
+                    <div>
+                        <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem;">Full Name</label>
+                        <input type="text" id="profileName" value="User Name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.875rem;">
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem;">Email</label>
+                        <input type="email" id="profileEmail" value="user@example.com" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.875rem;">
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <label style="display: block; font-weight: 600; color: var(--gray-700); margin-bottom: 0.5rem;">Role</label>
+                        <input type="text" value="Administrator" readonly style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.875rem; background: var(--gray-50); color: var(--gray-500);">
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                        <button onclick="saveProfile()" style="flex: 1; background: var(--primary-600); color: white; border: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button onclick="closeModal('profileModal')" style="background: var(--gray-200); color: var(--gray-700); border: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-ultimate" id="settingsModal">
+        <div class="modal-content-ultimate">
+            <div class="modal-header-ultimate">
+                <h2 class="modal-title-ultimate">
+                    <i class="fas fa-cog"></i> Settings
+                </h2>
+                <button class="modal-close-ultimate" onclick="closeModal('settingsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body-ultimate">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--gray-900); font-size: 1.125rem;">
+                        <i class="fas fa-palette"></i> Appearance
+                    </h3>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="theme" value="light" checked style="margin: 0;">
+                            <span>Light Theme</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <input type="radio" name="theme" value="dark" style="margin: 0;">
+                            <span>Dark Theme</span>
+                        </label>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin: 0 0 1rem 0; color: var(--gray-900); font-size: 1.125rem;">
+                        <i class="fas fa-bell"></i> Notifications
+                    </h3>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <input type="checkbox" checked style="margin: 0;">
+                        <span>Email notifications</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" checked style="margin: 0;">
+                        <span>Push notifications</span>
+                    </label>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button onclick="saveSettings()" style="flex: 1; background: var(--primary-600); color: white; border: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                    <button onclick="closeModal('settingsModal')" style="background: var(--gray-200); color: var(--gray-700); border: none; padding: 0.75rem 1rem; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; transition: all 0.2s ease;">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dropdown & Modal Scripts -->
+    <script>
+        // User Dropdown Toggle
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const userProfile = event.target.closest('.user-profile-ultimate');
+            
+            if (!userProfile && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Modal Functions
+        function openProfileModal() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('profileModal').classList.add('show');
+        }
+
+        function openSettingsModal() {
+            document.getElementById('userDropdown').classList.remove('show');
+            document.getElementById('settingsModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Close modal when clicking backdrop
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal-ultimate')) {
+                event.target.classList.remove('show');
+            }
+        });
+
+        // Save Functions
+        function saveProfile() {
+            const name = document.getElementById('profileName').value;
+            const email = document.getElementById('profileEmail').value;
+            
+            // Update header display
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userEmail').textContent = email;
+            document.getElementById('dropdownUserName').textContent = name;
+            document.getElementById('dropdownUserEmail').textContent = email;
+            
+            alert('Profile updated successfully!');
+            closeModal('profileModal');
+        }
+
+        function saveSettings() {
+            alert('Settings saved successfully!');
+            closeModal('settingsModal');
+        }
+
+        // Logout Function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear any stored auth data
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userData');
+                
+                // Redirect to login
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
 </body>
 </html>

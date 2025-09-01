@@ -225,15 +225,43 @@
                     <div class="status-dot"></div>
                     <span>CONNECTED</span>
                 </div>
-                <div class="user-profile-ultimate" onclick="toggleUserDropdown()">
-                    <div class="user-avatar-ultimate">
-                        <i class="fas fa-user"></i>
+                                    <div class="user-profile-ultimate" onclick="toggleUserDropdown()">
+                        <div class="user-avatar-ultimate">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="font-medium" id="userName">Admin</div>
+                            <div class="text-sm text-muted" id="userEmail">admin@example.com</div>
+                        </div>
+                        <!-- User Dropdown -->
+                        <div class="user-dropdown-ultimate" id="userDropdown">
+                            <div class="dropdown-header-ultimate">
+                                <div class="dropdown-user-info-ultimate">
+                                    <div class="dropdown-avatar-ultimate">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="dropdown-user-details-ultimate">
+                                        <h4 id="dropdownUserName">Admin</h4>
+                                        <p id="dropdownUserEmail">admin@example.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-ultimate">
+                                <button class="dropdown-item-ultimate" onclick="openProfileModal()">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span>Profile</span>
+                                </button>
+                                <button class="dropdown-item-ultimate" onclick="openSettingsModal()">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </button>
+                                <button class="dropdown-item-ultimate logout" onclick="handleLogout()">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="font-medium" id="userName">Admin</div>
-                        <div class="text-sm text-muted" id="userEmail">admin@example.com</div>
-                    </div>
-                </div>
             </div>
         </header>
 
@@ -517,6 +545,38 @@
             const modal = document.getElementById('createUserModal');
             if (event.target === modal) {
                 closeCreateUserModal();
+            }
+        }
+        
+        // User Dropdown Functions
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdown');
+            const userProfile = event.target.closest('.user-profile-ultimate');
+            if (!userProfile && dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function openProfileModal() {
+            alert('Profile functionality coming soon!');
+            document.getElementById('userDropdown').classList.remove('show');
+        }
+
+        function openSettingsModal() {
+            alert('Settings functionality coming soon!');
+            document.getElementById('userDropdown').classList.remove('show');
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userData');
+                window.location.href = 'login.html';
             }
         }
     </script>
