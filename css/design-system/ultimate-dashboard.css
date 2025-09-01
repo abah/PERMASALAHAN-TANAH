@@ -160,6 +160,9 @@ h4, .h4 {
   display: flex;
   min-height: 100vh;
   background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Ultimate Sidebar */
@@ -379,8 +382,10 @@ h4, .h4 {
   margin-top: 80px !important;
   padding: var(--space-8) !important;
   min-height: calc(100vh - 80px) !important;
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
   overflow-y: auto !important;
+  width: calc(100vw - 280px) !important;
 }
 
 /* ========================================
@@ -437,9 +442,10 @@ h4, .h4 {
 
 .stats-grid-ultimate {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  grid-template-columns: repeat(4, 1fr) !important;
   gap: var(--space-6) !important;
   margin-bottom: var(--space-8) !important;
+  width: 100% !important;
 }
 
 .stat-card-ultimate {
@@ -678,6 +684,8 @@ h4, .h4 {
   padding: var(--space-8);
   margin-bottom: var(--space-8);
   box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 100%;
 }
 
 .filter-header-ultimate {
@@ -696,9 +704,10 @@ h4, .h4 {
 
 .filter-grid-ultimate {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-6);
   margin-bottom: var(--space-8);
+  width: 100%;
 }
 
 .filter-actions-ultimate {
@@ -717,8 +726,9 @@ h4, .h4 {
 
 .charts-grid-ultimate {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-6);
+  width: 100%;
 }
 
 .chart-card-ultimate {
@@ -882,8 +892,9 @@ h4, .h4 {
 
 .quick-actions-grid-ultimate {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
+  width: 100%;
 }
 
 .quick-action-btn-ultimate {
@@ -1078,22 +1089,38 @@ h4, .h4 {
    ======================================== */
 
 @media (max-width: 1024px) {
-  .charts-grid-ultimate {
-    grid-template-columns: 1fr;
+  .stats-grid-ultimate {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
   
-  .quick-actions-grid-ultimate {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
   .charts-grid-ultimate {
     grid-template-columns: 1fr;
   }
   
   .quick-actions-grid-ultimate {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .filter-grid-ultimate {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid-ultimate {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .charts-grid-ultimate {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-actions-grid-ultimate {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .filter-grid-ultimate {
+    grid-template-columns: 1fr;
   }
   
   .chart-header-ultimate {
