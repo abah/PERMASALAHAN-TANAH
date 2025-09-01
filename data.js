@@ -5077,4 +5077,7 @@ const dashboardData = [
 // Export data untuk browser
 if (typeof window !== 'undefined') {
     window.dashboardData = dashboardData;
+    console.log('✅ data.js loaded successfully');
+    console.log('📊 Total records:', dashboardData.length);
+    console.log('🔍 Sample data:', dashboardData[0]);
 }

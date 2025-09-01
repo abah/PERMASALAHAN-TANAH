@@ -129,6 +129,14 @@ async function initDashboard() {
         
         // Update dashboard components
         console.log('🔄 Updating dashboard components...');
+        
+        // Debug data availability
+        console.log('🔍 Debug: window.dashboardData available:', !!window.dashboardData);
+        console.log('🔍 Debug: window.dashboardData length:', window.dashboardData ? window.dashboardData.length : 'undefined');
+        if (window.dashboardData && window.dashboardData.length > 0) {
+            console.log('🔍 Debug: Sample data:', window.dashboardData[0]);
+        }
+        
         populateLocationList();
         populateFilterOptions();
         updateGlobalDashboard();
@@ -540,6 +548,8 @@ function getProblemLabel(key) {
 function populateFilterOptions() {
     try {
         console.log('🔧 Populating filter options...');
+        console.log('🔍 Debug: window.dashboardData:', window.dashboardData);
+        console.log('🔍 Debug: window.dashboardData length:', window.dashboardData ? window.dashboardData.length : 'undefined');
         
         if (!window.dashboardData || window.dashboardData.length === 0) {
             console.warn('⚠️ No dashboard data available for filter options');
