@@ -479,11 +479,16 @@
                                     <th>ID</th>
                                     <th>Provinsi</th>
                                     <th>Kabupaten</th>
-                                    <th>SP</th>
-                                    <th>Masalah</th>
+                                    <th>Pola</th>
+                                    <th>Tahun Patan</th>
+                                    <th>Tahun Serah</th>
                                     <th>Total KK</th>
-                                    <th>Total SHM</th>
-                                    <th>Status</th>
+                                    <th>Beban Tugas SHM</th>
+                                    <th>HPL</th>
+                                    <th>Status Bina</th>
+                                    <th>Status Serah</th>
+                                    <th>Permasalahan</th>
+                                    <th>Total Kasus</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -533,29 +538,104 @@
                     
                     <div class="form-row-ultimate">
                         <div class="form-group-ultimate">
-                            <label for="sp">SP (Satker/Proyek)</label>
-                            <input type="text" id="sp" name="sp" required>
+                            <label for="pola">Pola</label>
+                            <input type="text" id="pola" name="pola" placeholder="e.g., TU-TPLK">
                         </div>
                         <div class="form-group-ultimate">
-                            <label for="tahunPatan">Tahun Patan</label>
-                            <input type="number" id="tahunPatan" name="tahunPatan" min="1990" max="2030">
+                            <label for="hpl">HPL</label>
+                            <input type="text" id="hpl" name="hpl" placeholder="Nomor dan luas HPL">
                         </div>
-                    </div>
-                    
-                    <div class="form-group-ultimate">
-                        <label for="masalah">Masalah</label>
-                        <textarea id="masalah" name="masalah" rows="3" placeholder="Deskripsi masalah..."></textarea>
                     </div>
                     
                     <div class="form-row-ultimate">
                         <div class="form-group-ultimate">
-                            <label for="totalKK">Total KK</label>
-                            <input type="number" id="totalKK" name="totalKK" min="0">
+                            <label for="tahunPatan">Tahun Patan</label>
+                            <input type="text" id="tahunPatan" name="tahunPatan" placeholder="e.g., 2015/2016/2021">
                         </div>
                         <div class="form-group-ultimate">
-                            <label for="totalSHM">Total SHM</label>
-                            <input type="number" id="totalSHM" name="totalSHM" min="0">
+                            <label for="tahunSerah">Tahun Serah</label>
+                            <input type="text" id="tahunSerah" name="tahunSerah" placeholder="e.g., 2020">
                         </div>
+                    </div>
+                    
+                    <div class="form-row-ultimate">
+                        <div class="form-group-ultimate">
+                            <label for="jmlKK">Jumlah KK</label>
+                            <input type="number" id="jmlKK" name="jmlKK" min="0">
+                        </div>
+                        <div class="form-group-ultimate">
+                            <label for="bebanTugasSHM">Beban Tugas SHM</label>
+                            <input type="number" id="bebanTugasSHM" name="bebanTugasSHM" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-ultimate">
+                        <label for="totalKasus">Total Kasus</label>
+                        <input type="number" id="totalKasus" name="totalKasus" min="0" value="0">
+                    </div>
+                    
+                    <div class="form-group-ultimate">
+                        <label>Status Bina</label>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="statusBina" value="blmHPL">
+                                <span>Belum HPL</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="statusBina" value="sdhHPL">
+                                <span>Sudah HPL</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="radio" name="statusBina" value="tdkHPL">
+                                <span>Tidak HPL</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-ultimate">
+                        <label>Status Serah</label>
+                        <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" id="statusSerahSdhHPL" name="statusSerahSdhHPL">
+                                <span>Sudah HPL</span>
+                            </label>
+                        </div>
+                        <input type="text" id="statusSerahSKSerah" name="statusSerahSKSerah" placeholder="Nomor SK Serah (jika ada)" style="margin-top: 0.5rem;">
+                    </div>
+                    
+                    <div class="form-group-ultimate">
+                        <label>Jenis Permasalahan</label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="permasalahanKwsHutan">
+                                <span>Kawasan Hutan</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="permasalahanPerusahaan">
+                                <span>Perusahaan</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="permasalahanMHA">
+                                <span>MHA</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="permasalahanOKUMasy">
+                                <span>OKU/Masyarakat</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="permasalahanInstansi">
+                                <span>Instansi</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                <input type="checkbox" name="permasalahanLainLain">
+                                <span>Lain-lain</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-ultimate">
+                        <label for="deskripsiPermasalahan">Deskripsi Permasalahan</label>
+                        <textarea id="deskripsiPermasalahan" name="deskripsiPermasalahan" rows="3" placeholder="Deskripsi detail permasalahan..."></textarea>
                     </div>
                     
                     <div class="form-row-ultimate">
@@ -820,21 +900,35 @@
             }
 
             tableBody.innerHTML = pageData.map(item => {
-                const status = getStatus(item);
+                const statusBina = getBinaStatus(item);
+                const statusSerah = getSerahStatus(item);
+                const permasalahan = getPermasalahanList(item);
+                
                 return `
                     <tr>
                         <td>${item.id}</td>
-                        <td>${item.provinsi}</td>
-                        <td>${item.kabupaten}</td>
-                        <td>${item.sp || '-'}</td>
-                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.masalah || '-'}">
-                            ${item.masalah || '-'}
+                        <td>${item.provinsi || '-'}</td>
+                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.kabupaten || '-'}">
+                            ${item.kabupaten || '-'}
                         </td>
-                        <td>${item.totalKK || 0}</td>
-                        <td>${item.totalSHM || 0}</td>
+                        <td>${item.pola || '-'}</td>
+                        <td>${item.tahunPatan || '-'}</td>
+                        <td>${item.tahunSerah || '-'}</td>
+                        <td>${item.jmlKK || item.totalKK || 0}</td>
+                        <td>${item.bebanTugasSHM || item.totalSHM || 0}</td>
+                        <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${item.hpl || '-'}">
+                            ${item.hpl || '-'}
+                        </td>
                         <td>
-                            <span class="status-badge-ultimate ${status.class}">${status.text}</span>
+                            <span class="status-badge-ultimate ${statusBina.class}">${statusBina.text}</span>
                         </td>
+                        <td>
+                            <span class="status-badge-ultimate ${statusSerah.class}">${statusSerah.text}</span>
+                        </td>
+                        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${permasalahan}">
+                            ${permasalahan}
+                        </td>
+                        <td>${item.totalKasus || 0}</td>
                         <td>
                             <div class="table-actions-ultimate">
                                 <button class="action-btn-ultimate view" onclick="viewData(${item.id})" title="Lihat Detail">
@@ -857,10 +951,53 @@
             document.getElementById('totalCount').textContent = currentData.length;
         }
 
+        function getBinaStatus(item) {
+            if (item.statusBinaSdhHPL || item.binaSdhHPL === 'Yes') {
+                return { class: 'active', text: 'Sudah HPL' };
+            } else if (item.statusBinaTdkHPL || item.binaTdkHPL === 'Yes') {
+                return { class: 'inactive', text: 'Tidak HPL' };
+            } else if (item.statusBinaBlmHPL || item.binaBlmHPL === 'Yes') {
+                return { class: 'pending', text: 'Belum HPL' };
+            } else {
+                return { class: 'inactive', text: 'Belum Ada' };
+            }
+        }
+
+        function getSerahStatus(item) {
+            if (item.statusSerahSdhHPL || item.serahSdhHPL === 'Yes') {
+                return { class: 'active', text: 'Sudah HPL' };
+            } else if (item.statusSerahSKSerah && item.statusSerahSKSerah !== 'false' && item.statusSerahSKSerah !== false) {
+                return { class: 'pending', text: 'SK Serah' };
+            } else {
+                return { class: 'inactive', text: 'Belum' };
+            }
+        }
+
+        function getPermasalahanList(item) {
+            const problems = [];
+            
+            if (item.permasalahanKwsHutan) problems.push('Kawasan Hutan');
+            if (item.permasalahanPerusahaan) problems.push('Perusahaan');
+            if (item.permasalahanMHA) problems.push('MHA');
+            if (item.permasalahanOKUMasy) problems.push('OKU/Masyarakat');
+            if (item.permasalahanInstansi) problems.push('Instansi');
+            if (item.permasalahanLainLain) problems.push('Lain-lain');
+            
+            if (problems.length === 0) {
+                return item.deskripsiPermasalahan || item.masalah || 'Tidak ada masalah';
+            }
+            
+            return problems.join(', ');
+        }
+
+        // Legacy function for backward compatibility
         function getStatus(item) {
-            if (item.binaSdhHPL === 'Yes' && item.serahSdhHPL === 'Yes') {
+            const bina = getBinaStatus(item);
+            const serah = getSerahStatus(item);
+            
+            if (bina.class === 'active' && serah.class === 'active') {
                 return { class: 'active', text: 'Selesai' };
-            } else if (item.binaSdhHPL === 'Yes' || item.serahSdhHPL === 'Yes') {
+            } else if (bina.class === 'active' || serah.class === 'active') {
                 return { class: 'pending', text: 'Proses' };
             } else {
                 return { class: 'inactive', text: 'Belum' };
@@ -954,16 +1091,40 @@
 
             document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Data';
             
-            // Populate form
+            // Populate basic fields
             document.getElementById('provinsi').value = item.provinsi || '';
             document.getElementById('kabupaten').value = item.kabupaten || '';
-            document.getElementById('sp').value = item.sp || '';
+            document.getElementById('pola').value = item.pola || '';
+            document.getElementById('hpl').value = item.hpl || '';
             document.getElementById('tahunPatan').value = item.tahunPatan || '';
-            document.getElementById('masalah').value = item.masalah || '';
-            document.getElementById('totalKK').value = item.totalKK || '';
-            document.getElementById('totalSHM').value = item.totalSHM || '';
+            document.getElementById('tahunSerah').value = item.tahunSerah || '';
+            document.getElementById('jmlKK').value = item.jmlKK || item.totalKK || '';
+            document.getElementById('bebanTugasSHM').value = item.bebanTugasSHM || item.totalSHM || '';
+            document.getElementById('totalKasus').value = item.totalKasus || '';
+            document.getElementById('deskripsiPermasalahan').value = item.deskripsiPermasalahan || '';
             document.getElementById('tindakLanjut').value = item.tindakLanjut || '';
             document.getElementById('rekomendasi').value = item.rekomendasi || '';
+            
+            // Populate status bina radio buttons
+            if (item.statusBinaSdhHPL) {
+                document.querySelector('input[name="statusBina"][value="sdhHPL"]').checked = true;
+            } else if (item.statusBinaTdkHPL) {
+                document.querySelector('input[name="statusBina"][value="tdkHPL"]').checked = true;
+            } else if (item.statusBinaBlmHPL) {
+                document.querySelector('input[name="statusBina"][value="blmHPL"]').checked = true;
+            }
+            
+            // Populate status serah
+            document.getElementById('statusSerahSdhHPL').checked = item.statusSerahSdhHPL || false;
+            document.getElementById('statusSerahSKSerah').value = item.statusSerahSKSerah || '';
+            
+            // Populate permasalahan checkboxes
+            document.querySelector('input[name="permasalahanKwsHutan"]').checked = item.permasalahanKwsHutan || false;
+            document.querySelector('input[name="permasalahanPerusahaan"]').checked = item.permasalahanPerusahaan || false;
+            document.querySelector('input[name="permasalahanMHA"]').checked = item.permasalahanMHA || false;
+            document.querySelector('input[name="permasalahanOKUMasy"]').checked = item.permasalahanOKUMasy || false;
+            document.querySelector('input[name="permasalahanInstansi"]').checked = item.permasalahanInstansi || false;
+            document.querySelector('input[name="permasalahanLainLain"]').checked = item.permasalahanLainLain || false;
 
             document.getElementById('dataModal').classList.add('show');
         }
@@ -1007,7 +1168,41 @@
             e.preventDefault();
             
             const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
+            let data = Object.fromEntries(formData.entries());
+            
+            // Process status bina
+            if (data.statusBina === 'sdhHPL') {
+                data.statusBinaSdhHPL = true;
+                data.statusBinaBlmHPL = false;
+                data.statusBinaTdkHPL = false;
+            } else if (data.statusBina === 'blmHPL') {
+                data.statusBinaSdhHPL = false;
+                data.statusBinaBlmHPL = true;
+                data.statusBinaTdkHPL = false;
+            } else if (data.statusBina === 'tdkHPL') {
+                data.statusBinaSdhHPL = false;
+                data.statusBinaBlmHPL = false;
+                data.statusBinaTdkHPL = true;
+            }
+            delete data.statusBina;
+            
+            // Process checkboxes (convert to boolean)
+            data.statusSerahSdhHPL = data.statusSerahSdhHPL === 'on';
+            data.permasalahanKwsHutan = data.permasalahanKwsHutan === 'on';
+            data.permasalahanPerusahaan = data.permasalahanPerusahaan === 'on';
+            data.permasalahanMHA = data.permasalahanMHA === 'on';
+            data.permasalahanOKUMasy = data.permasalahanOKUMasy === 'on';
+            data.permasalahanInstansi = data.permasalahanInstansi === 'on';
+            data.permasalahanLainLain = data.permasalahanLainLain === 'on';
+            
+            // Convert numbers
+            data.jmlKK = parseInt(data.jmlKK) || 0;
+            data.bebanTugasSHM = parseInt(data.bebanTugasSHM) || 0;
+            data.totalKasus = parseInt(data.totalKasus) || 0;
+            
+            // Backward compatibility fields
+            data.totalKK = data.jmlKK;
+            data.totalSHM = data.bebanTugasSHM;
             
             try {
                 if (editingId) {
