@@ -63,82 +63,101 @@ const chartConfig = {
     }
 };
 
-// Initialize analytics dashboard dengan Firebase
+// Initialize analytics dashboard dengan Firebase (same as index.html)
 async function initAnalytics() {
     try {
-        console.log('🚀 Initializing analytics with Firebase...');
+        console.log('🚀 Initializing analytics...');
         
         // Check if Firebase is available
-        if (!window.db) {
-            console.error('❌ Firebase not initialized');
-            throw new Error('Firebase not initialized');
+        if (window.db) {
+            console.log('🔥 Firebase available, loading data...');
+            try {
+                // Load data dari Firebase (same as script.js)
+                const snapshot = await window.db.collection('transmigrasi').get();
+                const firebaseData = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    // Convert Firebase data back to original format (same as script.js)
+                    return {
+                        id: data.id || doc.id,
+                        provinsi: data.provinsi || '',
+                        kabupaten: data.kabupaten || '',
+                        upt: data.upt || '',
+                        pola: data.pola || '',
+                        tahunPatan: data.tahun_patan || data.tahunPatan || '',
+                        tahunSerah: data.tahun_serah || data.tahunSerah || '',
+                        jmlKK: data.jumlah_kk || data.jmlKK || 0,
+                        bebanTugasSHM: data.beban_tugas_shm || data.bebanTugasSHM || 0,
+                        hpl: data.hpl || '',
+                        statusBinaBlmHPL: data.status_bina_blm_hpl || data.statusBinaBlmHPL || false,
+                        statusBinaSdhHPL: data.status_bina_sdh_hpl || data.statusBinaSdhHPL || false,
+                        statusBinaTdkHPL: data.status_bina_tdk_hpl || data.statusBinaTdkHPL || false,
+                        statusSerahSdhHPL: data.status_serah_sdh_hpl || data.statusSerahSdhHPL || false,
+                        statusSerahSKSerah: data.status_serah_sk_serah || data.statusSerahSKSerah || '',
+                        permasalahanOKUMasy: data.permasalahan_oku_masy || data.permasalahanOKUMasy || false,
+                        permasalahanPerusahaan: data.permasalahan_perusahaan || data.permasalahanPerusahaan || false,
+                        permasalahanKwsHutan: data.permasalahan_kws_hutan || data.permasalahanKwsHutan || false,
+                        permasalahanMHA: data.permasalahan_mha || data.permasalahanMHA || false,
+                        permasalahanInstansi: data.permasalahan_instansi || data.permasalahanInstansi || false,
+                        permasalahanLainLain: data.permasalahan_lain_lain || data.permasalahanLainLain || false,
+                        totalKasus: data.total_kasus || data.totalKasus || 0,
+                        deskripsiPermasalahan: data.deskripsi_permasalahan || data.deskripsiPermasalahan || '',
+                        tindakLanjut: data.tindak_lanjut || data.tindakLanjut || '',
+                        rekomendasi: data.rekomendasi || ''
+                    };
+                });
+                
+                if (firebaseData.length > 0) {
+                    window.dashboardData = firebaseData;
+                    console.log(`✅ Firebase data loaded: ${firebaseData.length} records`);
+                } else {
+                    throw new Error('No Firebase data available');
+                }
+            } catch (firebaseError) {
+                console.warn('⚠️ Firebase loading failed, falling back to data.js:', firebaseError);
+                throw firebaseError; // Force fallback
+            }
         }
         
-        // Load data dari Firebase
-        const snapshot = await window.db.collection('transmigrasi').get();
-        const firebaseData = snapshot.docs.map(doc => {
-            const data = doc.data();
-            // Convert Firebase data back to original format
-            return {
-                id: data.id,
-                provinsi: data.provinsi,
-                kabupaten: data.kabupaten,
-                pola: data.pola,
-                tahunPatan: data.tahun_patan,
-                tahunSerah: data.tahun_serah,
-                jmlKK: data.jumlah_kk,
-                bebanTugasSHM: data.beban_tugas_shm,
-                hpl: data.hpl,
-                statusBinaBlmHPL: data.status_bina_blm_hpl,
-                statusBinaSdhHPL: data.status_bina_sdh_hpl,
-                statusBinaTdkHPL: data.status_bina_tdk_hpl,
-                statusSerahSdhHPL: data.status_serah_sdh_hpl,
-                statusSerahSKSerah: data.status_serah_sk_serah,
-                permasalahanOKUMasy: data.permasalahan_oku_masy,
-                permasalahanPerusahaan: data.permasalahan_perusahaan,
-                permasalahanKwsHutan: data.permasalahan_kws_hutan,
-                permasalahanMHA: data.permasalahan_mha,
-                permasalahanInstansi: data.permasalahan_instansi,
-                permasalahanLainLain: data.permasalahan_lain_lain,
-                totalKasus: data.total_kasus,
-                deskripsiPermasalahan: data.deskripsi_permasalahan,
-                tindakLanjut: data.tindak_lanjut,
-                rekomendasi: data.rekomendasi
-            };
-        });
+        // Fallback to data.js if Firebase fails or not available (same as script.js)
+        if (!window.dashboardData || window.dashboardData.length === 0) {
+            console.log('📁 Loading data from data.js...');
+            
+            // Wait for data.js to load (same as script.js)
+            let attempts = 0;
+            while (!window.dashboardData && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+            
+            if (!window.dashboardData || window.dashboardData.length === 0) {
+                throw new Error('No data available from data.js');
+            }
+            
+            console.log(`✅ Data.js loaded: ${window.dashboardData.length} records`);
+        }
         
-        // Use Firebase data if available, otherwise use data.js
-        if (firebaseData.length > 0) {
-            window.dashboardData = firebaseData;
-            console.log('✅ Using Firebase data:', firebaseData.length, 'records');
-        } else if (window.dashboardData && window.dashboardData.length > 0) {
-            // Use existing data from data.js
-            console.log('✅ Using data.js data:', window.dashboardData.length, 'records');
-        } else {
-            // Fallback to sample data if nothing is available
-            console.warn('⚠️ No data available, using sample data');
-            window.dashboardData = [
-                {
-                    id: 'sample1',
-                    provinsi: 'Jawa Barat',
-                    kabupaten: 'Bandung',
-                    jmlKK: 1000,
-                    bebanTugasSHM: 1500,
-                    totalKasus: 5,
-                    permasalahanKwsHutan: true,
-                    permasalahanPerusahaan: false,
-                    permasalahanMHA: true,
-                    permasalahanOKUMasy: false,
-                    permasalahanInstansi: false,
-                    permasalahanLainLain: false,
-                    statusBinaBlmHPL: true,
-                    statusBinaSdhHPL: false,
-                    statusBinaTdkHPL: false,
-                    statusSerahSdhHPL: false,
-                    statusSerahSKSerah: '',
-                    tahunPatan: '2020'
-                }
-            ];
+        // Ensure data structure is correct (same as script.js)
+        console.log('🔍 Validating data structure...');
+        const sampleData = window.dashboardData[0];
+        console.log('📊 Sample data structure:', sampleData);
+        
+        // Validate required fields (same as script.js)
+        const requiredFields = ['provinsi', 'kabupaten', 'upt', 'jmlKK', 'bebanTugasSHM'];
+        const missingFields = requiredFields.filter(field => !sampleData.hasOwnProperty(field));
+        
+        if (missingFields.length > 0) {
+            console.warn('⚠️ Missing fields in data:', missingFields);
+            console.log('🔧 Attempting to fix data structure...');
+            
+            // Fix common field mapping issues (same as script.js)
+            window.dashboardData = window.dashboardData.map(item => ({
+                ...item,
+                upt: item.upt || item.upt || '',
+                jmlKK: item.jmlKK || item.jumlah_kk || 0,
+                bebanTugasSHM: item.bebanTugasSHM || item.beban_tugas_shm || 0,
+                tahunPatan: item.tahunPatan || item.tahun_patan || '',
+                tahunSerah: item.tahunSerah || item.tahun_serah || ''
+            }));
         }
             console.log('Using existing data from data.js');
         } else {
