@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin User - Permasalahan Lahan Transmigran</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #3b82f6;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #374151;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        button {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .info { background: #dbeafe; color: #1e40af; }
+        .warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .credentials {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .credentials h3 {
+            color: #0c4a6e;
+            margin-top: 0;
+        }
+        .credentials p {
+            margin: 8px 0;
+            font-family: monospace;
+            background: #e0f2fe;
+            padding: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Create Admin User</h1>
+        
+        <div class="warning">
+            <strong>⚠️ PERINGATAN:</strong><br>
+            Halaman ini hanya untuk setup awal. Setelah admin dibuat, hapus file ini untuk keamanan.
+        </div>
+        
+        <form id="adminForm">
+            <div class="form-group">
+                <label for="email">📧 Email:</label>
+                <input type="email" id="email" placeholder="admin@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">🔒 Password:</label>
+                <input type="password" id="password" placeholder="Minimal 6 karakter" minlength="6" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="displayName">👤 Nama Lengkap:</label>
+                <input type="text" id="displayName" placeholder="Nama Admin" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="role">🎭 Role:</label>
+                <select id="role" required>
+                    <option value="">Pilih Role</option>
+                    <option value="admin">Admin (Full Access)</option>
+                    <option value="editor">Editor (Read/Write)</option>
+                    <option value="viewer">Viewer (Read Only)</option>
+                </select>
+            </div>
+            
+            <button type="submit" id="createBtn">🚀 Create Admin User</button>
+        </form>
+        
+        <div id="statusContainer"></div>
+        
+        <div id="credentialsDisplay" style="display: none;">
+            <div class="credentials">
+                <h3>✅ User Berhasil Dibuat!</h3>
+                <p><strong>Email:</strong> <span id="createdEmail"></span></p>
+                <p><strong>Password:</strong> <span id="createdPassword"></span></p>
+                <p><strong>Role:</strong> <span id="createdRole"></span></p>
+                <br>
+                <p><strong>⚠️ Simpan informasi ini dengan aman!</strong></p>
+                <p>Gunakan credentials ini untuk login di halaman login.html</p>
+            </div>
+        </div>
+        
+        <div class="warning">
+            <strong>📋 Langkah Selanjutnya:</strong><br>
+            1. Buat user admin dengan form di atas<br>
+            2. Simpan email dan password dengan aman<br>
+            3. Login di halaman login.html<br>
+            4. Hapus file create-admin.html untuk keamanan
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config -->
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        let createdPassword = '';
+        
+        function showStatus(message, type = 'info') {
+            const container = document.getElementById('statusContainer');
+            container.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        async function createAdminUser(userData) {
+            try {
+                // Create user in Firebase Auth
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(
+                    userData.email, 
+                    userData.password
+                );
+                
+                const user = userCredential.user;
+                
+                // Update display name
+                await user.updateProfile({
+                    displayName: userData.displayName
+                });
+                
+                // Store user data in Firestore
+                await window.db.collection('users').doc(user.uid).set({
+                    email: userData.email,
+                    displayName: userData.displayName,
+                    role: userData.role,
+                    created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                    created_by: 'system'
+                });
+                
+                return user;
+                
+            } catch (error) {
+                throw error;
+            }
+        }
+        
+        document.getElementById('adminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const displayName = document.getElementById('displayName').value.trim();
+            const role = document.getElementById('role').value;
+            
+            if (!email || !password || !displayName || !role) {
+                showStatus('❌ Semua field harus diisi!', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showStatus('❌ Password minimal 6 karakter!', 'error');
+                return;
+            }
+            
+            // Disable button
+            const createBtn = document.getElementById('createBtn');
+            createBtn.disabled = true;
+            createBtn.textContent = '🔄 Creating...';
+            
+            try {
+                showStatus('🔄 Creating admin user...', 'info');
+                
+                const userData = { email, password, displayName, role };
+                const user = await createAdminUser(userData);
+                
+                // Store password temporarily for display
+                createdPassword = password;
+                
+                // Show success
+                showStatus('✅ Admin user berhasil dibuat!', 'success');
+                
+                // Display credentials
+                document.getElementById('createdEmail').textContent = email;
+                document.getElementById('createdPassword').textContent = password;
+                document.getElementById('createdRole').textContent = role;
+                document.getElementById('credentialsDisplay').style.display = 'block';
+                
+                // Clear form
+                document.getElementById('adminForm').reset();
+                
+            } catch (error) {
+                console.error('Error creating admin:', error);
+                
+                let errorMessage = 'Gagal membuat user admin';
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'Email sudah terdaftar. Gunakan email lain.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'Password terlalu lemah. Gunakan password yang lebih kuat.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Format email tidak valid.';
+                } else {
+                    errorMessage = `Error: ${error.message}`;
+                }
+                
+                showStatus(`❌ ${errorMessage}`, 'error');
+                
+            } finally {
+                // Re-enable button
+                createBtn.disabled = false;
+                createBtn.textContent = '🚀 Create Admin User';
+            }
+        });
+        
+        // Initialize Firebase
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Check if Firebase is initialized
+                if (typeof firebase === 'undefined') {
+                    showStatus('❌ Firebase tidak tersedia. Pastikan firebase-config.js sudah dimuat.', 'error');
+                    return;
+                }
+                
+                showStatus('✅ Firebase siap. Silakan buat user admin.', 'info');
+                
+            } catch (error) {
+                showStatus(`❌ Error initializing Firebase: ${error.message}`, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

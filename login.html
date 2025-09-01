@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Permasalahan Lahan Transmigran</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .btn-login {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        .btn-login:hover {
+            background: #2563eb;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .auth-tab.active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        
+        .auth-content {
+            display: none;
+        }
+        
+        .auth-content.active {
+            display: block;
+        }
+        
+        .user-info {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .user-info h3 {
+            margin: 0 0 10px 0;
+            color: #374151;
+        }
+        
+        .user-info p {
+            margin: 5px 0;
+            color: #6b7280;
+        }
+        
+        .login-info {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        
+        .login-info p {
+            margin: 5px 0;
+            color: #92400e;
+        }
+        
+        .login-info strong {
+            color: #78350f;
+        }
+        
+        .btn-login:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .btn-login:disabled:hover {
+            background: #9ca3af;
+        }
+        
+        .security-notice {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>🔐 Login</h1>
+            <p>Permasalahan Lahan Transmigran</p>
+        </div>
+
+        <div id="loginForm">
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchTab('login')">🔐 Login</div>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginContent" class="auth-content active">
+                <div class="form-group">
+                    <label for="loginEmail">📧 Email:</label>
+                    <input type="email" id="loginEmail" placeholder="admin@example.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">🔒 Password:</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button class="btn-login" onclick="signIn()" id="loginBtn">
+                    <span id="loginBtnText">🚀 Login</span>
+                </button>
+                
+                <div class="login-info">
+                    <p><strong>⚠️ Akses Terbatas:</strong></p>
+                    <p>• Hanya untuk admin dan staff yang berwenang</p>
+                    <p>• Data bersifat rahasia dan sensitif</p>
+                    <p>• Hubungi administrator untuk akses</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Info (when logged in) -->
+        <div id="userInfo" style="display: none;">
+            <div class="user-info">
+                <h3>👤 User Info</h3>
+                <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                <p><strong>Role:</strong> <span id="userRole"></span></p>
+                <p><strong>Status:</strong> <span id="userStatus"></span></p>
+            </div>
+            <button class="btn-login btn-secondary" onclick="signOut()">Logout</button>
+            <button class="btn-login" onclick="goToDashboard()">Buka Dashboard</button>
+        </div>
+
+        <div id="statusContainer"></div>
+        
+        <div class="security-notice">
+            🚨 PERINGATAN: Data ini bersifat rahasia dan sensitif. 
+            Akses hanya untuk pihak yang berwenang.
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config & Services -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firebase-auth.js"></script>
+
+    <script>
+        function showStatus(message, type = 'info') {
+            const container = document.getElementById('statusContainer');
+            container.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function switchTab(tab) {
+            // Only login tab is available for security
+            if (tab === 'login') {
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.auth-content').forEach(c => c.classList.remove('active'));
+                
+                document.querySelector('.auth-tab:first-child').classList.add('active');
+                document.getElementById('loginContent').classList.add('active');
+            }
+            // Register tab is disabled for security
+        }
+
+        async function signIn() {
+            try {
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+
+                if (!email || !password) {
+                    showStatus('❌ Email dan password harus diisi!', 'error');
+                    return;
+                }
+
+                // Disable login button during process
+                const loginBtn = document.getElementById('loginBtn');
+                const loginBtnText = document.getElementById('loginBtnText');
+                loginBtn.disabled = true;
+                loginBtnText.textContent = '🔄 Verifying...';
+
+                showStatus('🔄 Verifying credentials...', 'info');
+                
+                // Add delay to prevent brute force
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                await firebaseAuth.signIn(email, password);
+                showStatus('✅ Login berhasil! Redirecting...', 'success');
+                
+                // Redirect after successful login
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+            } catch (error) {
+                showStatus(`❌ Login gagal: ${error.message}`, 'error');
+                
+                // Re-enable login button
+                const loginBtn = document.getElementById('loginBtn');
+                const loginBtnText = document.getElementById('loginBtnText');
+                loginBtn.disabled = false;
+                loginBtnText.textContent = '🚀 Login';
+            }
+        }
+
+        async function signUp() {
+            // Registration is disabled for security
+            showStatus('❌ User registration is disabled for security reasons. Please contact administrator.', 'error');
+        }
+
+        async function signOut() {
+            try {
+                showStatus('🔄 Logging out...', 'info');
+                await firebaseAuth.signOut();
+                showStatus('✅ Logout berhasil!', 'success');
+                
+                // Clear any sensitive data
+                localStorage.removeItem('userSession');
+                sessionStorage.clear();
+                
+                // Redirect to login page
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1000);
+                
+            } catch (error) {
+                showStatus(`❌ Logout gagal: ${error.message}`, 'error');
+            }
+        }
+
+        function goToDashboard() {
+            window.location.href = 'index.html';
+        }
+
+        function updateUserInfo() {
+            const user = firebaseAuth.getCurrentUser();
+            const role = firebaseAuth.getUserRole();
+            
+            if (user) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('userInfo').style.display = 'block';
+                
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('userRole').textContent = role || 'user';
+                document.getElementById('userStatus').textContent = 'Authenticated';
+            } else {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+            }
+        }
+
+        // Initialize auth
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await firebaseAuth.init();
+                
+                // Listen for auth state changes
+                firebaseAuth.addListener((event, user) => {
+                    if (event === 'login') {
+                        updateUserInfo();
+                        showStatus(`✅ Welcome, ${user.email}!`, 'success');
+                        
+                        // Auto-redirect to dashboard
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1000);
+                    } else if (event === 'logout') {
+                        updateUserInfo();
+                        showStatus('👋 Logged out successfully', 'info');
+                    }
+                });
+                
+                // Update UI based on current auth state
+                updateUserInfo();
+                
+                // Check if user is already logged in
+                const currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser) {
+                    showStatus('✅ Already logged in. Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                }
+                
+            } catch (error) {
+                showStatus(`❌ Auth initialization failed: ${error.message}`, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

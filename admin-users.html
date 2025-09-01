@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User Management</title>
+    <link rel="stylesheet" href="styles.css?v=2.0">
+    <link rel="stylesheet" href="sidebar.css?v=2.0">
+    <link rel="stylesheet" href="sidebar-force.css?v=2.0">
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-header h1 {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .btn-admin {
+            background: #dc2626;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-admin:hover {
+            background: #b91c1c;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .user-table th,
+        .user-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .user-table th {
+            background: #f9fafb;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        .user-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .role-admin {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .role-editor {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .role-user {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .status.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Sidebar content will be managed by sidebar.js -->
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="admin-container">
+                <div class="admin-header">
+                    <h1>🔐 Admin Panel</h1>
+                    <p>User Management - Permasalahan Lahan Transmigran</p>
+                </div>
+
+        <div class="admin-actions">
+            <button class="btn-admin" onclick="showCreateUserModal()">➕ Create User</button>
+            <button class="btn-admin btn-secondary" onclick="refreshUsers()">🔄 Refresh</button>
+            <button class="btn-admin btn-secondary" onclick="goToDashboard()">🏠 Dashboard</button>
+            <button class="btn-admin btn-secondary" onclick="logout()">🚪 Logout</button>
+        </div>
+
+        <div id="statusContainer"></div>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                    <th>Last Login</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- Users will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Create User Modal -->
+    <div id="createUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Create New User</h2>
+            <div class="form-group">
+                <label for="newUserEmail">Email:</label>
+                <input type="email" id="newUserEmail" placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label for="newUserName">Name:</label>
+                <input type="text" id="newUserName" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+                <label for="newUserPassword">Password:</label>
+                <input type="password" id="newUserPassword" placeholder="Min 6 characters">
+            </div>
+            <div class="form-group">
+                <label for="newUserRole">Role:</label>
+                <select id="newUserRole">
+                    <option value="user">User</option>
+                    <option value="editor">Editor</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-admin btn-secondary" onclick="closeCreateUserModal()">Cancel</button>
+                <button class="btn-admin" onclick="createUser()">Create User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config & Services -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firebase-auth.js"></script>
+    
+    <!-- Security -->
+    <script src="auth-guard.js"></script>
+    
+    <!-- Sidebar Management -->
+    <script src="sidebar.js"></script>
+
+    <script>
+        let users = [];
+
+        function showStatus(message, type = 'info') {
+            const container = document.getElementById('statusContainer');
+            container.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function showCreateUserModal() {
+            document.getElementById('createUserModal').style.display = 'block';
+        }
+
+        function closeCreateUserModal() {
+            document.getElementById('createUserModal').style.display = 'none';
+            // Clear form
+            document.getElementById('newUserEmail').value = '';
+            document.getElementById('newUserName').value = '';
+            document.getElementById('newUserPassword').value = '';
+            document.getElementById('newUserRole').value = 'user';
+        }
+
+        async function createUser() {
+            try {
+                const email = document.getElementById('newUserEmail').value;
+                const name = document.getElementById('newUserName').value;
+                const password = document.getElementById('newUserPassword').value;
+                const role = document.getElementById('newUserRole').value;
+
+                if (!email || !name || !password) {
+                    showStatus('❌ All fields are required!', 'error');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    showStatus('❌ Password must be at least 6 characters!', 'error');
+                    return;
+                }
+
+                showStatus('🔄 Creating user...', 'info');
+
+                // Create user in Firebase Auth
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                
+                // Update profile
+                await userCredential.user.updateProfile({ displayName: name });
+
+                // Create user document in Firestore
+                await window.db.collection('users').doc(userCredential.user.uid).set({
+                    email: email,
+                    display_name: name,
+                    role: role,
+                    created_by: firebaseAuth.getCurrentUser().uid,
+                    created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                    last_login: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showStatus(`✅ User created successfully: ${email}`, 'success');
+                closeCreateUserModal();
+                refreshUsers();
+
+            } catch (error) {
+                showStatus(`❌ Error creating user: ${error.message}`, 'error');
+            }
+        }
+
+        async function refreshUsers() {
+            try {
+                showStatus('🔄 Loading users...', 'info');
+                
+                const snapshot = await window.db.collection('users').get();
+                users = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                renderUsers();
+                showStatus(`✅ Loaded ${users.length} users`, 'success');
+
+            } catch (error) {
+                showStatus(`❌ Error loading users: ${error.message}`, 'error');
+            }
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.email}</td>
+                    <td>${user.display_name || 'N/A'}</td>
+                    <td><span class="role-badge role-${user.role}">${user.role.toUpperCase()}</span></td>
+                    <td>${user.created_at ? new Date(user.created_at.toDate()).toLocaleDateString() : 'N/A'}</td>
+                    <td>${user.last_login ? new Date(user.last_login.toDate()).toLocaleDateString() : 'N/A'}</td>
+                    <td>
+                        <button class="btn-admin btn-secondary" onclick="changeUserRole('${user.id}', '${user.role}')">Change Role</button>
+                        <button class="btn-admin" onclick="deleteUser('${user.id}', '${user.email}')" style="background: #dc2626;">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function changeUserRole(userId, currentRole) {
+            const newRole = prompt(`Change role for user (current: ${currentRole}):\nEnter: user, editor, or admin`);
+            
+            if (!newRole || !['user', 'editor', 'admin'].includes(newRole)) {
+                showStatus('❌ Invalid role. Must be: user, editor, or admin', 'error');
+                return;
+            }
+
+            try {
+                await window.db.collection('users').doc(userId).update({
+                    role: newRole,
+                    updated_by: firebaseAuth.getCurrentUser().uid,
+                    updated_at: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                showStatus(`✅ Role changed to ${newRole}`, 'success');
+                refreshUsers();
+
+            } catch (error) {
+                showStatus(`❌ Error changing role: ${error.message}`, 'error');
+            }
+        }
+
+        async function deleteUser(userId, userEmail) {
+            if (!confirm(`Are you sure you want to delete user: ${userEmail}?`)) {
+                return;
+            }
+
+            try {
+                await window.db.collection('users').doc(userId).delete();
+                showStatus(`✅ User deleted: ${userEmail}`, 'success');
+                refreshUsers();
+
+            } catch (error) {
+                showStatus(`❌ Error deleting user: ${error.message}`, 'error');
+            }
+        }
+
+        function goToDashboard() {
+            window.location.href = 'index.html';
+        }
+
+        async function logout() {
+            try {
+                await firebaseAuth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                showStatus(`❌ Logout failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Check admin permission
+        function checkAdminPermission() {
+            const user = firebaseAuth.getCurrentUser();
+            const role = firebaseAuth.getUserRole();
+
+            if (!user || role !== 'admin') {
+                showStatus('❌ Access denied. Admin permission required.', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return false;
+            }
+
+            return true;
+        }
+
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                await firebaseAuth.init();
+                
+                // Wait for auth state to be determined
+                setTimeout(() => {
+                    if (checkAdminPermission()) {
+                        refreshUsers();
+                    }
+                }, 1000);
+
+            } catch (error) {
+                showStatus(`❌ Initialization failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('createUserModal');
+            if (event.target === modal) {
+                closeCreateUserModal();
+            }
+        }
+    </script>
+</body>
+</html>

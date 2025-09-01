@@ -2,6 +2,7 @@
 console.log('Search.js loaded - Simple & Realtime Version');
 
 // Global variables
+// dashboardData akan diambil dari window.dashboardData atau data.js
 let allData = [];
 let searchTimeout;
 let searchStartTime = 0;
@@ -13,16 +14,60 @@ document.addEventListener('DOMContentLoaded', function() {
     setupRealtimeSearch();
 });
 
-function setupRealtimeSearch() {
+async function setupRealtimeSearch() {
     try {
-        // Get data from data.js
-        if (typeof dashboardData !== 'undefined') {
-            allData = dashboardData;
-            console.log('Data loaded from data.js:', allData.length, 'locations');
-        } else {
-            console.error('dashboardData not found, using empty array');
-            allData = [];
+        console.log('🚀 Setting up realtime search with Firebase...');
+        
+        // Check if Firebase is available
+        if (!window.db) {
+            console.error('❌ Firebase not initialized');
+            throw new Error('Firebase not initialized');
         }
+        
+        // Load data dari Firebase
+        const snapshot = await window.db.collection('transmigrasi').get();
+        const firebaseData = snapshot.docs.map(doc => {
+            const data = doc.data();
+            // Convert Firebase data back to original format
+            return {
+                id: data.id,
+                provinsi: data.provinsi,
+                kabupaten: data.kabupaten,
+                pola: data.pola,
+                tahunPatan: data.tahun_patan,
+                tahunSerah: data.tahun_serah,
+                jmlKK: data.jumlah_kk,
+                bebanTugasSHM: data.beban_tugas_shm,
+                hpl: data.hpl,
+                statusBinaBlmHPL: data.status_bina_blm_hpl,
+                statusBinaSdhHPL: data.status_bina_sdh_hpl,
+                statusBinaTdkHPL: data.status_bina_tdk_hpl,
+                statusSerahSdhHPL: data.status_serah_sdh_hpl,
+                statusSerahSKSerah: data.status_serah_sk_serah,
+                permasalahanOKUMasy: data.permasalahan_oku_masy,
+                permasalahanPerusahaan: data.permasalahan_perusahaan,
+                permasalahanKwsHutan: data.permasalahan_kws_hutan,
+                permasalahanMHA: data.permasalahan_mha,
+                permasalahanInstansi: data.permasalahan_instansi,
+                permasalahanLainLain: data.permasalahan_lain_lain,
+                totalKasus: data.total_kasus,
+                deskripsiPermasalahan: data.deskripsi_permasalahan,
+                tindakLanjut: data.tindak_lanjut,
+                rekomendasi: data.rekomendasi
+            };
+        });
+        
+        // Use Firebase data if available, otherwise use data.js
+        if (firebaseData.length > 0) {
+            allData = firebaseData;
+        } else {
+            allData = window.dashboardData || [];
+        }
+        
+        console.log('Data loaded from Firebase:', allData.length, 'locations');
+        
+        // Update total count
+        updateTotalCount();
         
         // Update total count
         updateTotalCount();

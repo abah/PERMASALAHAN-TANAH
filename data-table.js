@@ -2,6 +2,7 @@
 console.log('Data Table JS loaded');
 
 // Global variables
+// dashboardData akan diambil dari window.dashboardData atau data.js
 let currentData = [];
 let filteredData = [];
 let currentPage = 1;
@@ -25,30 +26,71 @@ const prevPage = document.getElementById('prevPage');
 const nextPage = document.getElementById('nextPage');
 const pageNumbers = document.getElementById('pageNumbers');
 
-// Initialize data table
-function initDataTable() {
-    console.log('Initializing data table...');
-    
-    // Try to load from localStorage first
-    if (loadFromLocalStorage()) {
-        console.log('Data loaded from localStorage');
-        currentData = [...dashboardData];
-    } else {
-        console.log('Loading from data.js');
-        currentData = [...dashboardData];
+// Initialize data table dengan Firebase
+async function initDataTable() {
+    try {
+        console.log('🚀 Initializing data table with Firebase...');
+        
+        // Check if Firebase is available
+        if (!window.db) {
+            console.error('❌ Firebase not initialized');
+            throw new Error('Firebase not initialized');
+        }
+        
+        // Load data dari Firebase
+        const snapshot = await window.db.collection('transmigrasi').get();
+        const firebaseData = snapshot.docs.map(doc => {
+            const data = doc.data();
+            // Convert Firebase data back to original format
+            return {
+                id: data.id,
+                provinsi: data.provinsi,
+                kabupaten: data.kabupaten,
+                pola: data.pola,
+                tahunPatan: data.tahun_patan,
+                tahunSerah: data.tahun_serah,
+                jmlKK: data.jumlah_kk,
+                bebanTugasSHM: data.beban_tugas_shm,
+                hpl: data.hpl,
+                statusBinaBlmHPL: data.status_bina_blm_hpl,
+                statusBinaSdhHPL: data.status_bina_sdh_hpl,
+                statusBinaTdkHPL: data.status_bina_tdk_hpl,
+                statusSerahSdhHPL: data.status_serah_sdh_hpl,
+                statusSerahSKSerah: data.status_serah_sk_serah,
+                permasalahanOKUMasy: data.permasalahan_oku_masy,
+                permasalahanPerusahaan: data.permasalahan_perusahaan,
+                permasalahanKwsHutan: data.permasalahan_kws_hutan,
+                permasalahanMHA: data.permasalahan_mha,
+                permasalahanInstansi: data.permasalahan_instansi,
+                permasalahanLainLain: data.permasalahan_lain_lain,
+                totalKasus: data.total_kasus,
+                deskripsiPermasalahan: data.deskripsi_permasalahan,
+                tindakLanjut: data.tindak_lanjut,
+                rekomendasi: data.rekomendasi
+            };
+        });
+        
+        // Use Firebase data if available, otherwise use data.js
+        if (firebaseData.length > 0) {
+            currentData = firebaseData;
+        } else {
+            currentData = window.dashboardData || [];
+        }
+        
+        filteredData = [...currentData];
+        
+        // Update UI
+        updateTotalRecords();
+        populateFilters();
+        renderTable();
+        setupEventListeners();
+        
+        console.log('✅ Data table initialized successfully');
+        
+    } catch (error) {
+        console.error('❌ Failed to initialize data table:', error);
+        alert('Gagal memuat data dari database. Cek console untuk detail.');
     }
-    
-    filteredData = [...currentData];
-    
-    updateTotalRecords();
-    populateFilters();
-    renderTable();
-    setupEventListeners();
-    
-    // Check for unsaved changes
-    setTimeout(() => {
-        checkForUnsavedChanges();
-    }, 1000);
 }
 
 // Update total records display

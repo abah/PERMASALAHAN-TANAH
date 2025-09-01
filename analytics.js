@@ -1,5 +1,8 @@
-// Analytics Dashboard - Using Real Data from data.js
+// Analytics Dashboard - Using Real Data from Firebase
 console.log('Analytics.js loaded');
+
+// Global variables
+// dashboardData akan diambil dari window.dashboardData atau data.js
 
 // Chart instances
 let charts = {};
@@ -46,17 +49,60 @@ const chartConfig = {
     }
 };
 
-// Initialize analytics dashboard
-function initAnalytics() {
-    console.log('Initializing analytics...');
+// Initialize analytics dashboard dengan Firebase
+async function initAnalytics() {
     try {
-        // Check if dashboardData is available
-        if (typeof dashboardData === 'undefined') {
-            console.error('dashboardData not available from data.js');
-            return;
+        console.log('🚀 Initializing analytics with Firebase...');
+        
+        // Check if Firebase is available
+        if (!window.db) {
+            console.error('❌ Firebase not initialized');
+            throw new Error('Firebase not initialized');
         }
         
-        console.log('dashboardData available:', dashboardData.length, 'locations');
+        // Load data dari Firebase
+        const snapshot = await window.db.collection('transmigrasi').get();
+        const firebaseData = snapshot.docs.map(doc => {
+            const data = doc.data();
+            // Convert Firebase data back to original format
+            return {
+                id: data.id,
+                provinsi: data.provinsi,
+                kabupaten: data.kabupaten,
+                pola: data.pola,
+                tahunPatan: data.tahun_patan,
+                tahunSerah: data.tahun_serah,
+                jmlKK: data.jumlah_kk,
+                bebanTugasSHM: data.beban_tugas_shm,
+                hpl: data.hpl,
+                statusBinaBlmHPL: data.status_bina_blm_hpl,
+                statusBinaSdhHPL: data.status_bina_sdh_hpl,
+                statusBinaTdkHPL: data.status_bina_tdk_hpl,
+                statusSerahSdhHPL: data.status_serah_sdh_hpl,
+                statusSerahSKSerah: data.status_serah_sk_serah,
+                permasalahanOKUMasy: data.permasalahan_oku_masy,
+                permasalahanPerusahaan: data.permasalahan_perusahaan,
+                permasalahanKwsHutan: data.permasalahan_kws_hutan,
+                permasalahanMHA: data.permasalahan_mha,
+                permasalahanInstansi: data.permasalahan_instansi,
+                permasalahanLainLain: data.permasalahan_lain_lain,
+                totalKasus: data.total_kasus,
+                deskripsiPermasalahan: data.deskripsi_permasalahan,
+                tindakLanjut: data.tindak_lanjut,
+                rekomendasi: data.rekomendasi
+            };
+        });
+        
+        // Use Firebase data if available, otherwise use data.js
+        if (firebaseData.length > 0) {
+            window.dashboardData = firebaseData;
+        } else if (window.dashboardData && window.dashboardData.length > 0) {
+            // Use existing data from data.js
+            console.log('Using existing data from data.js');
+        } else {
+            console.error('No data available from Firebase or data.js');
+            throw new Error('No data available');
+        }
         
         // Create charts with real data
         createCharts();
@@ -73,9 +119,10 @@ function initAnalytics() {
         // Setup navigation menu
         setupNavigationMenu();
         
-        console.log('Analytics initialized successfully with real data');
+        console.log('✅ Analytics initialized successfully with', window.dashboardData.length, 'records');
     } catch (error) {
-        console.error('Error initializing analytics:', error);
+        console.error('❌ Error initializing analytics:', error);
+        alert('Gagal memuat data dari database. Cek console untuk detail.');
     }
 }
 
@@ -102,7 +149,7 @@ function createProblemChart() {
         return;
     }
     
-    // Calculate real problem distribution from dashboardData
+    // Calculate real problem distribution from window.dashboardData
     const problemCounts = {
         'Kws Hutan': 0,
         'Perusahaan': 0,
@@ -112,7 +159,7 @@ function createProblemChart() {
         'Lain-lain': 0
     };
 
-    dashboardData.forEach(location => {
+    window.dashboardData.forEach(location => {
         if (location.permasalahanKwsHutan) problemCounts['Kws Hutan']++;
         if (location.permasalahanPerusahaan) problemCounts['Perusahaan']++;
         if (location.permasalahanMHA) problemCounts['MHA']++;
@@ -155,10 +202,10 @@ function createProvinceChart() {
     const canvas = document.getElementById('provinceChart');
     if (!canvas) return;
     
-    // Calculate real province performance from dashboardData
+    // Calculate real province performance from window.dashboardData
     const provinceData = {};
     
-    dashboardData.forEach(location => {
+    window.dashboardData.forEach(location => {
         if (!provinceData[location.provinsi]) {
             provinceData[location.provinsi] = { locations: 0, kk: 0, shm: 0 };
         }
@@ -219,11 +266,11 @@ function createTimelineChart() {
     const canvas = document.getElementById('timelineChart');
     if (!canvas) return;
     
-    // Calculate real timeline data from dashboardData
+    // Calculate real timeline data from window.dashboardData
     const tahunPatanData = {};
     const tahunSerahData = {};
     
-    dashboardData.forEach(location => {
+    window.dashboardData.forEach(location => {
         if (location.tahunPatan) {
             const tahun = location.tahunPatan.split('/')[0];
             if (!tahunPatanData[tahun]) tahunPatanData[tahun] = 0;
@@ -284,7 +331,7 @@ function createStatusChart() {
     const canvas = document.getElementById('statusChart');
     if (!canvas) return;
     
-    // Calculate real status distribution from dashboardData
+    // Calculate real status distribution from window.dashboardData
     const statusBinaData = {
         'Bina - Belum HPL': 0,
         'Bina - Sudah HPL': 0,
@@ -295,7 +342,7 @@ function createStatusChart() {
         'Serah - SK Serah': 0
     };
 
-    dashboardData.forEach(location => {
+    window.dashboardData.forEach(location => {
         if (location.statusBinaBlmHPL) statusBinaData['Bina - Belum HPL']++;
         if (location.statusBinaSdhHPL) statusBinaData['Bina - Sudah HPL']++;
         if (location.statusBinaTdkHPL) statusBinaData['Bina - Tidak HPL']++;
@@ -338,16 +385,16 @@ function createStatusChart() {
 // Update summary statistics with real data
 function updateSummaryStats() {
     try {
-        if (typeof dashboardData === 'undefined') {
-            console.error('dashboardData not available for summary stats');
-            return;
-        }
-
-        // Calculate totals from real dashboardData
-        const totalLocations = dashboardData.length;
-        const totalKK = dashboardData.reduce((sum, location) => sum + (location.jmlKK || 0), 0);
-        const totalSHM = dashboardData.reduce((sum, location) => sum + (location.bebanTugasSHM || 0), 0);
-        const totalKasus = dashboardData.reduce((sum, location) => sum + (location.totalKasus || 0), 0);
+            if (typeof window.dashboardData === 'undefined') {
+        console.error('window.dashboardData not available for summary stats');
+        return;
+    }
+    
+    // Calculate totals from real window.dashboardData
+    const totalLocations = window.dashboardData.length;
+    const totalKK = window.dashboardData.reduce((sum, location) => sum + (location.jmlKK || 0), 0);
+    const totalSHM = window.dashboardData.reduce((sum, location) => sum + (location.bebanTugasSHM || 0), 0);
+    const totalKasus = window.dashboardData.reduce((sum, location) => sum + (location.totalKasus || 0), 0);
 
         // Update DOM elements with real data
         document.getElementById('totalLocations').textContent = totalLocations.toLocaleString();
@@ -386,13 +433,13 @@ function updateLastUpdated() {
 // Update data summary display with static information
 function updateDataSummary() {
     try {
-        if (typeof dashboardData === 'undefined') {
-            console.error('dashboardData not available for data summary');
+        if (typeof window.dashboardData === 'undefined') {
+            console.error('window.dashboardData not available for data summary');
             return;
         }
 
         // Get unique provinces count
-        const uniqueProvinces = new Set(dashboardData.map(location => location.provinsi));
+        const uniqueProvinces = new Set(window.dashboardData.map(location => location.provinsi));
         const totalProvinces = uniqueProvinces.size;
 
         // Get year range from tahunPatan and tahunSerah
@@ -416,13 +463,13 @@ function updateDataSummary() {
         const minYearDisplay = document.getElementById('minYearDisplay');
         const maxYearDisplay = document.getElementById('maxYearDisplay');
 
-        if (totalLocationsDisplay) totalLocationsDisplay.textContent = dashboardData.length;
+        if (totalLocationsDisplay) totalLocationsDisplay.textContent = window.dashboardData.length;
         if (totalProvincesDisplay) totalProvincesDisplay.textContent = totalProvinces;
         if (minYearDisplay) minYearDisplay.textContent = minYear;
         if (maxYearDisplay) maxYearDisplay.textContent = maxYear;
 
         console.log('Data summary updated:', {
-            totalLocations: dashboardData.length,
+            totalLocations: window.dashboardData.length,
             totalProvinces,
             yearRange: `${minYear}-${maxYear}`
         });

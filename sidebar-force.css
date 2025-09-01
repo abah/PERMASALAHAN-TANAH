@@ -1,0 +1,291 @@
+/* 🎯 FORCE OVERRIDE - Sidebar Styles yang Memaksa Override */
+/* Menggunakan specificity yang sangat tinggi untuk memastikan tidak ada konflik */
+
+body .container .sidebar,
+body .container aside.sidebar,
+body div.container .sidebar,
+body div.container aside.sidebar {
+    width: 280px !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    height: 100vh !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    overflow-y: auto !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    z-index: 1000 !important;
+    border-right: 1px solid #e5e7eb !important;
+    display: block !important;
+    flex-direction: unset !important;
+    flex: unset !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+}
+
+/* Header */
+body .container .sidebar .sidebar-header,
+body .container aside.sidebar .sidebar-header {
+    padding: 24px 20px !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    background: #f9fafb !important;
+    text-align: center !important;
+    margin: 0 !important;
+}
+
+body .container .sidebar .sidebar-logo,
+body .container aside.sidebar .sidebar-logo {
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    margin-bottom: 4px !important;
+    letter-spacing: -0.025em !important;
+}
+
+body .container .sidebar .sidebar-subtitle,
+body .container aside.sidebar .sidebar-subtitle {
+    font-size: 14px !important;
+    color: #6b7280 !important;
+    font-weight: 500 !important;
+}
+
+/* Navigation */
+body .container .sidebar .nav-menu,
+body .container aside.sidebar .nav-menu {
+    padding: 16px 0 !important;
+    border-bottom: none !important;
+    margin: 0 !important;
+}
+
+body .container .sidebar .nav-item,
+body .container aside.sidebar .nav-item {
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 20px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+    color: #374151 !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    position: relative !important;
+    border-left: 3px solid transparent !important;
+    border-right: none !important;
+    background: transparent !important;
+    gap: unset !important;
+    text-decoration: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+}
+
+body .container .sidebar .nav-item:hover,
+body .container aside.sidebar .nav-item:hover {
+    background: #f9fafb !important;
+    color: #1f2937 !important;
+    border-left-color: #d1d5db !important;
+    background-color: #f9fafb !important;
+}
+
+body .container .sidebar .nav-item.active,
+body .container aside.sidebar .nav-item.active {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    border-left-color: #3b82f6 !important;
+    font-weight: 600 !important;
+    background-color: #eff6ff !important;
+    border-right: none !important;
+}
+
+body .container .sidebar .nav-item i,
+body .container aside.sidebar .nav-item i {
+    width: 20px !important;
+    margin-right: 12px !important;
+    font-size: 16px !important;
+    text-align: center !important;
+    color: #6b7280 !important;
+}
+
+body .container .sidebar .nav-item.active i,
+body .container aside.sidebar .nav-item.active i {
+    color: #3b82f6 !important;
+}
+
+body .container .sidebar .nav-item span,
+body .container aside.sidebar .nav-item span {
+    font-size: 14px !important;
+    font-weight: inherit !important;
+}
+
+/* Sections */
+body .container .sidebar .sidebar-section,
+body .container aside.sidebar .sidebar-section {
+    margin: 20px 16px !important;
+    padding: 16px !important;
+    background: #f9fafb !important;
+    border-radius: 8px !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+body .container .sidebar .sidebar-section h3,
+body .container aside.sidebar .sidebar-section h3 {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+    color: #374151 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+body .container .sidebar .sidebar-section p,
+body .container aside.sidebar .sidebar-section p,
+body .container .sidebar .sidebar-section li,
+body .container aside.sidebar .sidebar-section li {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    color: #6b7280 !important;
+    margin-bottom: 4px !important;
+}
+
+body .container .sidebar .sidebar-section ul,
+body .container aside.sidebar .sidebar-section ul {
+    list-style: none !important;
+    padding-left: 0 !important;
+}
+
+body .container .sidebar .sidebar-section li,
+body .container aside.sidebar .sidebar-section li {
+    padding: 2px 0 !important;
+    position: relative !important;
+    padding-left: 16px !important;
+}
+
+body .container .sidebar .sidebar-section li:before,
+body .container aside.sidebar .sidebar-section li:before {
+    content: '•' !important;
+    position: absolute !important;
+    left: 0 !important;
+    color: #9ca3af !important;
+    font-size: 16px !important;
+    top: 0 !important;
+}
+
+/* Project Locations */
+body .container .sidebar .project-locations,
+body .container aside.sidebar .project-locations {
+    margin: 20px 16px !important;
+    padding: 16px !important;
+    background: #f9fafb !important;
+    border-radius: 8px !important;
+    border: 1px solid #e5e7eb !important;
+    flex: unset !important;
+}
+
+body .container .sidebar .project-locations h3,
+body .container aside.sidebar .project-locations h3 {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+    color: #374151 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* Location List */
+body .container .sidebar .location-list,
+body .container aside.sidebar .location-list {
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    margin-top: 8px !important;
+    display: block !important;
+    flex-direction: unset !important;
+    gap: unset !important;
+}
+
+body .container .sidebar .location-item,
+body .container aside.sidebar .location-item {
+    padding: 8px 12px !important;
+    margin: 2px 0 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+    font-size: 13px !important;
+    color: #6b7280 !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-left: 3px solid transparent !important;
+}
+
+body .container .sidebar .location-item:hover,
+body .container aside.sidebar .location-item:hover {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    border-color: #d1d5db !important;
+}
+
+body .container .sidebar .location-item.active,
+body .container aside.sidebar .location-item.active {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    border-color: #3b82f6 !important;
+}
+
+/* Footer */
+body .container .sidebar .sidebar-footer,
+body .container aside.sidebar .sidebar-footer {
+    margin-top: auto !important;
+    padding: 16px 20px !important;
+    text-align: center !important;
+    border-top: 1px solid #f3f4f6 !important;
+    font-size: 12px !important;
+    color: #9ca3af !important;
+    background: #f9fafb !important;
+}
+
+body .container .sidebar .sidebar-footer p,
+body .container aside.sidebar .sidebar-footer p {
+    margin: 2px 0 !important;
+}
+
+/* Main Content Adjustment */
+body .container .main-content {
+    margin-left: 280px !important;
+    transition: margin-left 0.3s ease !important;
+}
+
+/* Data highlights */
+body .container .sidebar .data-highlight,
+body .container aside.sidebar .data-highlight {
+    color: #1d4ed8 !important;
+    font-weight: 600 !important;
+}
+
+body .container .sidebar .status-indicator,
+body .container aside.sidebar .status-indicator {
+    padding: 2px 8px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+body .container .sidebar .status-indicator.loading,
+body .container aside.sidebar .status-indicator.loading {
+    background: #fef3c7 !important;
+    color: #d97706 !important;
+    border: 1px solid #fbbf24 !important;
+}
+
+body .container .sidebar .status-indicator.success,
+body .container aside.sidebar .status-indicator.success {
+    background: #d1fae5 !important;
+    color: #059669 !important;
+    border: 1px solid #10b981 !important;
+}
+
+body .container .sidebar .status-indicator.error,
+body .container aside.sidebar .status-indicator.error {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    border: 1px solid #f87171 !important;
+}

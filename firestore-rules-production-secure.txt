@@ -1,0 +1,54 @@
+# Firestore Security Rules untuk Production (SECURE)
+# Copy dan paste rules ini di Firebase Console
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Collection: transmigrasi
+    match /transmigrasi/{document} {
+      // Allow read for all authenticated users
+      allow read: if request.auth != null;
+      
+      // Allow write for authenticated users with specific roles
+      allow create, update: if request.auth != null && 
+        (request.auth.token.role == 'admin' || request.auth.token.role == 'editor');
+      
+      // Allow delete only for admin users
+      allow delete: if request.auth != null && request.auth.token.role == 'admin';
+    }
+    
+    // Collection: users (untuk user management)
+    match /users/{userId} {
+      // Users can read their own data
+      allow read: if request.auth != null && request.auth.uid == userId;
+      
+      // Users can update their own data (except role)
+      allow update: if request.auth != null && request.auth.uid == userId &&
+        !('role' in resource.data.diff(request.resource.data).affectedKeys());
+      
+      // Only admins can create/delete users and change roles
+      allow create, delete: if request.auth != null && request.auth.token.role == 'admin';
+      
+      // Only admins can update role field
+      allow update: if request.auth != null && request.auth.token.role == 'admin' &&
+        'role' in resource.data.diff(request.resource.data).affectedKeys();
+    }
+    
+    // Collection: audit_log (untuk tracking perubahan)
+    match /audit_log/{document} {
+      // Allow read for authenticated users
+      allow read: if request.auth != null;
+      
+      // Allow create for authenticated users (system will create logs)
+      allow create: if request.auth != null;
+      
+      // No updates or deletes allowed (audit logs should be immutable)
+      allow update, delete: if false;
+    }
+    
+    // Default: deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
