@@ -10,40 +10,26 @@
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
 }
 
-/* CRITICAL: Force sidebar width to exactly 280px - override any conflicting CSS */
-.sidebar-ultimate, 
-aside.sidebar-ultimate,
-div .sidebar-ultimate,
-body .sidebar-ultimate {
-    width: 280px !important;
-    min-width: 280px !important;
-    max-width: 280px !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    height: 100vh !important;
-    z-index: 40 !important;
-    flex: none !important;
+/* EXACT COPY from ultimate-dashboard.css - Ultimate Sidebar */
+.sidebar-ultimate {
+    width: 280px;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-light);
+    box-shadow: var(--shadow-lg);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 50;
+    top: 0;
+    left: 0;
 }
 
+/* Let ultimate-dashboard.css handle main layout - just add professional styling */
 .main-content-ultimate {
-    margin-left: 280px !important;
-    margin-top: 80px !important;
-    width: calc(100vw - 280px) !important;
-    padding: 2rem !important;
     background: #f8fafc !important;
-    min-height: calc(100vh - 80px) !important;
-    flex: none !important;
-    overflow-y: auto !important;
 }
 
 .header-ultimate {
-    height: 80px !important;
-    width: calc(100vw - 280px) !important;
-    left: 280px !important;
-    position: fixed !important;
-    top: 0 !important;
-    z-index: 50 !important;
     background: white !important;
     border-bottom: 1px solid #e5e7eb !important;
 }
@@ -297,24 +283,22 @@ body .sidebar-ultimate {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    /* CRITICAL: Maintain 280px sidebar width at ALL screen sizes to match analytics */
-    .sidebar-ultimate, 
-    aside.sidebar-ultimate,
-    div .sidebar-ultimate,
-    body .sidebar-ultimate {
-        width: 280px !important;
-        min-width: 280px !important;
-        max-width: 280px !important;
+    /* EXACT COPY from ultimate-dashboard.css responsive rules */
+    .sidebar-ultimate {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
     }
     
-    .main-content-ultimate {
-        margin-left: 280px !important;
-        width: calc(100vw - 280px) !important;
+    .sidebar-ultimate.open {
+        transform: translateX(0);
     }
     
     .header-ultimate {
-        left: 280px !important;
-        width: calc(100vw - 280px) !important;
+        left: 0;
+    }
+    
+    .main-content-ultimate {
+        margin-left: 0;
     }
     
     .stats-grid-ultimate {
@@ -335,21 +319,7 @@ body .sidebar-ultimate {
 }
 
 @media (max-width: 768px) {
-    /* CRITICAL: Even on mobile, keep sidebar 280px when visible (like analytics) */
-    .sidebar-ultimate, 
-    aside.sidebar-ultimate,
-    div .sidebar-ultimate,
-    body .sidebar-ultimate {
-        width: 280px !important;
-        min-width: 280px !important;
-        max-width: 280px !important;
-        transform: translateX(-100%) !important;
-        transition: transform 0.3s ease !important;
-    }
-    
-    .sidebar-ultimate.open {
-        transform: translateX(0) !important;
-    }
+    /* Keep same responsive behavior as analytics - sidebar stays 280px when visible */
     
     .stats-grid-ultimate {
         grid-template-columns: 1fr !important;
@@ -368,14 +338,7 @@ body .sidebar-ultimate {
     }
     
     .main-content-ultimate {
-        margin-left: 0 !important;
-        width: 100vw !important;
         padding: 1rem !important;
-    }
-    
-    .header-ultimate {
-        left: 0 !important;
-        width: 100vw !important;
     }
 }
 
