@@ -142,8 +142,8 @@ async function initDashboard() {
         updateGlobalDashboard();
         addEventListeners();
         
-        // Initialize sidebar integration
-        initializeSidebarIntegration();
+        // Initialize sidebar integration (simplified)
+        console.log('🔄 Sidebar integration skipped - using Ultimate Dashboard structure');
         
         // Initialize charts
         initializeCharts();

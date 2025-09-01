@@ -25,9 +25,9 @@ class SidebarManager {
 
     setupSidebar() {
         // Create sidebar structure
-        const sidebar = document.querySelector('.sidebar');
+        const sidebar = document.querySelector('.sidebar-ultimate');
         if (!sidebar) {
-            console.warn('⚠️ Sidebar not found, creating professional one...');
+            console.warn('⚠️ Ultimate sidebar not found, creating professional one...');
             console.log('🔍 Current DOM structure:');
             this.logDOMStructure();
             this.createSidebar();
@@ -49,23 +49,23 @@ class SidebarManager {
     }
 
     logDOMStructure() {
-        const container = document.querySelector('.container');
+        const container = document.querySelector('.dashboard-ultimate');
         if (container) {
-            console.log('📁 Container found:', container);
+            console.log('📁 Dashboard container found:', container);
             console.log('📁 Container children:', Array.from(container.children).map(child => ({
                 tag: child.tagName,
                 class: child.className,
                 id: child.id
             })));
             
-            const mainContent = container.querySelector('.main-content');
+            const mainContent = container.querySelector('.main-content-ultimate');
             if (mainContent) {
                 console.log('📁 Main content found:', mainContent);
             } else {
                 console.log('❌ Main content not found');
             }
         } else {
-            console.log('❌ Container not found');
+            console.log('❌ Dashboard container not found');
         }
     }
 
