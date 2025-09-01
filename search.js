@@ -654,10 +654,15 @@ function convertToCSV(data) {
 
 function showLocationDetail(locationId) {
     try {
+        console.log('🔍 showLocationDetail called with ID:', locationId);
+        console.log('📊 Available data length:', allData.length);
+        
         const location = allData.find(loc => loc.id === locationId);
+        console.log('🎯 Found location:', location);
         
         if (!location) {
-            console.error('Location not found:', locationId);
+            console.error('❌ Location not found for ID:', locationId);
+            console.log('🔍 Available IDs:', allData.slice(0, 5).map(loc => loc.id));
             return;
         }
         
@@ -767,13 +772,22 @@ function setupDetailButtonEvents() {
     const resultsList = document.getElementById('resultsList');
     if (resultsList) {
         resultsList.addEventListener('click', function(event) {
+            console.log('🖱️ Click detected on resultsList:', event.target);
+            
             const detailBtn = event.target.closest('.btn-detail');
             if (detailBtn) {
+                console.log('🎯 Detail button found:', detailBtn);
                 const locationId = detailBtn.getAttribute('data-location-id');
+                console.log('📍 Location ID:', locationId);
+                
                 if (locationId) {
-                    console.log('Detail button clicked for location ID:', locationId);
+                    console.log('🚀 Calling showLocationDetail with ID:', locationId);
                     showLocationDetail(parseInt(locationId));
+                } else {
+                    console.error('❌ No location ID found on button');
                 }
+            } else {
+                console.log('ℹ️ Click was not on detail button');
             }
         });
         console.log('✅ Detail button event delegation setup');
