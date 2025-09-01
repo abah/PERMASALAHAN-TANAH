@@ -713,20 +713,33 @@
                         const snapshot = await window.db.collection('transmigrasi').get();
                         const firebaseData = snapshot.docs.map(doc => {
                             const data = doc.data();
-                            // Convert Firebase data back to original format
+                            // Convert Firebase data back to original format (same as script.js)
                             return {
-                                id: doc.id,
+                                id: data.id || doc.id,
                                 provinsi: data.provinsi || '',
                                 kabupaten: data.kabupaten || '',
-                                sp: data.sp || data.satkerCode || '',
-                                masalah: data.masalah || data.permasalahan || '',
-                                totalKK: data.totalKK || data.jmlKK || 0,
-                                totalSHM: data.totalSHM || data.bebanTugasSHM || 0,
-                                tahunPatan: data.tahunPatan || '',
-                                tindakLanjut: data.tindakLanjut || '',
+                                upt: data.upt || '',
+                                pola: data.pola || '',
+                                tahunPatan: data.tahun_patan || data.tahunPatan || '',
+                                tahunSerah: data.tahun_serah || data.tahunSerah || '',
+                                jmlKK: data.jumlah_kk || data.jmlKK || 0,
+                                bebanTugasSHM: data.beban_tugas_shm || data.bebanTugasSHM || 0,
+                                hpl: data.hpl || '',
+                                statusBinaBlmHPL: data.status_bina_blm_hpl || data.statusBinaBlmHPL || false,
+                                statusBinaSdhHPL: data.status_bina_sdh_hpl || data.statusBinaSdhHPL || false,
+                                statusBinaTdkHPL: data.status_bina_tdk_hpl || data.statusBinaTdkHPL || false,
+                                statusSerahSdhHPL: data.status_serah_sdh_hpl || data.statusSerahSdhHPL || false,
+                                statusSerahSKSerah: data.status_serah_sk_serah || data.statusSerahSKSerah || '',
+                                permasalahanOKUMasy: data.permasalahan_oku_masy || data.permasalahanOKUMasy || false,
+                                permasalahanPerusahaan: data.permasalahan_perusahaan || data.permasalahanPerusahaan || false,
+                                permasalahanKwsHutan: data.permasalahan_kws_hutan || data.permasalahanKwsHutan || false,
+                                permasalahanMHA: data.permasalahan_mha || data.permasalahanMHA || false,
+                                permasalahanInstansi: data.permasalahan_instansi || data.permasalahanInstansi || false,
+                                permasalahanLainLain: data.permasalahan_lain_lain || data.permasalahanLainLain || false,
+                                totalKasus: data.total_kasus || data.totalKasus || 0,
+                                deskripsiPermasalahan: data.deskripsi_permasalahan || data.deskripsiPermasalahan || '',
+                                tindakLanjut: data.tindak_lanjut || data.tindakLanjut || '',
                                 rekomendasi: data.rekomendasi || '',
-                                binaSdhHPL: data.binaSdhHPL || data.statusBinaSdhHPL || 'No',
-                                serahSdhHPL: data.serahSdhHPL || data.statusSerahSdhHPL || 'No',
                                 ...data // Include all other fields
                             };
                         });
@@ -763,15 +776,32 @@
                     console.log(`✅ Data.js loaded: ${currentData.length} records`);
                 }
 
-                // Ensure data structure consistency
-                currentData = currentData.map(item => ({
-                    ...item,
-                    id: item.id || Date.now() + Math.random(),
-                    totalKK: item.totalKK || item.jmlKK || 0,
-                    totalSHM: item.totalSHM || item.bebanTugasSHM || 0,
-                    sp: item.sp || item.satkerCode || '',
-                    masalah: item.masalah || item.permasalahan || ''
-                }));
+                // Ensure data structure consistency (same as script.js)
+                console.log('🔍 Sample raw data before mapping:', currentData[0]);
+                
+                // Validate required fields (same as script.js)
+                const sampleData = currentData[0];
+                const requiredFields = ['provinsi', 'kabupaten', 'jmlKK', 'bebanTugasSHM'];
+                const missingFields = requiredFields.filter(field => !sampleData.hasOwnProperty(field));
+                
+                if (missingFields.length > 0) {
+                    console.warn('⚠️ Missing fields in data:', missingFields);
+                    console.log('🔧 Attempting to fix data structure...');
+                    
+                    // Fix common field mapping issues (same as script.js)
+                    currentData = currentData.map(item => ({
+                        ...item,
+                        upt: item.upt || item.upt || '',
+                        jmlKK: item.jmlKK || item.jumlah_kk || 0,
+                        bebanTugasSHM: item.bebanTugasSHM || item.beban_tugas_shm || 0,
+                        tahunPatan: item.tahunPatan || item.tahun_patan || '',
+                        tahunSerah: item.tahunSerah || item.tahun_serah || ''
+                    }));
+                }
+                
+                console.log('🔍 Sample processed data after mapping:', currentData[0]);
+                console.log('📊 Field check - jmlKK:', currentData[0].jmlKK);
+                console.log('📊 Field check - bebanTugasSHM:', currentData[0].bebanTugasSHM);
 
                 filteredData = [...currentData];
                 console.log(`✅ Final data loaded: ${currentData.length} records`);
@@ -899,10 +929,15 @@
                 return;
             }
 
+            console.log('🔍 Rendering table with pageData:', pageData.length, 'items');
+            console.log('📊 First item data for debugging:', pageData[0]);
+            
             tableBody.innerHTML = pageData.map(item => {
                 const statusBina = getBinaStatus(item);
                 const statusSerah = getSerahStatus(item);
                 const permasalahan = getPermasalahanList(item);
+                
+                console.log(`📊 Row ${item.id} - jmlKK: ${item.jmlKK}, bebanTugasSHM: ${item.bebanTugasSHM}`);
                 
                 return `
                     <tr>
