@@ -272,6 +272,213 @@
                         <!-- Chart will be populated by JavaScript -->
                     </div>
                 </div>
+
+                <!-- Ultimate Stats Cards -->
+                <div class="stats-grid-ultimate">
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalKK">44,772</h3>
+                                <p>Total KK</p>
+                            </div>
+                            <div class="stat-icon-ultimate blue">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change-ultimate positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12.5% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalSHM">61,178</h3>
+                                <p>Total SHM</p>
+                            </div>
+                            <div class="stat-icon-ultimate green">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change-ultimate positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8.3% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalKasus">235</h3>
+                                <p>Total Kasus</p>
+                            </div>
+                            <div class="stat-icon-ultimate red">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change-ultimate negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>-5.2% from last month</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card-ultimate fade-in-up">
+                        <div class="stat-header-ultimate">
+                            <div class="stat-content-ultimate">
+                                <h3 id="totalLokasi">195</h3>
+                                <p>Total Lokasi</p>
+                            </div>
+                            <div class="stat-icon-ultimate orange">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change-ultimate positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+3.1% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section-ultimate">
+                    <div class="charts-grid-ultimate">
+                        <!-- Chart 1: Distribution Chart -->
+                        <div class="chart-card-ultimate">
+                            <div class="chart-header-ultimate">
+                                <h3 class="chart-title-ultimate">Distribusi Permasalahan</h3>
+                                <div class="chart-actions-ultimate">
+                                    <button class="btn-ultimate btn-secondary-ultimate btn-sm">
+                                        <i class="fas fa-refresh"></i>
+                                    </button>
+                                    <button class="btn-ultimate btn-secondary-ultimate btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-body-ultimate">
+                                <canvas id="distributionChart" width="400" height="300"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Trend Chart -->
+                        <div class="chart-card-ultimate">
+                            <div class="chart-header-ultimate">
+                                <h3 class="chart-title-ultimate">Trend Permasalahan</h3>
+                                <div class="chart-actions-ultimate">
+                                    <button class="btn-ultimate btn-secondary-ultimate btn-sm">
+                                        <i class="fas fa-refresh"></i>
+                                    </button>
+                                    <button class="btn-ultimate btn-secondary-ultimate btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-body-ultimate">
+                                <canvas id="trendChart" width="400" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="activity-section-ultimate">
+                    <div class="activity-card-ultimate">
+                        <div class="card-header-ultimate">
+                            <h3 class="card-title-ultimate">Aktivitas Terbaru</h3>
+                            <button class="btn-ultimate btn-primary-ultimate btn-sm">
+                                Lihat Semua
+                            </button>
+                        </div>
+                        <div class="card-body-ultimate">
+                            <div class="activity-list-ultimate">
+                                <div class="activity-item-ultimate">
+                                    <div class="activity-icon-ultimate success">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="activity-content-ultimate">
+                                        <h4>Data Kab. Merauke diperbarui</h4>
+                                        <p>Total KK: 2,450 → 2,480 (+30)</p>
+                                        <span class="activity-time-ultimate">2 jam yang lalu</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item-ultimate">
+                                    <div class="activity-icon-ultimate warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="activity-content-ultimate">
+                                        <h4>Permasalahan baru terdeteksi</h4>
+                                        <p>Kab. Jayapura - Konflik lahan</p>
+                                        <span class="activity-time-ultimate">4 jam yang lalu</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item-ultimate">
+                                    <div class="activity-icon-ultimate info">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="activity-content-ultimate">
+                                        <h4>Laporan bulanan diunggah</h4>
+                                        <p>Laporan Januari 2024 - Trans-Data</p>
+                                        <span class="activity-time-ultimate">1 hari yang lalu</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-item-ultimate">
+                                    <div class="activity-icon-ultimate primary">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <div class="activity-content-ultimate">
+                                        <h4>User baru ditambahkan</h4>
+                                        <p>Admin: john.doe@transdata.com</p>
+                                        <span class="activity-time-ultimate">2 hari yang lalu</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Section -->
+                <div class="quick-actions-section-ultimate">
+                    <div class="quick-actions-card-ultimate">
+                        <div class="card-header-ultimate">
+                            <h3 class="card-title-ultimate">Aksi Cepat</h3>
+                        </div>
+                        <div class="card-body-ultimate">
+                            <div class="quick-actions-grid-ultimate">
+                                <button class="quick-action-btn-ultimate">
+                                    <div class="quick-action-icon-ultimate blue">
+                                        <i class="fas fa-plus"></i>
+                                    </div>
+                                    <span>Tambah Data</span>
+                                </button>
+                                
+                                <button class="quick-action-btn-ultimate">
+                                    <div class="quick-action-icon-ultimate green">
+                                        <i class="fas fa-file-export"></i>
+                                    </div>
+                                    <span>Export Data</span>
+                                </button>
+                                
+                                <button class="quick-action-btn-ultimate">
+                                    <div class="quick-action-icon-ultimate orange">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </div>
+                                    <span>Generate Report</span>
+                                </button>
+                                
+                                <button class="quick-action-btn-ultimate">
+                                    <div class="quick-action-icon-ultimate purple">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
+                                    <span>Settings</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -292,6 +499,9 @@
     
     <!-- Sidebar Management -->
     <script src="sidebar.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <!-- Data & Scripts -->
     <script src="data.js"></script>
