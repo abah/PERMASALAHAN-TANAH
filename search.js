@@ -16,18 +16,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function setupRealtimeSearch() {
     try {
-        console.log('🚀 Setting up realtime search with Firebase...');
+        console.log('🚀 Setting up realtime search...');
         
-        // Check if Firebase is available
-        if (!window.db) {
-            console.error('❌ Firebase not initialized');
-            throw new Error('Firebase not initialized');
-        }
+        // Try Firebase first, then fallback to data.js
+        let dataLoaded = false;
         
-        // Load data dari Firebase
-        const snapshot = await window.db.collection('transmigrasi').get();
-        const firebaseData = snapshot.docs.map(doc => {
-            const data = doc.data();
+        if (window.db) {
+            try {
+                console.log('📡 Attempting to load from Firebase...');
+                const snapshot = await window.db.collection('transmigrasi').get();
+                const firebaseData = snapshot.docs.map(doc => {
+                    const data = doc.data();
             // Convert Firebase data back to original format
             return {
                 id: data.id,
@@ -60,8 +59,16 @@ async function setupRealtimeSearch() {
         // Use Firebase data if available, otherwise use data.js
         if (firebaseData.length > 0) {
             allData = firebaseData;
+            console.log('✅ Using Firebase data');
         } else {
+            console.log('📁 Using data.js fallback');
             allData = window.dashboardData || [];
+        }
+        
+        if (allData.length === 0) {
+            console.error('❌ No data available from any source');
+            showErrorMessage('No data available. Please refresh the page.');
+            return;
         }
         
         console.log('Data loaded from Firebase:', allData.length, 'locations');
