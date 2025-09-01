@@ -18,54 +18,79 @@ async function setupRealtimeSearch() {
     try {
         console.log('🚀 Setting up realtime search...');
         
-        // Try Firebase first, then fallback to data.js
+        // Prioritize data.js for faster loading, Firebase as backup
         let dataLoaded = false;
+        let firebaseData = [];
         
-        if (window.db) {
-            try {
-                console.log('📡 Attempting to load from Firebase...');
-                const snapshot = await window.db.collection('transmigrasi').get();
-                const firebaseData = snapshot.docs.map(doc => {
-                    const data = doc.data();
-            // Convert Firebase data back to original format
-            return {
-                id: data.id,
-                provinsi: data.provinsi,
-                kabupaten: data.kabupaten,
-                pola: data.pola,
-                tahunPatan: data.tahun_patan,
-                tahunSerah: data.tahun_serah,
-                jmlKK: data.jumlah_kk,
-                bebanTugasSHM: data.beban_tugas_shm,
-                hpl: data.hpl,
-                statusBinaBlmHPL: data.status_bina_blm_hpl,
-                statusBinaSdhHPL: data.status_bina_sdh_hpl,
-                statusBinaTdkHPL: data.status_bina_tdk_hpl,
-                statusSerahSdhHPL: data.status_serah_sdh_hpl,
-                statusSerahSKSerah: data.status_serah_sk_serah,
-                permasalahanOKUMasy: data.permasalahan_oku_masy,
-                permasalahanPerusahaan: data.permasalahan_perusahaan,
-                permasalahanKwsHutan: data.permasalahan_kws_hutan,
-                permasalahanMHA: data.permasalahan_mha,
-                permasalahanInstansi: data.permasalahan_instansi,
-                permasalahanLainLain: data.permasalahan_lain_lain,
-                totalKasus: data.total_kasus,
-                deskripsiPermasalahan: data.deskripsi_permasalahan,
-                tindakLanjut: data.tindak_lanjut,
-                rekomendasi: data.rekomendasi
-            };
-        });
-        
-        // Use Firebase data if available, otherwise use data.js
-        if (firebaseData.length > 0) {
-            allData = firebaseData;
-            console.log('✅ Using Firebase data');
+        // Try data.js first (faster, more reliable)
+        console.log('📁 Attempting to load from data.js first...');
+        if (window.dashboardData && window.dashboardData.length > 0) {
+            allData = window.dashboardData;
+            dataLoaded = true;
+            console.log('✅ Using data.js (faster option)');
         } else {
-            console.log('📁 Using data.js fallback');
-            allData = window.dashboardData || [];
+            // Wait for data.js to load
+            let attempts = 0;
+            while (!window.dashboardData && attempts < 30) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+            
+            if (window.dashboardData && window.dashboardData.length > 0) {
+                allData = window.dashboardData;
+                dataLoaded = true;
+                console.log('✅ Using data.js after wait');
+            }
         }
         
-        if (allData.length === 0) {
+        // Try Firebase as backup if data.js failed
+        if (!dataLoaded && window.db) {
+            try {
+                console.log('📡 Falling back to Firebase...');
+                const snapshot = await window.db.collection('transmigrasi').get();
+                firebaseData = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    // Convert Firebase data back to original format
+                    return {
+                        id: data.id,
+                        provinsi: data.provinsi,
+                        kabupaten: data.kabupaten,
+                        pola: data.pola,
+                        tahunPatan: data.tahun_patan,
+                        tahunSerah: data.tahun_serah,
+                        jmlKK: data.jumlah_kk,
+                        bebanTugasSHM: data.beban_tugas_shm,
+                        hpl: data.hpl,
+                        statusBinaBlmHPL: data.status_bina_blm_hpl,
+                        statusBinaSdhHPL: data.status_bina_sdh_hpl,
+                        statusBinaTdkHPL: data.status_bina_tdk_hpl,
+                        statusSerahSdhHPL: data.status_serah_sdh_hpl,
+                        statusSerahSKSerah: data.status_serah_sk_serah,
+                        permasalahanOKUMasy: data.permasalahan_oku_masy,
+                        permasalahanPerusahaan: data.permasalahan_perusahaan,
+                        permasalahanKwsHutan: data.permasalahan_kws_hutan,
+                        permasalahanMHA: data.permasalahan_mha,
+                        permasalahanInstansi: data.permasalahan_instansi,
+                        permasalahanLainLain: data.permasalahan_lain_lain,
+                        totalKasus: data.total_kasus,
+                        deskripsiPermasalahan: data.deskripsi_permasalahan,
+                        tindakLanjut: data.tindak_lanjut,
+                        rekomendasi: data.rekomendasi
+                    };
+                });
+                
+                if (firebaseData.length > 0) {
+                    allData = firebaseData;
+                    dataLoaded = true;
+                    console.log('✅ Using Firebase data as backup');
+                }
+            } catch (firebaseError) {
+                console.warn('⚠️ Firebase backup also failed:', firebaseError);
+            }
+        }
+        
+        // Final check - ensure we have data
+        if (!dataLoaded || allData.length === 0) {
             console.error('❌ No data available from any source');
             showErrorMessage('No data available. Please refresh the page.');
             return;
