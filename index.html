@@ -81,25 +81,25 @@
                     <div class="filter-grid">
                         <div class="filter-group">
                             <label for="provinsiFilter">Provinsi</label>
-                            <select id="provinsiFilter" onchange="updateKabupatenOptions()">
+                            <select id="provinsiFilter" class="form-select" onchange="updateKabupatenOptions()">
                                 <option value="">Semua Provinsi</option>
                             </select>
                         </div>
                         <div class="filter-group">
                             <label for="kabupatenFilter">Kabupaten</label>
-                            <select id="kabupatenFilter" onchange="applyFilters()">
+                            <select id="kabupatenFilter" class="form-select" onchange="applyFilters()">
                                 <option value="">Semua Kabupaten</option>
                             </select>
                         </div>
                         <div class="filter-group">
                             <label for="tahunPatanFilter">Tahun Patan</label>
-                            <select id="tahunPatanFilter" onchange="applyFilters()">
+                            <select id="tahunPatanFilter" class="form-select" onchange="applyFilters()">
                                 <option value="">Semua Tahun</option>
                             </select>
                         </div>
                         <div class="filter-group">
                             <label for="statusBinaFilter">Status Bina</label>
-                            <select id="statusBinaFilter" onchange="applyFilters()">
+                            <select id="statusBinaFilter" class="form-select" onchange="applyFilters()">
                                 <option value="">Semua Status</option>
                                 <option value="blmHPL">Belum HPL</option>
                                 <option value="sdhHPL">Sudah HPL</option>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="filter-group">
                             <label for="statusSerahFilter">Status Serah</label>
-                            <select id="statusSerahFilter" onchange="applyFilters()">
+                            <select id="statusSerahFilter" class="form-select" onchange="applyFilters()">
                                 <option value="">Semua Status</option>
                                 <option value="sdhHPL">Sudah HPL</option>
                                 <option value="skSerah">SK Serah</option>
@@ -116,7 +116,7 @@
                         </div>
                         <div class="filter-group">
                             <label for="permasalahanFilter">Permasalahan</label>
-                            <select id="permasalahanFilter" onchange="applyFilters()">
+                            <select id="permasalahanFilter" class="form-select" onchange="applyFilters()">
                                 <option value="">Semua Permasalahan</option>
                                 <option value="masyarakat">Masyarakat</option>
                                 <option value="perusahaan">Perusahaan</option>
@@ -138,36 +138,49 @@
                 </div>
 
                 <!-- Summary Cards -->
-                <div class="summary-cards">
-                    <div class="card summary-card">
-                        <div class="card-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>Jumlah KK</h3>
-                            <div class="card-value" id="totalKK">200</div>
-                        </div>
-                    </div>
-
-                    <div class="card summary-card">
-                        <div class="card-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>Beban Tugas SHM (Bidang)</h3>
-                            <div class="card-value" id="totalSHM">417</div>
+                <div class="card-grid card-grid-3">
+                    <div class="card card-elevated">
+                        <div class="card-body">
+                            <div class="flex items-center gap-4">
+                                <div class="card-list-item-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <h3 class="card-header-title">Jumlah KK</h3>
+                                    <div class="card-stat-value" id="totalKK">200</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card summary-card">
-                        <div class="card-icon warning">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="card-content">
-                            <h3>Total Kasus Permasalahan</h3>
-                            <div class="card-value" id="totalKasus">1</div>
+                    <div class="card card-elevated">
+                        <div class="card-body">
+                            <div class="flex items-center gap-4">
+                                <div class="card-list-item-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div>
+                                    <h3 class="card-header-title">Beban Tugas SHM (Bidang)</h3>
+                                    <div class="card-stat-value" id="totalSHM">417</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="card card-elevated">
+                        <div class="card-body">
+                            <div class="flex items-center gap-4">
+                                <div class="card-list-item-icon" style="background-color: var(--color-warning-100); color: var(--color-warning-600);">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div>
+                                    <h3 class="card-header-title">Total Kasus Permasalahan</h3>
+                                    <div class="card-stat-value" id="totalKasus">1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <!-- Problem Description -->
