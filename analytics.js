@@ -119,6 +119,11 @@ async function initAnalytics() {
         // Setup navigation menu
         setupNavigationMenu();
         
+        // Initialize sidebar integration
+        if (typeof initSidebar === 'function') {
+            initSidebar();
+        }
+        
         console.log('✅ Analytics initialized successfully with', window.dashboardData.length, 'records');
     } catch (error) {
         console.error('❌ Error initializing analytics:', error);
@@ -478,13 +483,13 @@ function updateDataSummary() {
     }
 }
 
-// Setup navigation menu
+// Setup navigation menu for Ultimate Dashboard
 function setupNavigationMenu() {
-    console.log('Setting up navigation menu...');
+    console.log('Setting up Ultimate Dashboard navigation menu...');
     
     try {
         // Get all navigation items
-        const navItems = document.querySelectorAll('.nav-item');
+        const navItems = document.querySelectorAll('.nav-item-ultimate');
         console.log('Found navigation items:', navItems.length);
         
         navItems.forEach((item, index) => {
@@ -496,7 +501,7 @@ function setupNavigationMenu() {
                 console.log('Navigation item clicked:', this.querySelector('span')?.textContent);
                 
                 // Remove active class from all items
-                document.querySelectorAll('.nav-item').forEach(nav => {
+                document.querySelectorAll('.nav-item-ultimate').forEach(nav => {
                     nav.classList.remove('active');
                 });
                 
@@ -515,17 +520,19 @@ function setupNavigationMenu() {
                 } else if (text === 'Pencarian') {
                     console.log('Redirecting to search page...');
                     window.location.href = 'search.html';
-                } else if (text === 'Reports') {
-                    console.log('Reports page clicked (not implemented)');
-                } else if (text === 'Settings') {
-                    console.log('Settings page clicked (not implemented)');
+                } else if (text === 'Data') {
+                    console.log('Redirecting to data page...');
+                    window.location.href = 'data.html';
+                } else if (text === 'Admin Users') {
+                    console.log('Redirecting to admin users page...');
+                    window.location.href = 'admin-users.html';
                 }
             });
             
             console.log(`Navigation item ${index + 1} setup complete`);
         });
         
-        console.log('Navigation menu setup complete');
+        console.log('Ultimate Dashboard navigation menu setup complete');
         
     } catch (error) {
         console.error('Error setting up navigation menu:', error);
@@ -569,9 +576,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initAnalytics();
 });
 
+// User dropdown functions
+function toggleUserDropdown() {
+    console.log('Toggle user dropdown clicked');
+    // This will be handled by the main dashboard system
+}
+
 // Export functions for global access
 window.analyticsUtils = {
     toggleChartType,
-    exportChart
+    exportChart,
+    toggleUserDropdown
 };
 
