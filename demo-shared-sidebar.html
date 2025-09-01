@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Shared Sidebar - Trans-Data Dashboard</title>
+    
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/design-system.css?v=4.0">
+    <link rel="stylesheet" href="css/design-system/ultimate-dashboard.css?v=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Ultimate Dashboard -->
+        <div class="dashboard-ultimate">
+            <!-- Shared Sidebar Component -->
+            <div id="shared-sidebar">
+                <!-- Loading placeholder -->
+                <aside class="sidebar-ultimate">
+                    <div style="padding: 2rem; color: #666; text-align: center;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                        <p>Loading shared sidebar...</p>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Shared Header Component -->
+            <div id="shared-header">
+                <!-- Loading placeholder -->
+                <header class="header-ultimate">
+                    <div style="padding: 1rem 2rem; color: #666; display: flex; align-items: center; gap: 1rem;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Loading shared header...</span>
+                    </div>
+                </header>
+            </div>
+
+            <!-- Ultimate Main Content -->
+            <main class="main-content-ultimate">
+                <div class="card-ultimate">
+                    <div class="card-header-ultimate">
+                        <h3 class="card-title-ultimate">
+                            <i class="fas fa-magic"></i> Demo: Shared Sidebar & Header
+                        </h3>
+                        <p class="card-subtitle-ultimate">Sidebar dan header yang konsisten di semua halaman</p>
+                    </div>
+                    <div class="card-body-ultimate">
+                        <div class="alert" style="background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-lg); padding: var(--space-4); margin-bottom: var(--space-6);">
+                            <h4 style="color: var(--primary-700); margin: 0 0 0.5rem 0;">
+                                <i class="fas fa-info-circle"></i> Konsep Shared Components
+                            </h4>
+                            <p style="color: var(--primary-600); margin: 0;">
+                                Sidebar dan header di atas dimuat dari file terpisah yang bisa digunakan di semua halaman, 
+                                memastikan design dan navigation yang konsisten.
+                            </p>
+                        </div>
+                        
+                        <h4>✅ Keuntungan:</h4>
+                        <ul style="margin-bottom: 2rem;">
+                            <li><strong>Konsistensi Design:</strong> Sidebar dan header sama persis di semua halaman</li>
+                            <li><strong>Maintenance Mudah:</strong> Update satu file, semua halaman ter-update</li>
+                            <li><strong>Auto Navigation:</strong> Active state otomatis berdasarkan halaman aktif</li>
+                            <li><strong>Universal Functions:</strong> User dropdown dan functions sama di semua halaman</li>
+                        </ul>
+                        
+                        <h4>🔧 Implementasi:</h4>
+                        <div style="background: var(--gray-50); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+                            <pre style="margin: 0; font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--gray-700);">
+&lt;!-- Di setiap halaman, ganti sidebar lama dengan: --&gt;
+&lt;div id="shared-sidebar"&gt;&lt;/div&gt;
+&lt;div id="shared-header"&gt;&lt;/div&gt;
+
+&lt;!-- Tambahkan script: --&gt;
+&lt;script src="js/components-loader.js"&gt;&lt;/script&gt;
+                            </pre>
+                        </div>
+                        
+                        <div class="stats-grid-ultimate">
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>1</h3>
+                                        <p>Shared Sidebar</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate blue">
+                                        <i class="fas fa-bars"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-change-ultimate positive">
+                                    <i class="fas fa-check"></i>
+                                    <span>Loaded from components/sidebar.html</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>1</h3>
+                                        <p>Shared Header</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate green">
+                                        <i class="fas fa-window-maximize"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-change-ultimate positive">
+                                    <i class="fas fa-check"></i>
+                                    <span>Loaded from components/header.html</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>5</h3>
+                                        <p>Pages</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate orange">
+                                        <i class="fas fa-file"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-change-ultimate positive">
+                                    <i class="fas fa-sync"></i>
+                                    <span>Will use same components</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>∞</h3>
+                                        <p>Consistency</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate purple">
+                                        <i class="fas fa-magic"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-change-ultimate positive">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Perfect UI consistency</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; padding: 1rem; background: var(--success-50); border: 1px solid var(--success-200); border-radius: var(--radius-lg);">
+                            <h4 style="color: var(--success-700); margin: 0 0 0.5rem 0;">
+                                <i class="fas fa-rocket"></i> Ready to Implement?
+                            </h4>
+                            <p style="color: var(--success-600); margin: 0;">
+                                Konsep ini bisa langsung diterapkan ke semua halaman. Sidebar dan header akan 100% konsisten!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Components Loader - Load this FIRST -->
+    <script src="js/components-loader.js"></script>
+    
+    <!-- Demo-specific scripts -->
+    <script>
+        // Listen for components loaded event
+        document.addEventListener('componentsLoaded', function(event) {
+            console.log('🎉 Demo: All components loaded!', event.detail);
+            
+            // Show success message
+            const successAlert = document.createElement('div');
+            successAlert.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--success-600);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-lg);
+                z-index: 9999;
+                animation: slideInRight 0.3s ease;
+            `;
+            successAlert.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <strong>Components Loaded!</strong>
+                <br>Sidebar dan header sekarang shared dan konsisten.
+            `;
+            
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(successAlert);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                successAlert.style.animation = 'slideInRight 0.3s ease reverse';
+                setTimeout(() => successAlert.remove(), 300);
+            }, 5000);
+        });
+        
+        console.log('✅ Demo page loaded - testing shared components');
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Template - Trans-Data Dashboard</title>
+    
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/design-system.css?v=4.0">
+    <link rel="stylesheet" href="css/design-system/ultimate-dashboard.css?v=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Ultimate Dashboard -->
+        <div class="dashboard-ultimate">
+            <!-- Shared Sidebar Component -->
+            <div id="shared-sidebar">
+                <!-- Sidebar will be loaded here -->
+                <div style="padding: 2rem; color: #666;">Loading sidebar...</div>
+            </div>
+
+            <!-- Shared Header Component -->
+            <div id="shared-header">
+                <!-- Header will be loaded here -->
+                <div style="padding: 1rem; color: #666;">Loading header...</div>
+            </div>
+
+            <!-- Ultimate Main Content -->
+            <main class="main-content-ultimate">
+                <!-- Your page-specific content goes here -->
+                <div class="card-ultimate">
+                    <div class="card-header-ultimate">
+                        <h3 class="card-title-ultimate">Page Template</h3>
+                        <p class="card-subtitle-ultimate">This is a template showing how to use shared components</p>
+                    </div>
+                    <div class="card-body-ultimate">
+                        <p>This page demonstrates the shared sidebar and header components.</p>
+                        
+                        <h4>How to use:</h4>
+                        <ol>
+                            <li>Copy this template HTML structure</li>
+                            <li>Include the components-loader.js script</li>
+                            <li>Add your page-specific content in main-content-ultimate</li>
+                            <li>Components will automatically load and set active navigation</li>
+                        </ol>
+                        
+                        <div class="stats-grid-ultimate" style="margin-top: 2rem;">
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>1</h3>
+                                        <p>Shared Sidebar</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate blue">
+                                        <i class="fas fa-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>1</h3>
+                                        <p>Shared Header</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate green">
+                                        <i class="fas fa-window-maximize"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>5</h3>
+                                        <p>Navigation Items</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate orange">
+                                        <i class="fas fa-link"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card-ultimate">
+                                <div class="stat-header-ultimate">
+                                    <div class="stat-content-ultimate">
+                                        <h3>∞</h3>
+                                        <p>Consistency</p>
+                                    </div>
+                                    <div class="stat-icon-ultimate purple">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (if needed) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config (if needed) -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firebase-auth.js"></script>
+    
+    <!-- Security (if needed) -->
+    <script src="auth-guard.js"></script>
+    
+    <!-- Components Loader - Load this FIRST -->
+    <script src="js/components-loader.js"></script>
+    
+    <!-- Page-specific scripts go here -->
+    <script>
+        // Page-specific JavaScript
+        document.addEventListener('componentsLoaded', function(event) {
+            console.log('🎉 All components loaded!', event.detail);
+            // Initialize page-specific functionality here
+        });
+        
+        console.log('✅ Template page loaded');
+    </script>
+</body>
+</html>

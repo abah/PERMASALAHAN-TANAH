@@ -1,0 +1,148 @@
+<!-- Ultimate Header Component -->
+<!-- This file should be included in all pages for consistent header -->
+<header class="header-ultimate">
+    <div class="header-left-ultimate">
+        <div class="page-info-ultimate">
+            <h1 id="page-title">Dashboard</h1>
+            <p id="page-description">Trans-Data Dashboard System</p>
+        </div>
+    </div>
+    <div class="header-right-ultimate">
+        <div class="status-indicator-ultimate">
+            <div class="status-dot"></div>
+            <span>CONNECTED</span>
+        </div>
+        <div class="user-profile-ultimate" onclick="toggleUserDropdown()">
+            <div class="user-avatar-ultimate">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <div class="font-medium" id="userName">User</div>
+                <div class="text-sm text-muted" id="userEmail">user@example.com</div>
+            </div>
+            <!-- User Dropdown -->
+            <div class="user-dropdown-ultimate" id="userDropdown">
+                <div class="dropdown-header-ultimate">
+                    <div class="dropdown-user-info-ultimate">
+                        <div class="dropdown-avatar-ultimate">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="dropdown-user-details-ultimate">
+                            <h4 id="dropdownUserName">User</h4>
+                            <p id="dropdownUserEmail">user@example.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown-menu-ultimate">
+                    <button class="dropdown-item-ultimate" onclick="openProfileModal()">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Profile</span>
+                    </button>
+                    <button class="dropdown-item-ultimate" onclick="openSettingsModal()">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </button>
+                    <button class="dropdown-item-ultimate logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+// Header Component JavaScript
+(function() {
+    'use strict';
+    
+    // Auto-set page title and description based on current page
+    function setPageInfo() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const titleElement = document.getElementById('page-title');
+        const descElement = document.getElementById('page-description');
+        
+        if (!titleElement || !descElement) return;
+        
+        switch(currentPage) {
+            case 'index.html':
+            case '':
+                titleElement.textContent = 'Dashboard';
+                descElement.textContent = 'Trans-Data Dashboard System';
+                break;
+            case 'analytics.html':
+                titleElement.textContent = 'Analytics';
+                descElement.textContent = 'Data Analytics & Insights';
+                break;
+            case 'search-new.html':
+            case 'search.html':
+                titleElement.textContent = 'Pencarian Data';
+                descElement.textContent = 'Cari & Filter Data Transmigrasi';
+                break;
+            case 'data-new.html':
+            case 'data.html':
+                titleElement.textContent = 'Data Management';
+                descElement.textContent = 'Kelola Data Transmigrasi';
+                break;
+            case 'admin-users.html':
+                titleElement.textContent = 'Admin Users';
+                descElement.textContent = 'Manage User Access & Permissions';
+                break;
+        }
+        
+        console.log(`🎯 Page info set for: ${currentPage}`);
+    }
+    
+    // Universal user dropdown functions
+    window.toggleUserDropdown = function() {
+        const dropdown = document.getElementById('userDropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('show');
+        }
+    };
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('userDropdown');
+        const userProfile = event.target.closest('.user-profile-ultimate');
+        if (!userProfile && dropdown && dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    });
+
+    // Universal modal functions (fallback if not defined in page)
+    if (!window.openProfileModal) {
+        window.openProfileModal = function() {
+            alert('Profile functionality coming soon!');
+            document.getElementById('userDropdown').classList.remove('show');
+        };
+    }
+
+    if (!window.openSettingsModal) {
+        window.openSettingsModal = function() {
+            alert('Settings functionality coming soon!');
+            document.getElementById('userDropdown').classList.remove('show');
+        };
+    }
+
+    if (!window.handleLogout) {
+        window.handleLogout = function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userData');
+                window.location.href = 'login.html';
+            }
+        };
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setPageInfo);
+    } else {
+        setPageInfo();
+    }
+    
+    console.log('✅ Shared header component loaded');
+})();
+</script>
