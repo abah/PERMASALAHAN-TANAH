@@ -1,5 +1,19 @@
 // Analytics Dashboard - Using Real Data from Firebase
-console.log('Analytics.js loaded');
+console.log('🚀 Analytics.js loaded successfully');
+
+// Debug function to check if everything is working
+function debugAnalytics() {
+    console.log('🔍 Debug Analytics Status:');
+    console.log('- Window.dashboardData:', window.dashboardData ? window.dashboardData.length : 'Not loaded');
+    console.log('- Firebase db:', window.db ? 'Available' : 'Not available');
+    console.log('- Chart.js:', typeof Chart !== 'undefined' ? 'Available' : 'Not available');
+    console.log('- DOM Elements:');
+    console.log('  - problemChart:', document.getElementById('problemChart') ? 'Found' : 'Not found');
+    console.log('  - provinceChart:', document.getElementById('provinceChart') ? 'Found' : 'Not found');
+    console.log('  - timelineChart:', document.getElementById('timelineChart') ? 'Found' : 'Not found');
+    console.log('  - statusChart:', document.getElementById('statusChart') ? 'Found' : 'Not found');
+    console.log('  - totalLocations:', document.getElementById('totalLocations') ? 'Found' : 'Not found');
+}
 
 // Global variables
 // dashboardData akan diambil dari window.dashboardData atau data.js
@@ -96,8 +110,36 @@ async function initAnalytics() {
         // Use Firebase data if available, otherwise use data.js
         if (firebaseData.length > 0) {
             window.dashboardData = firebaseData;
+            console.log('✅ Using Firebase data:', firebaseData.length, 'records');
         } else if (window.dashboardData && window.dashboardData.length > 0) {
             // Use existing data from data.js
+            console.log('✅ Using data.js data:', window.dashboardData.length, 'records');
+        } else {
+            // Fallback to sample data if nothing is available
+            console.warn('⚠️ No data available, using sample data');
+            window.dashboardData = [
+                {
+                    id: 'sample1',
+                    provinsi: 'Jawa Barat',
+                    kabupaten: 'Bandung',
+                    jmlKK: 1000,
+                    bebanTugasSHM: 1500,
+                    totalKasus: 5,
+                    permasalahanKwsHutan: true,
+                    permasalahanPerusahaan: false,
+                    permasalahanMHA: true,
+                    permasalahanOKUMasy: false,
+                    permasalahanInstansi: false,
+                    permasalahanLainLain: false,
+                    statusBinaBlmHPL: true,
+                    statusBinaSdhHPL: false,
+                    statusBinaTdkHPL: false,
+                    statusSerahSdhHPL: false,
+                    statusSerahSKSerah: '',
+                    tahunPatan: '2020'
+                }
+            ];
+        }
             console.log('Using existing data from data.js');
         } else {
             console.error('No data available from Firebase or data.js');
@@ -136,13 +178,25 @@ function createCharts() {
     console.log('Creating charts with real data...');
     
     try {
+        // Check if Chart.js is available
+        if (typeof Chart === 'undefined') {
+            console.error('❌ Chart.js not loaded');
+            return;
+        }
+        
+        // Check if we have data
+        if (!window.dashboardData || window.dashboardData.length === 0) {
+            console.error('❌ No data available for charts');
+            return;
+        }
+        
         createProblemChart();
         createProvinceChart();
         createTimelineChart();
         createStatusChart();
-        console.log('All charts created successfully with real data');
+        console.log('✅ All charts created successfully with real data');
     } catch (error) {
-        console.error('Error creating charts:', error);
+        console.error('❌ Error creating charts:', error);
     }
 }
 
@@ -573,7 +627,16 @@ function exportChart(chartId) {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing analytics with real data...');
-    initAnalytics();
+    
+    // Debug first
+    setTimeout(() => {
+        debugAnalytics();
+    }, 1000);
+    
+    // Then initialize
+    setTimeout(() => {
+        initAnalytics();
+    }, 1500);
 });
 
 // User dropdown functions
@@ -588,4 +651,10 @@ window.analyticsUtils = {
     exportChart,
     toggleUserDropdown
 };
+
+// Make functions globally available
+window.toggleChartType = toggleChartType;
+window.exportChart = exportChart;
+window.toggleUserDropdown = toggleUserDropdown;
+window.debugAnalytics = debugAnalytics;
 
