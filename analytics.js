@@ -159,11 +159,9 @@ async function initAnalytics() {
                 tahunSerah: item.tahunSerah || item.tahun_serah || ''
             }));
         }
-            console.log('Using existing data from data.js');
-        } else {
-            console.error('No data available from Firebase or data.js');
-            throw new Error('No data available');
-        }
+        
+        console.log('✅ Data validation completed successfully');
+        console.log(`📊 Final data count: ${window.dashboardData.length} records`);
         
         // Create charts with real data
         createCharts();
@@ -463,10 +461,10 @@ function createStatusChart() {
 // Update summary statistics with real data
 function updateSummaryStats() {
     try {
-            if (typeof window.dashboardData === 'undefined') {
-        console.error('window.dashboardData not available for summary stats');
-        return;
-    }
+        if (typeof window.dashboardData === 'undefined') {
+            console.error('window.dashboardData not available for summary stats');
+            return;
+        }
     
     // Calculate totals from real window.dashboardData
     const totalLocations = window.dashboardData.length;
