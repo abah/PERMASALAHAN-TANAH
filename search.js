@@ -407,12 +407,24 @@ function displaySearchResults(results) {
         // Populate results list
         const resultsList = document.getElementById('resultsList');
         if (resultsList) {
+            console.log('🔧 Clearing results list and adding', results.length, 'items');
             resultsList.innerHTML = '';
             
-            results.forEach(item => {
+            results.forEach((item, index) => {
+                console.log(`📝 Creating result item ${index + 1}:`, item.kabupaten, 'ID:', item.id);
                 const resultItem = createResultItem(item);
+                console.log('🎯 Result item HTML:', resultItem.innerHTML.substring(0, 200) + '...');
                 resultsList.appendChild(resultItem);
             });
+            
+            // Verify buttons were created
+            const detailButtons = resultsList.querySelectorAll('.btn-detail');
+            console.log('🔘 Detail buttons created:', detailButtons.length);
+            detailButtons.forEach((btn, i) => {
+                console.log(`Button ${i + 1} onclick:`, btn.getAttribute('onclick'));
+            });
+        } else {
+            console.error('❌ resultsList element not found!');
         }
     }
 }
@@ -865,3 +877,4 @@ window.debugSearch = function() {
 
 console.log('Simple realtime search ready - Type to search!');
 console.log('🧪 Debug functions available: testDetailFunction(), testClickEventSetup(), debugSearch()');
+console.log('🔧 Manual test: Run window.showLocationDetail(1) in console after searching!');
