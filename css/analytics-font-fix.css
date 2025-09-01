@@ -1,0 +1,94 @@
+/* Fix Analytics Page Font Sizing - More Proportional */
+
+/* Fix oversized stat numbers */
+.stat-content-ultimate h3 {
+    font-size: 1.75rem !important; /* Reduced from 2.5rem */
+    font-weight: 700 !important; /* Reduced from 800 */
+    line-height: 1.2 !important;
+    letter-spacing: -0.02em !important;
+}
+
+/* Fix stat descriptions */
+.stat-content-ultimate p {
+    font-size: 0.875rem !important; /* Reduced from 1rem */
+    font-weight: 500 !important;
+    margin: 0.25rem 0 0 0 !important;
+}
+
+/* Fix insight card numbers */
+.insight-card-ultimate h3 {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.25rem !important;
+}
+
+/* Fix insight card text */
+.insight-card-ultimate p {
+    font-size: 0.8rem !important;
+    font-weight: 400 !important;
+    color: var(--gray-600) !important;
+}
+
+/* Analytics header proportional sizing */
+.analytics-header-ultimate h1 {
+    font-size: 1.875rem !important; /* 30px */
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+}
+
+.analytics-header-ultimate p {
+    font-size: 1rem !important; /* 16px */
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+}
+
+/* Chart titles proportional */
+.chart-title-ultimate {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+}
+
+/* Percentage change indicators */
+.stat-change-ultimate {
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+/* Make sure card content has proper spacing */
+.stat-card-ultimate {
+    padding: 1.25rem !important; /* Slightly reduced padding */
+}
+
+.insight-card-ultimate {
+    padding: 1.25rem !important; /* Slightly reduced padding */
+}
+
+/* Responsive font scaling */
+@media (max-width: 1024px) {
+    .stat-content-ultimate h3 {
+        font-size: 1.5rem !important;
+    }
+    
+    .analytics-header-ultimate h1 {
+        font-size: 1.625rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .stat-content-ultimate h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    .stat-content-ultimate p {
+        font-size: 0.8rem !important;
+    }
+    
+    .analytics-header-ultimate h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .analytics-header-ultimate p {
+        font-size: 0.875rem !important;
+    }
+}
