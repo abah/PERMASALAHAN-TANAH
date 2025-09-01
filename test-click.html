@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEST CLICK SIMPLE</title>
+    <style>
+        .btn {
+            background: red;
+            color: white;
+            padding: 20px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>TEST CLICK BUTTONS</h1>
+    
+    <!-- Method 1: Inline onclick -->
+    <button class="btn" onclick="alert('Method 1 WORKS!')">Method 1: Inline onclick</button>
+    
+    <!-- Method 2: Event listener -->
+    <button class="btn" id="btn2">Method 2: Event listener</button>
+    
+    <!-- Method 3: Function call -->
+    <button class="btn" onclick="testFunction(123)">Method 3: Function call</button>
+    
+    <!-- Method 4: Window function -->
+    <button class="btn" onclick="window.testFunction(456)">Method 4: Window function</button>
+    
+    <script>
+        // Method 2
+        document.getElementById('btn2').addEventListener('click', function() {
+            alert('Method 2 WORKS!');
+        });
+        
+        // Method 3 & 4
+        function testFunction(id) {
+            alert('Function WORKS with ID: ' + id);
+        }
+        
+        window.testFunction = testFunction;
+        
+        console.log('All test methods ready');
+    </script>
+</body>
+</html>
