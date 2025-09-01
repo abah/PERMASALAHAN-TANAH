@@ -183,6 +183,9 @@ async function setupRealtimeSearch() {
         // Setup modal close events
         setupModalEvents();
         
+        // Setup detail button click events (event delegation)
+        setupDetailButtonEvents();
+        
         console.log('Simple realtime search setup complete');
         
     } catch (error) {
@@ -459,7 +462,7 @@ function createResultItem(item) {
         </div>
         <div class="result-actions">
             ${!item.isProvinceSummary && !item.isKabupatenSummary && !item.isYearSummary && !item.isStatusSummary ? 
-                `<button class="btn-detail" onclick="showLocationDetail(${item.id})">
+                `<button class="btn-detail" data-location-id="${item.id}">
                     <i class="fas fa-eye"></i> Detail
                 </button>` : 
                 `<span class="summary-info">Klik untuk lihat detail</span>`
@@ -759,6 +762,26 @@ function setupModalEvents() {
     });
 }
 
+function setupDetailButtonEvents() {
+    // Use event delegation for detail buttons
+    const resultsList = document.getElementById('resultsList');
+    if (resultsList) {
+        resultsList.addEventListener('click', function(event) {
+            const detailBtn = event.target.closest('.btn-detail');
+            if (detailBtn) {
+                const locationId = detailBtn.getAttribute('data-location-id');
+                if (locationId) {
+                    console.log('Detail button clicked for location ID:', locationId);
+                    showLocationDetail(parseInt(locationId));
+                }
+            }
+        });
+        console.log('✅ Detail button event delegation setup');
+    } else {
+        console.warn('⚠️ resultsList element not found for event delegation');
+    }
+}
+
 function closeDetailModal() {
     const modal = document.getElementById('detailModal');
     if (modal) {
@@ -771,5 +794,9 @@ window.searchUtils = {
     showLocationDetail,
     closeDetailModal
 };
+
+// Make functions available globally for onclick
+window.showLocationDetail = showLocationDetail;
+window.closeDetailModal = closeDetailModal;
 
 console.log('Simple realtime search ready - Type to search!');
