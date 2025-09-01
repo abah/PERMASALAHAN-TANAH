@@ -768,29 +768,24 @@ function setupModalEvents() {
 }
 
 function setupDetailButtonEvents() {
-    // Use event delegation for detail buttons
+    // Event delegation is now backup only - onclick handles primary clicks
     const resultsList = document.getElementById('resultsList');
     if (resultsList) {
         resultsList.addEventListener('click', function(event) {
-            console.log('🖱️ Click detected on resultsList:', event.target);
-            
             const detailBtn = event.target.closest('.btn-detail');
             if (detailBtn) {
-                console.log('🎯 Detail button found:', detailBtn);
-                const locationId = detailBtn.getAttribute('data-location-id');
-                console.log('📍 Location ID:', locationId);
-                
-                if (locationId) {
-                    console.log('🚀 Calling showLocationDetail with ID:', locationId);
-                    showLocationDetail(parseInt(locationId));
-                } else {
-                    console.error('❌ No location ID found on button');
+                // Check if onclick failed, then use fallback
+                const onclickAttr = detailBtn.getAttribute('onclick');
+                if (onclickAttr && !onclickAttr.includes('showLocationDetail')) {
+                    console.log('🔄 Onclick fallback needed');
+                    const locationId = detailBtn.getAttribute('data-location-id');
+                    if (locationId) {
+                        showLocationDetail(parseInt(locationId));
+                    }
                 }
-            } else {
-                console.log('ℹ️ Click was not on detail button');
             }
         });
-        console.log('✅ Detail button event delegation setup');
+        console.log('✅ Detail button fallback delegation setup (onclick is primary)');
     } else {
         console.warn('⚠️ resultsList element not found for event delegation');
     }
@@ -819,10 +814,16 @@ window.testDetailFunction = function() {
     if (allData.length > 0) {
         const testId = allData[0].id;
         console.log('🎯 Testing with first data ID:', testId);
+        console.log('📊 First data item:', allData[0]);
         showLocationDetail(testId);
     } else {
         console.error('❌ No data available for testing');
     }
+};
+
+window.forceShowDetail = function(id = 1) {
+    console.log('🚀 Force showing detail for ID:', id);
+    showLocationDetail(id);
 };
 
 window.testClickEventSetup = function() {
