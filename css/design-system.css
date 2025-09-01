@@ -5,6 +5,10 @@
 /* Import design system components */
 @import url('./design-system/tokens.css');
 @import url('./design-system/typography.css');
+@import url('./components/buttons.css');
+@import url('./components/forms.css');
+@import url('./components/cards.css');
+@import url('./components/modals.css');
 
 /* ========================================
    GLOBAL RESET & BASE STYLES
