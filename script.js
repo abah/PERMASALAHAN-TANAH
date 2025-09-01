@@ -137,6 +137,9 @@ async function initDashboard() {
         // Initialize sidebar integration
         initializeSidebarIntegration();
         
+        // Initialize charts
+        initializeCharts();
+        
         console.log('✅ Dashboard initialized successfully');
         
     } catch (error) {
@@ -159,6 +162,7 @@ async function initDashboard() {
                 updateGlobalDashboard();
                 addEventListeners();
                 initializeSidebarIntegration();
+                initializeCharts();
                 console.log('✅ Dashboard continued with available data');
             } catch (fallbackError) {
                 console.error('❌ Fallback also failed:', fallbackError);
@@ -1921,9 +1925,12 @@ function applyFiltersWithSidebar() {
 
 // Initialize Charts
 function initializeCharts() {
+    console.log('🎨 Initializing charts...');
+    
     // Distribution Chart
     const distributionCtx = document.getElementById('distributionChart');
     if (distributionCtx) {
+        console.log('📊 Creating distribution chart...');
         new Chart(distributionCtx, {
             type: 'doughnut',
             data: {
@@ -1963,9 +1970,14 @@ function initializeCharts() {
         });
     }
 
+    } else {
+        console.warn('⚠️ Distribution chart canvas not found');
+    }
+
     // Trend Chart
     const trendCtx = document.getElementById('trendChart');
     if (trendCtx) {
+        console.log('📈 Creating trend chart...');
         new Chart(trendCtx, {
             type: 'line',
             data: {
@@ -2017,7 +2029,11 @@ function initializeCharts() {
                 }
             }
         });
+    } else {
+        console.warn('⚠️ Trend chart canvas not found');
     }
+    
+    console.log('✅ Charts initialization completed');
 }
 
 // Initialize dashboard when DOM is loaded
