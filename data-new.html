@@ -583,7 +583,20 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config & Services -->
+    <script src="firebase-config.js"></script>
+    <script src="firebase-service.js"></script>
+    <script src="firebase-auth.js"></script>
+    
+    <!-- Security -->
+    <script src="auth-guard.js"></script>
+    
+    <!-- Data Source -->
     <script src="data.js"></script>
     
     <script>
@@ -606,17 +619,90 @@
             populateFilters();
         }
 
-        function loadData() {
+        async function loadData() {
             console.log('📊 Loading data...');
-            if (window.dashboardData) {
-                currentData = [...window.dashboardData];
+            console.log('🔍 Data Source Status:');
+            console.log('- Window.dashboardData:', window.dashboardData ? window.dashboardData.length : 'Not loaded');
+            console.log('- Firebase db:', window.db ? 'Available' : 'Not available');
+
+            try {
+                // Priority 1: Try Firebase first (same as script.js and analytics.js)
+                if (window.db) {
+                    console.log('🔥 Firebase available, loading data...');
+                    try {
+                        const snapshot = await window.db.collection('transmigrasi').get();
+                        const firebaseData = snapshot.docs.map(doc => {
+                            const data = doc.data();
+                            // Convert Firebase data back to original format
+                            return {
+                                id: doc.id,
+                                provinsi: data.provinsi || '',
+                                kabupaten: data.kabupaten || '',
+                                sp: data.sp || data.satkerCode || '',
+                                masalah: data.masalah || data.permasalahan || '',
+                                totalKK: data.totalKK || data.jmlKK || 0,
+                                totalSHM: data.totalSHM || data.bebanTugasSHM || 0,
+                                tahunPatan: data.tahunPatan || '',
+                                tindakLanjut: data.tindakLanjut || '',
+                                rekomendasi: data.rekomendasi || '',
+                                binaSdhHPL: data.binaSdhHPL || data.statusBinaSdhHPL || 'No',
+                                serahSdhHPL: data.serahSdhHPL || data.statusSerahSdhHPL || 'No',
+                                ...data // Include all other fields
+                            };
+                        });
+                        
+                        if (firebaseData.length > 0) {
+                            currentData = firebaseData;
+                            window.dashboardData = firebaseData; // Update global
+                            console.log(`✅ Firebase data loaded: ${firebaseData.length} records`);
+                        } else {
+                            throw new Error('No Firebase data available');
+                        }
+                    } catch (firebaseError) {
+                        console.warn('⚠️ Firebase loading failed, falling back to data.js:', firebaseError);
+                        throw firebaseError; // Force fallback
+                    }
+                }
+                
+                // Priority 2: Fallback to data.js if Firebase fails or not available
+                if (!currentData || currentData.length === 0) {
+                    console.log('📁 Loading data from data.js...');
+                    
+                    // Wait for data.js to load
+                    let attempts = 0;
+                    while (!window.dashboardData && attempts < 50) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        attempts++;
+                    }
+                    
+                    if (!window.dashboardData || window.dashboardData.length === 0) {
+                        throw new Error('No data available from data.js');
+                    }
+                    
+                    currentData = [...window.dashboardData];
+                    console.log(`✅ Data.js loaded: ${currentData.length} records`);
+                }
+
+                // Ensure data structure consistency
+                currentData = currentData.map(item => ({
+                    ...item,
+                    id: item.id || Date.now() + Math.random(),
+                    totalKK: item.totalKK || item.jmlKK || 0,
+                    totalSHM: item.totalSHM || item.bebanTugasSHM || 0,
+                    sp: item.sp || item.satkerCode || '',
+                    masalah: item.masalah || item.permasalahan || ''
+                }));
+
                 filteredData = [...currentData];
-                console.log(`✅ Loaded ${currentData.length} records`);
+                console.log(`✅ Final data loaded: ${currentData.length} records`);
+                
                 renderTable();
                 updatePagination();
-            } else {
-                console.error('❌ No data found in window.dashboardData');
-                // Fallback sample data
+                
+            } catch (error) {
+                console.error('❌ All data loading methods failed:', error);
+                // Last resort: Sample data
+                console.log('🚨 Using fallback sample data');
                 currentData = [
                     {
                         id: 1,
@@ -628,7 +714,23 @@
                         totalSHM: 120,
                         tahunPatan: 2018,
                         tindakLanjut: "Mediasi dengan tokoh adat",
-                        rekomendasi: "Pemetaan ulang batas lahan"
+                        rekomendasi: "Pemetaan ulang batas lahan",
+                        binaSdhHPL: 'No',
+                        serahSdhHPL: 'No'
+                    },
+                    {
+                        id: 2,
+                        provinsi: "Papua Barat",
+                        kabupaten: "Manokwari",
+                        sp: "SP Manokwari II",
+                        masalah: "Masalah sertifikat tanah",
+                        totalKK: 200,
+                        totalSHM: 180,
+                        tahunPatan: 2019,
+                        tindakLanjut: "Koordinasi dengan BPN",
+                        rekomendasi: "Percepatan sertifikat",
+                        binaSdhHPL: 'Yes',
+                        serahSdhHPL: 'No'
                     }
                 ];
                 filteredData = [...currentData];
@@ -873,39 +975,90 @@
             alert(`Detail Data:\n\nProvinsi: ${item.provinsi}\nKabupaten: ${item.kabupaten}\nSP: ${item.sp}\nMasalah: ${item.masalah}\nTotal KK: ${item.totalKK}\nTotal SHM: ${item.totalSHM}`);
         }
 
-        function deleteData(id) {
+        async function deleteData(id) {
             if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
 
-            const index = currentData.findIndex(d => d.id === id);
-            if (index !== -1) {
-                currentData.splice(index, 1);
-                applyFilters();
-                alert('Data berhasil dihapus!');
+            try {
+                // Try to delete from Firebase first
+                if (window.db) {
+                    try {
+                        await window.db.collection('transmigrasi').doc(id.toString()).delete();
+                        console.log('✅ Data deleted from Firebase');
+                    } catch (firebaseError) {
+                        console.warn('⚠️ Firebase delete failed:', firebaseError);
+                    }
+                }
+
+                // Delete from local data
+                const index = currentData.findIndex(d => d.id === id);
+                if (index !== -1) {
+                    currentData.splice(index, 1);
+                    window.dashboardData = [...currentData]; // Update global
+                    applyFilters();
+                    alert('Data berhasil dihapus!');
+                }
+            } catch (error) {
+                console.error('❌ Error deleting data:', error);
+                alert('Gagal menghapus data. Cek console untuk detail.');
             }
         }
 
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
             
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
             
-            if (editingId) {
-                // Update existing data
-                const index = currentData.findIndex(d => d.id === editingId);
-                if (index !== -1) {
-                    currentData[index] = { ...currentData[index], ...data };
-                    alert('Data berhasil diperbarui!');
+            try {
+                if (editingId) {
+                    // Update existing data
+                    const index = currentData.findIndex(d => d.id === editingId);
+                    if (index !== -1) {
+                        const updatedData = { ...currentData[index], ...data };
+                        
+                        // Try to update Firebase first
+                        if (window.db) {
+                            try {
+                                await window.db.collection('transmigrasi').doc(editingId.toString()).update(data);
+                                console.log('✅ Data updated in Firebase');
+                            } catch (firebaseError) {
+                                console.warn('⚠️ Firebase update failed:', firebaseError);
+                            }
+                        }
+                        
+                        // Update local data
+                        currentData[index] = updatedData;
+                        window.dashboardData = [...currentData]; // Update global
+                        alert('Data berhasil diperbarui!');
+                    }
+                } else {
+                    // Add new data
+                    const newId = Date.now().toString(); // Use timestamp as ID for Firebase compatibility
+                    const newData = { id: newId, ...data };
+                    
+                    // Try to add to Firebase first
+                    if (window.db) {
+                        try {
+                            await window.db.collection('transmigrasi').doc(newId).set(newData);
+                            console.log('✅ Data added to Firebase');
+                        } catch (firebaseError) {
+                            console.warn('⚠️ Firebase add failed:', firebaseError);
+                        }
+                    }
+                    
+                    // Add to local data
+                    currentData.push(newData);
+                    window.dashboardData = [...currentData]; // Update global
+                    alert('Data berhasil ditambahkan!');
                 }
-            } else {
-                // Add new data
-                const newId = Math.max(...currentData.map(d => d.id), 0) + 1;
-                currentData.push({ id: newId, ...data });
-                alert('Data berhasil ditambahkan!');
+                
+                closeDataModal();
+                applyFilters();
+                
+            } catch (error) {
+                console.error('❌ Error saving data:', error);
+                alert('Gagal menyimpan data. Cek console untuk detail.');
             }
-            
-            closeDataModal();
-            applyFilters();
         }
 
         function closeDataModal() {
