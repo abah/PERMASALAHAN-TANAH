@@ -813,4 +813,44 @@ window.searchUtils = {
 window.showLocationDetail = showLocationDetail;
 window.closeDetailModal = closeDetailModal;
 
+// Test functions for debugging
+window.testDetailFunction = function() {
+    console.log('🧪 Testing detail function...');
+    if (allData.length > 0) {
+        const testId = allData[0].id;
+        console.log('🎯 Testing with first data ID:', testId);
+        showLocationDetail(testId);
+    } else {
+        console.error('❌ No data available for testing');
+    }
+};
+
+window.testClickEventSetup = function() {
+    console.log('🧪 Testing click event setup...');
+    const resultsList = document.getElementById('resultsList');
+    console.log('📋 ResultsList element:', resultsList);
+    console.log('🎯 Number of detail buttons:', document.querySelectorAll('.btn-detail').length);
+    
+    // Simulate a click
+    const firstDetailBtn = document.querySelector('.btn-detail');
+    if (firstDetailBtn) {
+        console.log('🖱️ Simulating click on first detail button');
+        firstDetailBtn.click();
+    } else {
+        console.warn('⚠️ No detail buttons found. Try searching first!');
+    }
+};
+
+window.debugSearch = function() {
+    console.log('🔍 Debug Search Info:');
+    console.log('- Data loaded:', allData.length, 'records');
+    console.log('- Search setup completed:', typeof setupRealtimeSearch === 'function');
+    console.log('- Detail function available:', typeof showLocationDetail === 'function');
+    console.log('- Results container:', document.getElementById('resultsList') ? 'Found' : 'Not found');
+    console.log('- Modal container:', document.getElementById('detailModal') ? 'Found' : 'Not found');
+    console.log('- Current search results:', document.querySelectorAll('.result-item').length);
+    console.log('- Detail buttons:', document.querySelectorAll('.btn-detail').length);
+};
+
 console.log('Simple realtime search ready - Type to search!');
+console.log('🧪 Debug functions available: testDetailFunction(), testClickEventSetup(), debugSearch()');
