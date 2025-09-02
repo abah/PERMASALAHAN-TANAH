@@ -1,0 +1,320 @@
+/* ========================================
+   AUTHENTICATION PAGES MOBILE RESPONSIVE
+   ======================================== */
+
+/* Login Page Mobile Optimization */
+@media (max-width: 768px) {
+    .login-container {
+        max-width: 90% !important;
+        margin: 50px auto !important;
+        padding: 30px 20px !important;
+        border-radius: 12px !important;
+    }
+    
+    .login-header h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .login-header p {
+        font-size: 0.875rem !important;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem !important;
+    }
+    
+    .form-group label {
+        font-size: 0.875rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .form-group input {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+        padding: 12px !important;
+        border-radius: 8px !important;
+        min-height: 44px !important;
+    }
+    
+    .btn-primary {
+        font-size: 16px !important;
+        padding: 12px !important;
+        min-height: 44px !important;
+        border-radius: 8px !important;
+    }
+    
+    .login-links {
+        margin-top: 1.5rem !important;
+    }
+    
+    .login-links a {
+        font-size: 0.875rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        max-width: 95% !important;
+        margin: 30px auto !important;
+        padding: 25px 15px !important;
+    }
+    
+    .login-header {
+        margin-bottom: 25px !important;
+    }
+    
+    .login-header h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem !important;
+    }
+    
+    .form-group input {
+        padding: 10px !important;
+    }
+    
+    .btn-primary {
+        padding: 10px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Admin Users Page Mobile Optimization */
+@media (max-width: 768px) {
+    .admin-container {
+        max-width: 95% !important;
+        margin: 30px auto !important;
+        padding: 20px 15px !important;
+        border-radius: 12px !important;
+    }
+    
+    .admin-header h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .admin-header p {
+        font-size: 0.875rem !important;
+    }
+    
+    .admin-actions {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .admin-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        min-height: 44px !important;
+    }
+    
+    /* Users Table Mobile */
+    .users-table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    .users-table {
+        min-width: 600px !important;
+        font-size: 0.875rem !important;
+    }
+    
+    .users-table th,
+    .users-table td {
+        padding: 8px 6px !important;
+        white-space: nowrap !important;
+    }
+    
+    .users-table .btn-sm {
+        min-height: 36px !important;
+        min-width: 36px !important;
+        padding: 6px 8px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* User Form Modal Mobile */
+    .user-modal .modal-content {
+        max-width: 95% !important;
+        margin: 20px auto !important;
+        border-radius: 12px !important;
+    }
+    
+    .user-modal .modal-header {
+        padding: 15px 20px !important;
+    }
+    
+    .user-modal .modal-header h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    .user-modal .modal-body {
+        padding: 20px !important;
+    }
+    
+    .user-modal .form-group {
+        margin-bottom: 1rem !important;
+    }
+    
+    .user-modal .form-group label {
+        font-size: 0.875rem !important;
+    }
+    
+    .user-modal .form-group input,
+    .user-modal .form-group select {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+        padding: 10px !important;
+        min-height: 44px !important;
+        border-radius: 8px !important;
+    }
+    
+    .user-modal .modal-actions {
+        padding: 15px 20px !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .user-modal .modal-actions .btn {
+        width: 100% !important;
+        min-height: 44px !important;
+        justify-content: center !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-container {
+        margin: 15px auto !important;
+        padding: 15px 10px !important;
+    }
+    
+    .admin-header {
+        margin-bottom: 20px !important;
+    }
+    
+    .admin-header h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    .users-table {
+        font-size: 0.75rem !important;
+    }
+    
+    .users-table th,
+    .users-table td {
+        padding: 6px 4px !important;
+    }
+    
+    .user-modal .modal-content {
+        margin: 10px auto !important;
+    }
+    
+    .user-modal .modal-header,
+    .user-modal .modal-body,
+    .user-modal .modal-actions {
+        padding: 15px !important;
+    }
+}
+
+/* Create Admin Page Mobile Optimization */
+@media (max-width: 768px) {
+    .create-admin-container {
+        max-width: 90% !important;
+        margin: 50px auto !important;
+        padding: 30px 20px !important;
+        border-radius: 12px !important;
+    }
+    
+    .create-admin-header h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .create-admin-header p {
+        font-size: 0.875rem !important;
+    }
+    
+    .create-admin-form .form-group {
+        margin-bottom: 1.25rem !important;
+    }
+    
+    .create-admin-form .form-group label {
+        font-size: 0.875rem !important;
+    }
+    
+    .create-admin-form .form-group input,
+    .create-admin-form .form-group select {
+        font-size: 16px !important; /* Prevent zoom on iOS */
+        padding: 12px !important;
+        min-height: 44px !important;
+        border-radius: 8px !important;
+    }
+    
+    .create-admin-form .btn {
+        width: 100% !important;
+        min-height: 44px !important;
+        font-size: 16px !important;
+        padding: 12px !important;
+        border-radius: 8px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .create-admin-container {
+        max-width: 95% !important;
+        margin: 30px auto !important;
+        padding: 25px 15px !important;
+    }
+    
+    .create-admin-header h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    .create-admin-form .form-group {
+        margin-bottom: 1rem !important;
+    }
+    
+    .create-admin-form .form-group input,
+    .create-admin-form .form-group select {
+        padding: 10px !important;
+    }
+    
+    .create-admin-form .btn {
+        padding: 10px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Touch Improvements for Auth Pages */
+@media (max-width: 768px) {
+    /* Larger touch targets */
+    .btn,
+    button,
+    input[type="submit"],
+    input[type="button"] {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        cursor: pointer !important;
+    }
+    
+    /* Better form input styling */
+    input,
+    select,
+    textarea {
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden !important;
+    }
+    
+    /* Better focus states for accessibility */
+    input:focus,
+    select:focus,
+    button:focus {
+        outline: 2px solid var(--primary-500) !important;
+        outline-offset: 2px !important;
+    }
+}

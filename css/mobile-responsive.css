@@ -1,0 +1,397 @@
+/* ========================================
+   MOBILE-FIRST RESPONSIVE DESIGN SYSTEM
+   ======================================== */
+
+/* Mobile First Approach - Default styles for mobile */
+
+/* ========================================
+   MOBILE HAMBURGER MENU
+   ======================================== */
+
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1100;
+    background: var(--primary-600);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--primary-700);
+    transform: scale(1.05);
+}
+
+.mobile-menu-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.show {
+    opacity: 1;
+}
+
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Mobile Portrait: 320px - 480px */
+@media (max-width: 480px) {
+    /* Show mobile menu toggle */
+    .mobile-menu-toggle {
+        display: block !important;
+    }
+    
+    .mobile-overlay {
+        display: block;
+    }
+    
+    /* Hide sidebar by default on mobile */
+    .sidebar-ultimate {
+        transform: translateX(-100%) !important;
+        position: fixed !important;
+        z-index: 1000 !important;
+        width: 280px !important;
+        transition: transform 0.3s ease !important;
+    }
+    
+    .sidebar-ultimate.show {
+        transform: translateX(0) !important;
+    }
+    
+    /* Adjust main content for mobile */
+    .main-content-ultimate {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 1rem !important;
+    }
+    
+    /* Header adjustments */
+    .header-ultimate {
+        left: 0 !important;
+        width: 100% !important;
+        padding: 0.75rem 4rem 0.75rem 1rem !important;
+    }
+    
+    .header-left-ultimate h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    .header-left-ultimate p {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Stats grid - single column */
+    .stats-grid-ultimate {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    /* Cards responsive */
+    .card-ultimate {
+        padding: 1rem !important;
+    }
+    
+    .stat-content-ultimate h3 {
+        font-size: 1.5rem !important;
+    }
+    
+    /* Chart containers */
+    .chart-container-ultimate {
+        height: 250px !important;
+        padding: 1rem !important;
+    }
+    
+    /* Tables responsive */
+    .table-container-ultimate {
+        overflow-x: auto !important;
+    }
+    
+    .table-ultimate {
+        min-width: 600px !important;
+    }
+    
+    /* Forms responsive */
+    .form-group-ultimate {
+        margin-bottom: 1rem !important;
+    }
+    
+    .form-input-ultimate,
+    .form-select-ultimate,
+    .form-textarea-ultimate {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+    }
+    
+    /* Buttons responsive */
+    .btn-ultimate {
+        padding: 0.75rem 1.5rem !important;
+        font-size: 0.875rem !important;
+        min-height: 44px !important; /* Touch target size */
+    }
+    
+    /* User dropdown */
+    .user-dropdown-ultimate {
+        right: 0.5rem !important;
+        min-width: 250px !important;
+    }
+    
+    /* Quick actions grid */
+    .quick-actions-grid-ultimate {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+    }
+    
+    /* Search and filters */
+    .search-container-ultimate {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .search-input-ultimate {
+        width: 100% !important;
+    }
+}
+
+/* Mobile Landscape: 481px - 768px */
+@media (min-width: 481px) and (max-width: 768px) {
+    /* Show mobile menu toggle */
+    .mobile-menu-toggle {
+        display: block !important;
+    }
+    
+    .mobile-overlay {
+        display: block;
+    }
+    
+    /* Sidebar still hidden by default */
+    .sidebar-ultimate {
+        transform: translateX(-100%) !important;
+        position: fixed !important;
+        z-index: 1000 !important;
+        transition: transform 0.3s ease !important;
+    }
+    
+    .sidebar-ultimate.show {
+        transform: translateX(0) !important;
+    }
+    
+    /* Main content adjustments */
+    .main-content-ultimate {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 1.5rem !important;
+    }
+    
+    .header-ultimate {
+        left: 0 !important;
+        width: 100% !important;
+        padding: 1rem 4rem 1rem 1.5rem !important;
+    }
+    
+    /* Stats grid - 2 columns */
+    .stats-grid-ultimate {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+    }
+    
+    /* Chart containers */
+    .chart-container-ultimate {
+        height: 300px !important;
+    }
+    
+    /* Quick actions - 2 columns */
+    .quick-actions-grid-ultimate {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Tablet Portrait: 769px - 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Show mobile menu toggle */
+    .mobile-menu-toggle {
+        display: block !important;
+    }
+    
+    .mobile-overlay {
+        display: block;
+    }
+    
+    /* Sidebar behavior */
+    .sidebar-ultimate {
+        transform: translateX(-100%) !important;
+        position: fixed !important;
+        z-index: 1000 !important;
+        transition: transform 0.3s ease !important;
+    }
+    
+    .sidebar-ultimate.show {
+        transform: translateX(0) !important;
+    }
+    
+    /* Main content */
+    .main-content-ultimate {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 2rem !important;
+    }
+    
+    .header-ultimate {
+        left: 0 !important;
+        width: 100% !important;
+        padding: 1.25rem 4rem 1.25rem 2rem !important;
+    }
+    
+    /* Stats grid - 3 columns */
+    .stats-grid-ultimate {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    /* Charts */
+    .chart-container-ultimate {
+        height: 350px !important;
+    }
+}
+
+/* Desktop: 1025px and up */
+@media (min-width: 1025px) {
+    /* Hide mobile elements */
+    .mobile-menu-toggle {
+        display: none !important;
+    }
+    
+    .mobile-overlay {
+        display: none !important;
+    }
+    
+    /* Normal sidebar behavior */
+    .sidebar-ultimate {
+        transform: translateX(0) !important;
+        position: fixed !important;
+        z-index: 100 !important;
+    }
+    
+    .main-content-ultimate {
+        margin-left: 280px !important;
+        width: calc(100% - 280px) !important;
+    }
+    
+    .header-ultimate {
+        left: 280px !important;
+        width: calc(100% - 280px) !important;
+    }
+}
+
+/* ========================================
+   TOUCH IMPROVEMENTS
+   ======================================== */
+
+/* Larger touch targets for mobile */
+@media (max-width: 768px) {
+    .nav-item-ultimate {
+        min-height: 48px !important;
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .btn-ultimate,
+    .form-input-ultimate,
+    .form-select-ultimate {
+        min-height: 44px !important;
+    }
+    
+    /* Table actions */
+    .btn-sm-ultimate {
+        min-height: 36px !important;
+        min-width: 36px !important;
+    }
+}
+
+/* ========================================
+   TYPOGRAPHY RESPONSIVE
+   ======================================== */
+
+@media (max-width: 480px) {
+    .page-title-ultimate {
+        font-size: 1.5rem !important;
+    }
+    
+    .section-title-ultimate {
+        font-size: 1.25rem !important;
+    }
+    
+    .card-title-ultimate {
+        font-size: 1rem !important;
+    }
+    
+    .text-sm-ultimate {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ========================================
+   SCROLL IMPROVEMENTS
+   ======================================== */
+
+/* Smooth scrolling on mobile */
+html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Better scrollbars on mobile */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Hardware acceleration for animations */
+.sidebar-ultimate,
+.mobile-overlay,
+.mobile-menu-toggle {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Reduce animations on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar-ultimate,
+    .mobile-overlay,
+    .mobile-menu-toggle {
+        transition: none !important;
+        animation: none !important;
+    }
+}
