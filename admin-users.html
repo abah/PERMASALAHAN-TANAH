@@ -17,13 +17,12 @@
     <link rel="stylesheet" href="css/mobile-responsive.css?v=1.0">
     <link rel="stylesheet" href="css/auth-mobile.css?v=1.0">
     <style>
-        .admin-container {
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 30px;
+        .admin-container-ultimate {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: var(--space-8);
+            margin-bottom: var(--space-8);
         }
         
         .admin-header {
@@ -358,9 +357,6 @@
     
     <!-- Security -->
     <script src="auth-guard.js"></script>
-    
-    <!-- Sidebar Management -->
-    <script src="sidebar.js"></script>
 
     <script>
         let users = [];
